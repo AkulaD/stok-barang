@@ -4,6 +4,11 @@ if(!isset($_SESSION['login'])){
     header('location: login.php');
     exit;
 }
+
+include 'php/conn.php';
+
+$result = mysqli_query($conn, "SELECT * FROM produk ORDER BY created_at DESC");
+$no = 1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +77,54 @@ if(!isset($_SESSION['login'])){
             </div>
         </section>
         <section class="product-list">
+            <div class="list-body">
+                <h2>Product List</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Product Name</th>
+                                <th colspan="2">Stock</th>
+                                <th>Price</th>
+                                <th>QR Download</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (mysqli_num_rows($result) > 0): ?>
+                                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                                <tr>
+                                    <td><?= $no++; ?></td>
+                                    <td><?= htmlspecialchars($row['nama_produk']); ?></td>
+                                    <td><?= $row['stok']; ?></td>
+                                    <td><a href="php/input-stock.php?id=<?= $row['id_produk']; ?>">Add Stock</a></td>
+                                    <td>Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
 
+                                    <td>
+                                        <a href="php/barcode.php?code=<?= urlencode($row['barcode']); ?>" target="_blank">
+                                            Download Barcode
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <a href="php/edit-product.php?id=<?= $row['id_produk']; ?>">Edit</a> |
+                                        <a href="php/delete.php?id=<?= $row['id_produk']; ?>"
+                                        onclick="return confirm('Delete this product?')">
+                                        Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="6" style="text-align:center;">No products found</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </section>
     </main>
 </body>
