@@ -8,3 +8,4 @@ form.addEventListener('submit', function () {
     btn.disabled = true;
     btn.innerText = 'Processing...';
 });
+

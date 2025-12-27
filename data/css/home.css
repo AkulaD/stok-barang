@@ -24,3 +24,34 @@
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+.chart {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.chart-wrapper {
+    display: grid !important;
+    grid-template-columns: 340px 340px !important;
+    justify-content: flex-start;
+}
+
+.chart-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 340px;  
+    box-sizing: border-box;
+}
+
+
+.chart-filter form {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+main{
+    min-height: 100vh;
+    padding: 2rem;
+}

@@ -20,6 +20,16 @@ if (isset($_POST['login'])) {
             $_SESSION['login'] = true;
             $_SESSION['username'] = $user['username'];
 
+            if ($user['role'] === 'admin') {
+                $_SESSION['role'] = 'admin';
+            } elseif ($user['role'] === 'viewer') {
+                $_SESSION['role'] = 'viewer';
+            } elseif ($user['role'] === 'uploader') {
+                $_SESSION['role'] = 'uploader';
+            } elseif ($user['role'] === 'cashier') {
+                $_SESSION['role'] = 'cashier';
+            }
+
             header("Location: ../index.php");
             exit;
 

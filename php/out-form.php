@@ -1,25 +1,27 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['login'])) {
-    header('Location: ../login.php');
+    header('location: login.php');
     exit;
 }
 
-require_once __DIR__ . '/conn.php';
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../index.php');
+if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'cashier' && $_SESSION['role'] !== 'viewer') {
+    header('location: products.php');
     exit;
 }
+
+include 'conn.php';
 
 $qr_number = trim($_POST['qr_number']);
+$penjualan = trim($_POST['penjualan']);
 
 mysqli_begin_transaction($conn);
 
 try {
 
     $stmt = $conn->prepare(
-        "SELECT id_produk, stok 
+        "SELECT id_produk, stok, harga 
          FROM produk 
          WHERE barcode = ? 
          FOR UPDATE"
@@ -38,6 +40,7 @@ try {
         throw new Exception('Stok habis');
     }
 
+
     $stmt = $conn->prepare(
         "UPDATE produk 
          SET stok = stok - 1 
@@ -54,13 +57,15 @@ try {
 
     $stmt = $conn->prepare(
         "INSERT INTO log_stok
-        (id_log, id_produk, tipe, jumlah, keterangan)
-        VALUES (?, ?, 'keluar', 1, 'Scan barcode')"
+        (id_log, id_produk, tipe, jumlah, keterangan, penjualan, harga)
+        VALUES (?, ?, 'keluar', 1, 'Scan barcode', ?, ?)"
     );
     $stmt->bind_param(
-        "ss",
+        "ssss",
         $log_id,
-        $product['id_produk']
+        $product['id_produk'],
+        $penjualan,
+        $product['harga']
     );
     $stmt->execute();
 

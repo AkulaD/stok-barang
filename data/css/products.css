@@ -24,3 +24,51 @@
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+main {
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.head-main{
+    display: flex;
+    border-bottom: 1px solid #000;
+}
+
+.add-product{
+    padding: 1rem;
+    width: 40%;
+}
+
+.information-list{
+    width: 60%;
+    padding-left: 2rem;
+}
+
+.flex{
+    display: flex;
+}
+
+.sub-products{
+    width: 30%;
+}
+
+.sub-chart-stock{
+    width: 70%;
+}
+
+.form-add{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 0 ;
+}
+
+.button-submit{
+    display: flex;
+    justify-content: end;
+}
+
+.chart-stock{
+    display: flex;
+}
