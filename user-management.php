@@ -7,7 +7,7 @@ if(!isset($_SESSION['login'])){
 }
 
 if ($_SESSION['role']!=='admin'){
-    header('location:index.php');
+    header('location:product-out.php');
     exit;
 }
 

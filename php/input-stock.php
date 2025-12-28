@@ -7,14 +7,14 @@ if (!isset($_SESSION['login'])) {
 }
 
 if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader' && $_SESSION['role'] !== 'viewer') {
-    header('location: index.php');
+    header('location: ../product-out.php');
     exit;
 }
 
 include 'conn.php';
 
 if (!isset($_GET['id'])) {
-    header('Location: ../products.php');
+    header('Location: ../product-in.php');
     exit;
 }
 
@@ -47,10 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $log_stmt->bind_param("ssi", $id_log, $id_product, $added_stock);
         $log_stmt->execute();
         
-        header("Location: ../products.php?stock_add=success");
+        header("Location: ../product-in.php?stock_add=success");
         exit;
     } else {
-        header("Location: ../products.php?stock_add=failure");
+        header("Location: ../product-in.php?stock_add=failure");
         exit;
     }
 }
@@ -60,9 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit - Stock</title>
     <link rel="stylesheet" href="../data/css/products.css">
     <script src="../data/js/products.js" defer></script>
+    <link rel="stylesheet" href="../data/css/sub-form.css">
 </head>
 <body>
     <div id="loading-overlay" style="display:none;">
@@ -71,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <form action="" method="post">
+        <a href="../product-in.php">Back</a>
         <h2>Add Stock</h2>
         <p><b><?= $row['nama_produk']; ?></b></p>
         <p>Current Stock: <?= $row['stok']; ?></p>

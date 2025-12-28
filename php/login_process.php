@@ -30,16 +30,16 @@ if (isset($_POST['login'])) {
                 $_SESSION['role'] = 'cashier';
             }
 
-            header("Location: ../index.php");
+            header("Location: ../product-in.php");
             exit;
 
         } else {
-            header("Location: ../login.php?error=Password salah");
+            header("Location: ../index.php?error=Password salah");
             exit;
         }
 
     } else {
-        header("Location: ../login.php?error=Username tidak ditemukan");
+        header("Location: ../index.php?error=Username tidak ditemukan");
         exit;
     }
 }

@@ -7,7 +7,7 @@ if (!isset($_SESSION['login'])) {
 }
 
 if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader' && $_SESSION['role'] !== 'viewer') {
-    header('location: index.php');
+    header('location: product-out.php');
     exit;
 }
 
@@ -38,8 +38,8 @@ $no = 1;
         <nav>
             <div class="left-side">
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="products.php">Products</a></li>
+                <li><a href="product-in.php">Product In</a></li>
+                <li><a href="product-out.php">Product Out</a></li>
                     <li><a href="penjualan.php">penjualan</a></li>
                     <?php
                         if($_SESSION['role'] === 'admin'){
@@ -71,16 +71,19 @@ $no = 1;
                     <div class="form-add">
                         <div class="input-product">
                             <label>Product Name</label>
+                            <br>
                             <input type="text" name="product" required>
                         </div>
 
                         <div class="input-stock">
                             <label>Add Stock</label>
+                            <br>
                             <input type="number" name="stock" required value="1">
                         </div>
 
                         <div class="input-price">
                             <label>Price</label>
+                            <br>
                             <input type="number" name="price" required>
                         </div>
                     </div>
@@ -126,6 +129,26 @@ $no = 1;
                 </div>
             </div>
         </section>
+        <section class="add-stock-form">
+            <form action="php/form-add-stock.php" method="post">
+                <h2>Add Stock</h2>
+                <div class="form-add-body">
+                    <div class="new-stok">
+                        <div class="qr-code">
+                            <label for="qr-code">Qr Code</label>
+                            <input type="text" name="qr-code" id="qr-code">
+                        </div>
+                        <div class="add-stock">
+                            <label for="stock">Stock</label>
+                            <input type="number" name="stock" id="stock">
+                        </div>
+                    </div>
+                </div>
+                <div class="body-button">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </section>
         <section class="product-list">
             <div class="list-body">
                 <h2>Product List</h2>
@@ -133,33 +156,33 @@ $no = 1;
                     <table>
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>Product Name</th>
-                                <th colspan="2">Stock</th>
-                                <th>Price</th>
-                                <th>QR Download</th>
-                                <th>Action</th>
+                                <th class="t-no">No</th>
+                                <th class="t-name">Product Name</th>
+                                <th class="t-b-stock" colspan="2">Stock</th>
+                                <th class="t-price">Price</th>
+                                <th class="t-qr-d">QR Download</th>
+                                <th class="t-action">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php if (mysqli_num_rows($result) > 0): ?>
                                 <?php while ($row = mysqli_fetch_assoc($result)): ?>
                                 <tr>
-                                    <td><?= $no++; ?></td>
-                                    <td><?= htmlspecialchars($row['nama_produk']); ?></td>
-                                    <td><?= $row['stok']; ?></td>
-                                    <td><a href="php/input-stock.php?id=<?= $row['id_produk']; ?>">Add Stock</a></td>
-                                    <td>Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
+                                    <td class="t-no"><?= $no++; ?></td>
+                                    <td class="t-name"><?= htmlspecialchars($row['nama_produk']); ?></td>
+                                    <td class="t-stock"><?= $row['stok']; ?></td>
+                                    <td class="t-istock"><a href="php/input-stock.php?id=<?= $row['id_produk']; ?>">Add Stock</a></td>
+                                    <td class="price">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
 
-                                    <td>
+                                    <td class="t-qr-d">
                                         <a href="php/barcode.php?code=<?= urlencode($row['barcode']); ?>" target="_blank">
-                                            Download Barcode
+                                            Download QR Code
                                         </a>
                                     </td>
 
-                                    <td>
-                                        <a href="php/edit-product.php?id=<?= $row['id_produk']; ?>">Edit</a> |
-                                        <a href="php/delete.php?id=<?= $row['id_produk']; ?>"
+                                    <td class="t-action">
+                                        <a class="t-edit" href="php/edit-product.php?id=<?= $row['id_produk']; ?>">Edit</a> |
+                                        <a class="t-delete" href="php/delete.php?id=<?= $row['id_produk']; ?>"
                                         onclick="return confirm('Delete this product?')">
                                         Delete
                                         </a>
@@ -226,7 +249,7 @@ function renderOverlayList(data) {
             border-radius:6px;
             font-size:13px
         ">
-        <strong>Daftar Stok</strong>
+        <strong>List Stok</strong>
         <ul style="list-style:none;padding:0;margin:8px 0 0 0">
     `;
 

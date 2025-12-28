@@ -3,5 +3,5 @@ session_start();
 session_unset();
 session_destroy();
 
-header('location: ../login.php?message=Berhasil Logout');
+header('location: ../index.php?message=Berhasil Logout');
 exit;

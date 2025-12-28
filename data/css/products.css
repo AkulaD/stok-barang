@@ -38,30 +38,79 @@ main {
 .add-product{
     padding: 1rem;
     width: 40%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    margin-bottom: 1rem;
+    border-radius: 15px;
 }
 
 .information-list{
     width: 60%;
     padding-left: 2rem;
+    margin-bottom:1rem ;
+    margin-left: 2rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 15px;
 }
 
-.flex{
-    display: flex;
+.information-list h2{
+    padding-top: 0.4rem;
 }
 
 .sub-products{
-    width: 30%;
+    width: 50%;
 }
 
 .sub-chart-stock{
-    width: 70%;
+    width: 50%;
 }
 
 .form-add{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.4rem 0 ;
+    flex-direction: column;
+    padding: 2rem 2rem ;
+    gap: 20px;
+}
+
+.add-product h2{
+    font-size: 1.6rem;
+    padding-left: 1rem;
+}
+
+.input-product, .input-stock, .input-price{
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #000;
+    border-radius: 5px;}
+
+.input-product input, .input-stock input, .input-price input{
+    width: 100%;
+    padding: 0.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.input-product input:focus, .input-stock input:focus, .input-price input:focus{
+    outline: none;
+}
+
+.button-submit button{
+    border: none;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    padding: 0.6rem 1.2rem;
+    background-color: rgb(0, 85, 255);
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-weight: bold;
+}
+
+.button-submit button:hover{
+    background-color: rgb(0, 135, 255);
+    color: #fff;
+    transition: all 0.3s ease-in-out;
 }
 
 .button-submit{
@@ -71,4 +120,240 @@ main {
 
 .chart-stock{
     display: flex;
+}
+
+.sub-total, .sub-stock{
+    width: 50%;
+    border-bottom: 1px solid #000;
+    padding-top: 2.4rem;
+}
+
+.sub-total h3{
+    font-size: 1.2rem;
+    font-weight: bold;}
+
+.sub-stock h3{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.sub-total p{
+    font-size: 1.2rem;
+    padding-right: 0.4rem;
+    padding-left: 0.5rem;
+}
+
+.sub-stock p{
+    font-size: 1.2rem;
+    padding-top: 0.4rem;
+    padding-left: 0.5rem;
+}
+
+.product-list{
+    padding: 1rem;
+    width: 100%;
+}
+
+.list-body h2{
+    font-size: 2rem;
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+}
+
+.product-list table{
+    width: 100%;
+}
+
+tbody tr td{
+    padding: 0.5rem;
+    border-bottom: 2px solid #ccc;
+    font-size: 1.2rem;
+}
+
+thead tr th{
+    font-size: 1.4rem;
+    text-align: left;
+}
+
+.t-no{
+    width: 5%;
+    text-align: center;
+}
+
+.t-name{
+    width: 40%;
+}
+
+.t-b-stock{
+    width: 15%;
+}
+
+.t-stock{
+    text-align: center;
+}
+
+.t-istock a{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.2rem;
+    background-color: rgb(0, 85, 255);
+    border-radius: 5px;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out
+}
+
+.t-istock a:hover{
+    background-color: rgb(0, 135, 255);
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+
+}
+
+.t-price{
+    width: 15%;
+}
+
+.t-qr-d{
+    width: 15%;
+}
+
+.t-qr-d a{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.2rem;
+    background-color: rgb(0, 85, 255);
+    border-radius: 5px;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out
+}
+
+.t-qr-d a:hover{
+    background-color: rgb(0, 135, 255);
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+
+}
+
+.t-action{
+    width: 10%;
+}
+
+.t-edit{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.2rem;
+    background-color: rgb(0, 85, 255);
+    border-radius: 5px;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out
+}
+
+.t-edit:hover{
+    background-color: rgb(0, 135, 255);
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+
+}
+
+.t-delete{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.2rem;
+    background-color: rgb(255, 0, 0);
+    border-radius: 5px;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out
+}
+
+.t-delete:hover{
+    background-color: rgb(255, 74, 74);
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+.add-stock-form{
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 15px;
+    width: 100%;
+}
+
+.add-stock-form h2{
+    font-size: 1.5rem;
+    padding-left: 1rem;
+}
+
+.new-stok{
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-stock{
+    width: 50%;
+    height: 100%;
+    border-radius: 15px;
+    border: 1px solid #000;
+    padding: 1rem;
+    margin-left:0.5rem ;
+    margin-bottom: 1rem;
+}
+
+.qr-code{
+    width: 50%;
+    height: 100%;
+    border-radius: 15px;
+    border: 1px solid #000;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 0.5rem;
+}
+
+.qr-code label, .add-stock label{
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding-bottom: 0.2rem;
+}
+
+.qr-code input, .add-stock input{
+    width: 100%;
+    padding: 0.2rem;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.body-button{
+    display: flex;
+    justify-content: end;
+}
+
+.body-button button{
+    border-radius: 15px;
+    border: none;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    padding: 0.6rem 1.2rem;
+    background-color: rgb(0, 85, 255);
+    transition: all 0.3s ease-in-out;
+    color: #fff;
+}
+
+.body-button button:hover{
+    background-color: rgb(0, 135, 255);
+    color: #fff;
+    transition: all 0.3s ease-in-out;
 }

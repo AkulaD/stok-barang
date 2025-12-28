@@ -26,14 +26,13 @@
 }
 
 .chart {
-    width: 100% !important;
-    max-width: none !important;
+    width: 100% ;
+    max-width: none ;
 }
 
 .chart-wrapper {
-    display: grid !important;
-    grid-template-columns: 340px 340px !important;
-    justify-content: flex-start;
+    display: flex ;
+    justify-content: space-between;
 }
 
 .chart-box {
@@ -54,4 +53,217 @@
 main{
     min-height: 100vh;
     padding: 2rem;
+}
+
+.form-out{
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 25px;
+    background-color: #fff;
+    padding: 2rem;;
+    margin-bottom: 2rem;
+}
+
+.form-out h2{
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.inp-body{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 90%;
+    margin: 0 0.5rem;
+}
+
+.inp-body input{
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width:75%;
+}
+
+.inp-body label{
+    font-size: 1.2rem;
+    width: 20%;
+}
+
+.inp-body select{
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width:75%;
+    margin: 0 0.5rem;
+}
+
+.qr-number{
+    display: flex;
+    justify-content:space-between ;
+}
+
+.submit-body{
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: end;
+    padding-right: 2rem;
+}
+
+.form-out button{
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.4rem;
+    background-color: rgb(0, 85, 255);
+    border-radius: 5px;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out
+}
+
+.form-out button:hover{
+    background-color: rgb(0, 100, 255);
+    color: #fff;
+}
+
+.content-main{
+    display: flex;
+}
+
+.left-body{
+    width: 60%;
+}
+
+.main-body{
+    width: 40%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 1rem;
+    border-radius: 25px;
+    margin: 0 1rem;
+}
+
+.main-body h2{
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.table-container table{
+    width: 100%;
+}
+
+.table-container table th, .table-container table td{
+    padding: 0.5rem;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.table-container table td{
+    border-bottom: 1px solid #ccc;
+    padding-top: 1rem;
+}
+
+.chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.legend-box {
+    width: 200px;
+    max-height: 220px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    padding: 10px;
+}
+
+.legend-box h4 {
+    margin: 0 0 8px;
+    font-size: 14px;
+}
+
+.legend-list {
+    max-height: 170px;
+    overflow-y: auto;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+
+.history-body h2{
+    font-size: 1.5rem;
+}
+
+.history-body a{
+    padding-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.chart-filter form label{
+    font-size: 1.2rem;
+    margin: 0 0.5rem;
+}
+
+.chart-filter form input{
+    border: 1px solid #ccc;
+    outline: none;
+    background: none;
+    font-family: 1.2rem;
+    margin: 0 0.5rem;
+}
+
+.chart-filter form button{
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.4rem;
+    background-color: rgb(0, 85, 255);
+    border-radius: 5px;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out
+}
+
+.container-all-history{
+    padding: 1rem;
+}
+
+.container-all-history h2{
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.container-all-history a{
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    color: #fff;
+    background-color: rgb(0, 85, 255);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out
+}
+
+.container-all-history a:hover{
+    background-color: rgb(0, 100, 255);
+    color: #fff;
 }

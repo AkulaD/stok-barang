@@ -2,12 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location: login.php');
+    header('location: ../login.php');
     exit;
 }
 
 if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'cashier' && $_SESSION['role'] !== 'viewer') {
-    header('location: products.php');
+    header('location: ../product-in.php');
     exit;
 }
 
@@ -71,12 +71,12 @@ try {
 
     mysqli_commit($conn);
 
-    header("Location: ../index.php?out=success");
+    header("Location: ../product-out.php?out=success");
     exit;
 
 } catch (Exception $e) {
 
     mysqli_rollback($conn);
-    header("Location: ../index.php?out=failure&msg=" . urlencode($e->getMessage()));
+    header("Location: ../product-out.php?out=failure&msg=" . urlencode($e->getMessage()));
     exit;
 }

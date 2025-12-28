@@ -16,6 +16,7 @@ main{
     padding: 5rem 2rem;
     background-color: #444;
     border-radius: 1.5rem;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
     display: flex;
 }
 

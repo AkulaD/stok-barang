@@ -2,12 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location: login.php');
+    header('location: ../login.php');
     exit;
 }
 
 if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader' && $_SESSION['role'] !== 'viewer') {
-    header('location: index.php');
+    header('location: ../product-out.php');
     exit;
 }
 

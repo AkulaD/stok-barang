@@ -2,19 +2,19 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location: login.php');
+    header('location: ../login.php');
     exit;
 }
 
 if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader' && $_SESSION['role'] !== 'viewer') {
-    header('location: index.php');
+    header('location: ../product-out.php');
     exit;
 }
 
 include 'conn.php';
 
 if(!isset($_GET['id'])){
-    header('location: ../products.php');
+    header('location: ../product-in.php');
     exit;
 }
 
@@ -37,9 +37,9 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
     $update_stmt->bind_param("sis", $edit_name, $edit_price, $id_product);
     if($update_stmt->execute()){
         $update_stmt->close();
-        header('location: ../products.php?edit=success');
+        header('location: ../product-in.php?edit=success');
     }else{
-        header('location: ../products.php?edit=failure');
+        header('location: ../product-in.php?edit=failure');
     }
 }
 ?>
@@ -48,9 +48,10 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit - Product</title>
     <link rel="stylesheet" href="../data/css/products.css">
     <script src="../data/js/products.js" defer></script>
+    <link rel="stylesheet" href="../data/css/sub-form.css">
 </head>
 <body>
     <div class="form-container">
@@ -60,6 +61,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
         </div>
         
         <form action="" method="post">
+            <a href="../product-in.php">Back</a>
             <h2>Edit Product</h2>
             <div class="edit-name">
                 <label for="product">Product Name:</label>

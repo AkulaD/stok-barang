@@ -1,279 +1,35 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['login'])) {
-    header('location: login.php');
-    exit;
-}
-
-if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'cashier' && $_SESSION['role'] !== 'viewer') {
-    header('location: products.php');
-    exit;
-}
-
-include 'php/conn.php';
-$result = mysqli_query($conn,"SELECT * FROM produk ORDER BY created_at DESC");
-$no = 1;
-
-$history_log = mysqli_query($conn,"
-    SELECT log_stok.*, produk.nama_produk
-    FROM log_stok
-    JOIN produk ON log_stok.id_produk = produk.id_produk
-    ORDER BY log_stok.tanggal DESC
-");
-
-$whereDate = "";
-if (!empty($_GET['from']) && !empty($_GET['to'])) {
-    $from = $_GET['from'] . " 00:00:00";
-    $to   = $_GET['to'] . " 23:59:59";
-    $whereDate = "AND log_stok.tanggal BETWEEN '$from' AND '$to'";
-}
-
-
-$chart_penjualan = mysqli_query($conn, "
-    SELECT penjualan, SUM(jumlah) AS total
-    FROM log_stok
-    WHERE tipe = 'keluar' $whereDate
-    GROUP BY penjualan
-");
-
-$chart_produk = mysqli_query($conn, "
-    SELECT produk.nama_produk, SUM(log_stok.jumlah) AS total
-    FROM log_stok
-    JOIN produk ON log_stok.id_produk = produk.id_produk
-    WHERE log_stok.tipe = 'keluar' $whereDate
-    GROUP BY produk.nama_produk
-");
-
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="data/css/home.css">
-    <link rel="stylesheet" href="data/css/style.css">
-    <script src="data/js/home.js" defer></script>
+    <title>Login - Stok Barang</title>
+    <link rel="stylesheet" href="data/css/login.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="left-side">
-                <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="products.php">Products</a></li>
-                    <li><a href="penjualan.php">penjualan</a></li>
-                    <?php
-                        if($_SESSION['role'] === 'admin'){
-                            echo "<li>";
-                            echo '<a href="user-management.php">User</a>';
-                            echo "</li>";
-                        }
-                    ?>
-                </ul>
-            </div>
-            <div class="right-side">
-                <ul>
-                    <li><a href="php/logout.php">log Out</a></li>
-                    <li><p><?php echo $_SESSION['username']; ?></p></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
     <main>
-        <div id="loading-overlay" style="display:none;">
-            <div class="spinner"></div>
-            <p>Processing...</p>
-        </div>
-
-        <form action="php/out-form.php" method="post">
-            <div class="qr-number">
-                <label>Enter QR Code Number:</label>
-                <input type="text" name="qr_number" required>
-                <br>
-                <label for="penjualan">Shipment Location</label>
-                <select name="penjualan" id="penjualan">
-                    <option value="offline ">Offline</option>
-                    <option value="shopee">Shopee</option>
-                    <option value="tiktok">Tiktok</option>
-                    <option value="tokopedia">tokopedia</option>
-                </select>
-                <br>
-                <button type="submit">Submit</button>
+        <div class="container">
+            <div class="left-content">
+                <h1>Login</h1>
+                <h2>Stok Barang</h2>
+                <p>Manajemen Stok Barang</p>
             </div>
-        </form>
-        <div class="content-main">
-            <div class="left-body">
-                <h2>Inventory Stock</h2>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Product Name</th>
-                                <th>Stock</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if(mysqli_num_rows($result) > 0): ?>
-                                <?php while($row = mysqli_fetch_assoc($result)): ?>
-                                <tr>
-                                    <td><?= $no++; ?></td>
-                                    <td><?= htmlspecialchars($row['nama_produk']) ?></td>
-                                    <td><?= $row['stok'] ?></td>
-                                </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="3">No products found.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="main-body">
-                <section class="chart">
-                    <h2>Distribusi Penjualan (Barang Keluar)</h2>
-                    <section class="chart-filter">
-                        <form method="GET">
-                            <label>Dari Tanggal</label>
-                            <input type="date" name="from" value="<?= $_GET['from'] ?? '' ?>">
-
-                            <label>Sampai</label>
-                            <input type="date" name="to" value="<?= $_GET['to'] ?? '' ?>">
-
-                            <button type="submit">Filter</button>
-                        </form>
-                    </section>
-
-                    <div class="chart-wrapper">
-                        <div class="chart-box">
-                            <h3>Penjualan</h3>
-                            <canvas id="chartPenjualan" width="300" height="300"></canvas>
-                        </div>
-                        <div class="chart-box">
-                            <h3>Produk Keluar</h3>
-                            <canvas id="chartProduk" width="300" height="300"></canvas>
-                        </div>
+            <div class="right-content">
+                <form action="php/login_process.php" method="post">
+                    <div class="username">
+                        <label for="username">Username: </label>
+                        <input type="username" name="username" id="username" required>
                     </div>
-                </section>
-                <!-- JS -->
-                <script>
-                    const penjualanData = [
-                    <?php
-                    $p = [];
-                    while ($row = mysqli_fetch_assoc($chart_penjualan)) {
-                        $label = $row['penjualan'] ?: 'Unknown';
-                        $p[] = "{ label: '$label', value: {$row['total']} }";
-                    }
-                    echo implode(",", $p);
-                    ?>
-                    ];
-
-                    const produkData = [
-                    <?php
-                    $pr = [];
-                    while ($row = mysqli_fetch_assoc($chart_produk)) {
-                        $pr[] = "{ label: '{$row['nama_produk']}', value: {$row['total']} }";
-                    }
-                    echo implode(",", $pr);
-                    ?>
-                    ];
-                </script>
-
-                <section class="history-body">
-                    <h2>History Stock</h2>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Product Name</th>
-                                    <th>Type</th>
-                                    <th>Quantity</th>
-                                    <th>Date</th>
-                                    <th>Note</th>
-                                    <th>Shipment Location</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                $no_log = 1;
-                                if(mysqli_num_rows($history_log) > 0): ?>
-                                    <?php while($row_log = mysqli_fetch_assoc($history_log)): ?>
-                                    <tr>
-                                        <td><?= $no_log++; ?></td>
-                                        <td><?= htmlspecialchars($row_log['nama_produk']) ?></td>
-                                        <td>
-                                            <?= $row_log['tipe'] === 'keluar' ? 'OUT' : 'IN'; ?>
-                                        </td>
-                                        <td><?= $row_log['jumlah'] ?></td>
-                                        <td><?= $row_log['tanggal'] ?></td>
-                                        <td><?= htmlspecialchars($row_log['keterangan']) ?></td>
-                                        <td><?= $row_log['penjualan'] ?></td>
-                                    </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="6">No history found.</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                    <div class="password">
+                        <label for="password">Password: </label>
+                        <input type="password" name="password" id="password" required>
                     </div>
-                </section>
+                    <div class="submit">
+                        <button type="submit" name="login">Login</button>
+                    </div>
+                </form>
             </div>
         </div>
-
     </main>
-    <script>
-
-    function generateColors(count) {
-        const colors = [];
-        for (let i = 0; i < count; i++) {
-            const hue = Math.floor((360 / count) * i);
-            colors.push(`hsl(${hue}, 70%, 60%)`);
-        }
-        return colors;
-    }
-    
-    function drawPie(canvasId, data) {
-        const canvas = document.getElementById(canvasId);
-        const ctx = canvas.getContext('2d');
-
-        const colors = generateColors(data.length);
-        const total = data.reduce((s, d) => s + d.value, 0);
-
-        let angle = 0;
-        data.forEach((d, i) => {
-            const slice = (d.value / total) * 2 * Math.PI;
-            ctx.beginPath();
-            ctx.moveTo(150,150);
-            ctx.arc(150,150,120,angle,angle+slice);
-            ctx.fillStyle = colors[i % colors.length];
-            ctx.fill();
-            angle += slice;
-        });
-
-        let y = 10;
-        data.forEach((d,i)=>{
-            ctx.fillStyle = colors[i % colors.length];
-            ctx.fillRect(10,y,10,10);
-            ctx.fillStyle = "#000";
-            ctx.font = "12px Arial";
-            ctx.fillText(`${d.label} (${d.value})`,25,y+10);
-            y += 18;
-        });
-    }
-
-    drawPie('chartPenjualan', penjualanData);
-    drawPie('chartProduk', produkData);
-    </script>
-
-
 </body>
 </html>

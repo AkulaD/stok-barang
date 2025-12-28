@@ -2,12 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location: login.php');
+    header('location: ../login.php');
     exit;
 }
 
 if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader' && $_SESSION['role'] !== 'viewer') {
-    header('location: index.php');
+    header('location: ../product-out.php');
     exit;
 }
 
@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     if ($stmt->execute()) {
-        header("Location: ../products.php?add=success");
+        header("Location: ../product-in.php?add=success");
         exit;
     } else {
-        header("Location: ../products.php?add=failure");
+        header("Location: ../product-in.php?add=failure");
         exit;
     }
 }
