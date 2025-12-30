@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,29 +10,32 @@
     <link rel="stylesheet" href="data/css/login.css">
 </head>
 <body>
-    <main>
-        <div class="container">
-            <div class="left-content">
-                <h1>Login</h1>
-                <h2>Stok Barang</h2>
-                <p>Manajemen Stok Barang</p>
+<main>
+    <div class="container">
+        <form action="php/login_process.php" method="post">
+            <h1>Login</h1>
+
+            <div class="inp-body">
+                <label>Username</label>
+                <input type="text" name="username" required>
             </div>
-            <div class="right-content">
-                <form action="php/login_process.php" method="post">
-                    <div class="username">
-                        <label for="username">Username: </label>
-                        <input type="username" name="username" id="username" required>
-                    </div>
-                    <div class="password">
-                        <label for="password">Password: </label>
-                        <input type="password" name="password" id="password" required>
-                    </div>
-                    <div class="submit">
-                        <button type="submit" name="login">Login</button>
-                    </div>
-                </form>
+
+            <div class="inp-body">
+                <label>Password</label>
+                <input type="password" name="password" required>
             </div>
-        </div>
-    </main>
+
+            <div class="inp-body captcha-box">
+                <label>Captcha</label>
+                <img src="php/captcha.php" alt="captcha">
+                <input type="text" name="captcha" required>
+            </div>
+
+            <div class="submit">
+                <button type="submit" name="login">Login</button>
+            </div>
+        </form>
+    </div>
+</main>
 </body>
 </html>

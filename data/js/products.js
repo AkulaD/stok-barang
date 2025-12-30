@@ -1,11 +1,29 @@
-const form = document.querySelector('form');
 const loading = document.getElementById('loading-overlay');
 
-form.addEventListener('submit', function () {
-    loading.style.display = 'flex';
+document.querySelectorAll('form.safe-submit').forEach(form => {
+    let isSubmitting = false;
 
-    const btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    btn.innerText = 'Processing...';
+    form.addEventListener('submit', function (e) {
+        if (isSubmitting) {
+            e.preventDefault();
+            return;
+        }
+
+        e.preventDefault();
+        isSubmitting = true;
+
+        if (loading) {
+            loading.style.display = 'flex';
+        }
+
+        const btn = form.querySelector('button[type="submit"]');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'Processing...';
+        }
+
+        setTimeout(() => {
+            form.submit();
+        }, 100);
+    });
 });
-

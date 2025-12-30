@@ -67,7 +67,7 @@ $no = 1;
         <section class="head-main">
             <div class="add-product">
             <h2>Add Product</h2>
-                <form action="php/add-process.php" method="post">
+                <form action="php/add-process.php" method="post" class="safe-submit">
                     <div class="form-add">
                         <div class="input-product">
                             <label>Product Name</label>
@@ -130,7 +130,7 @@ $no = 1;
             </div>
         </section>
         <section class="add-stock-form">
-            <form action="php/form-add-stock.php" method="post">
+            <form action="php/form-add-stock.php" method="post" class="safe-submit">
                 <h2>Add Stock</h2>
                 <div class="form-add-body">
                     <div class="new-stok">

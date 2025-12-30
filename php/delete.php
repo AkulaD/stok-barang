@@ -1,0 +1,34 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['login'])) {
+    header('Location: ../login.php');
+    exit;
+}
+
+if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader') {
+    header('Location: ../product-in.php?status=unauthorized');
+    exit;
+}
+
+require 'conn.php';
+
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    header('Location: ../product-in.php?status=invalid');
+    exit;
+}
+
+$id_produk = $_GET['id'];
+
+$stmt = $conn->prepare("DELETE FROM produk WHERE id_produk = ?");
+$stmt->bind_param("s", $id_produk);
+
+if ($stmt->execute()) {
+    header('Location: ../product-in.php?status=deleted');
+} else {
+    header('Location: ../product-in.php?status=error');
+}
+
+$stmt->close();
+$conn->close();
+exit;
