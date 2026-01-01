@@ -2,12 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('Location: ../login.php');
+    header('location: login.php');
     exit;
 }
 
-if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader') {
-    header('Location: ../product-in.php?status=unauthorized');
+if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'cashier' && $_SESSION['role'] !== 'viewer') {
+    header('location: product-in.php');
     exit;
 }
 

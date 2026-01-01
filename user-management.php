@@ -25,7 +25,7 @@ $result = mysqli_query($conn, "SELECT * FROM user ORDER BY tanggal DESC");
     <link rel="stylesheet" href="data/css/userM.css">
     <link rel="stylesheet" href="data/css/style.css">
     <script src="data/js/userM.js" defer></script>
-    <title>Document</title>
+    <title>User - Management</title>
 </head>
 <body>
     <header>

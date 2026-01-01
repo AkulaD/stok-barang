@@ -53,7 +53,7 @@ $chart_produk = mysqli_query($conn, "
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock - In Out</title>
+    <title>Product Out | Stok Barang</title>
     <link rel="stylesheet" href="data/css/home.css">
     <link rel="stylesheet" href="data/css/style.css">
     <script src="data/js/home.js" defer></script>
