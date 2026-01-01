@@ -8,3 +8,10 @@ form.addEventListener('submit', function () {
     btn.disabled = true;
     btn.innerText = 'Processing...';
 });
+
+const toggle = document.querySelector('.nav-toggle');
+const mobileNav = document.querySelector('.nav-mobile');
+
+toggle.addEventListener('click', () => {
+    mobileNav.classList.toggle('active');
+});

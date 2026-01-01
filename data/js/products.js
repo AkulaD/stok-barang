@@ -27,3 +27,10 @@ document.querySelectorAll('form.safe-submit').forEach(form => {
         }, 100);
     });
 });
+
+const toggle = document.querySelector('.nav-toggle');
+const mobileNav = document.querySelector('.nav-mobile');
+
+toggle.addEventListener('click', () => {
+    mobileNav.classList.toggle('active');
+});

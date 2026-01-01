@@ -223,3 +223,126 @@ hr{
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* ================= RESPONSIVE ================= */
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px){
+
+    .inp-content{
+        flex-wrap: wrap;
+    }
+
+    .inpt-body{
+        width: 48%;
+    }
+
+    .information-body{
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .list-user{
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #ccc;
+        margin-top: 2rem;
+        padding: 1rem;
+    }
+
+    .body-user{
+        width: 90%;
+    }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px){
+
+    h1{
+        font-size: 1.8rem;
+    }
+
+    /* Add New User → column */
+    .inp-content{
+        flex-direction: column;
+    }
+
+    .inpt-body{
+        width: 100%;
+    }
+
+    .action-add{
+        justify-content: center;
+    }
+
+    /* Section bawah */
+    .flex{
+        flex-direction: column;
+    }
+
+    .information-body,
+    .list-user{
+        width: 100%;
+        padding: 1rem;
+        border: none;
+    }
+
+    .content ul{
+        padding-left: 1.2rem;
+    }
+
+    /* List user card */
+    .body-user{
+        width: 100%;
+        padding: 1rem;
+    }
+
+    /* Form edit user */
+    .left-body,
+    .right-body{
+        width: 100%;
+    }
+
+    .action{
+        flex-direction: column;
+        gap: 0.8rem;
+        padding-left: 0;
+        align-items: flex-start;
+    }
+
+    .action button{
+        width: 100%;
+        text-align: center;
+    }
+
+    .action a{
+        font-weight: 600;
+    }
+}
+
+/* ===== SMALL MOBILE (≤480px) ===== */
+@media (max-width: 480px){
+
+    main{
+        padding: 0.5rem;
+    }
+
+    .input-new-user{
+        padding: 1rem;
+    }
+
+    .inpt-body label{
+        font-size: 0.85rem;
+    }
+
+    .inpt-body input,
+    .inp-body input,
+    .inp-body select{
+        font-size: 0.95rem;
+    }
+
+    .action button{
+        font-size: 1rem;
+        padding: 0.6rem;
+    }
+}

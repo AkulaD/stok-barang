@@ -24,3 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+const toggle = document.querySelector('.nav-toggle');
+const mobileNav = document.querySelector('.nav-mobile');
+
+toggle.addEventListener('click', () => {
+    mobileNav.classList.toggle('active');
+});

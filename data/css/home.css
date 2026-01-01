@@ -267,3 +267,108 @@ main{
     background-color: rgb(0, 100, 255);
     color: #fff;
 }
+
+/* =========================
+   RESPONSIVE: TABLET & MOBILE
+   ========================= */
+
+/* Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+
+    .content-main {
+        flex-direction: column;
+    }
+
+    .left-body,
+    .main-body {
+        width: 100%;
+        margin: 0;
+    }
+
+    .main-body {
+        margin-top: 2rem;
+    }
+
+    .chart-wrapper {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .chart-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .legend-box {
+        width: 100%;
+        max-width: 300px;
+        margin-top: 1rem;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* Mobile (≤ 600px) */
+@media (max-width: 600px) {
+
+    main {
+        padding: 1rem;
+    }
+
+    .qr-number {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .inp-body {
+        width: 100%;
+        margin: 0;
+        flex-direction: column;
+    }
+
+    .inp-body label {
+        width: 100%;
+        margin-bottom: 0.3rem;
+    }
+
+    .inp-body input,
+    .inp-body select {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .submit-body {
+        justify-content: center;
+        padding-right: 0;
+    }
+
+    .form-out button {
+        width: 100%;
+    }
+
+    .chart-filter form {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .chart-filter form input,
+    .chart-filter form button {
+        width: 100%;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .table-container table {
+        min-width: 600px;
+    }
+
+    .legend-box {
+        width: 100%;
+        max-width: none;
+    }
+}

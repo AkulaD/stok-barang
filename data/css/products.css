@@ -25,11 +25,6 @@
     to { transform: rotate(360deg); }
 }
 
-main {
-    min-height: 100vh;
-    padding: 2rem;
-}
-
 .head-main{
     display: flex;
     border-bottom: 1px solid #000;
@@ -46,7 +41,7 @@ main {
 .information-list{
     width: 60%;
     padding-left: 2rem;
-    margin-bottom:1rem ;
+    margin-bottom:1rem;
     margin-left: 2rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     border-radius: 15px;
@@ -57,17 +52,17 @@ main {
 }
 
 .sub-products{
-    width: 50%;
+    width:40%;
 }
 
 .sub-chart-stock{
-    width: 50%;
+    width: 60%;
 }
 
 .form-add{
     display: flex;
     flex-direction: column;
-    padding: 2rem 2rem ;
+    padding: 2rem;
     gap: 20px;
 }
 
@@ -76,13 +71,18 @@ main {
     padding-left: 1rem;
 }
 
-.input-product, .input-stock, .input-price{
+.input-product,
+.input-stock,
+.input-price{
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #000;
-    border-radius: 5px;}
+    border-radius: 5px;
+}
 
-.input-product input, .input-stock input, .input-price input{
+.input-product input,
+.input-stock input,
+.input-price input{
     width: 100%;
     padding: 0.2rem;
     font-size: 1rem;
@@ -90,8 +90,15 @@ main {
     border-radius: 5px;
 }
 
-.input-product input:focus, .input-stock input:focus, .input-price input:focus{
+.input-product input:focus,
+.input-stock input:focus,
+.input-price input:focus{
     outline: none;
+}
+
+.button-submit{
+    display: flex;
+    justify-content: end;
 }
 
 .button-submit button{
@@ -109,43 +116,28 @@ main {
 
 .button-submit button:hover{
     background-color: rgb(0, 135, 255);
-    color: #fff;
-    transition: all 0.3s ease-in-out;
-}
-
-.button-submit{
-    display: flex;
-    justify-content: end;
 }
 
 .chart-stock{
     display: flex;
 }
 
-.sub-total, .sub-stock{
+.sub-total,
+.sub-stock{
     width: 50%;
     border-bottom: 1px solid #000;
     padding-top: 2.4rem;
 }
 
-.sub-total h3{
-    font-size: 1.2rem;
-    font-weight: bold;}
-
+.sub-total h3,
 .sub-stock h3{
     font-size: 1.2rem;
     font-weight: bold;
 }
 
-.sub-total p{
-    font-size: 1.2rem;
-    padding-right: 0.4rem;
-    padding-left: 0.5rem;
-}
-
+.sub-total p,
 .sub-stock p{
     font-size: 1.2rem;
-    padding-top: 0.4rem;
     padding-left: 0.5rem;
 }
 
@@ -164,86 +156,28 @@ main {
     width: 100%;
 }
 
+thead tr th{
+    font-size: 1.4rem;
+    text-align: left;
+}
+
 tbody tr td{
     padding: 0.5rem;
     border-bottom: 2px solid #ccc;
     font-size: 1.2rem;
 }
 
-thead tr th{
-    font-size: 1.4rem;
-    text-align: left;
-}
+.t-no{ width: 5%; text-align: center; }
+.t-name{ width: 40%; }
+.t-b-stock{ width: 15%; }
+.t-price{ width: 15%; }
+.t-qr-d{ width: 15%; }
+.t-action{ width: 10%; }
 
-.t-no{
-    width: 5%;
-    text-align: center;
-}
+.t-stock{ text-align: center; }
 
-.t-name{
-    width: 40%;
-}
-
-.t-b-stock{
-    width: 15%;
-}
-
-.t-stock{
-    text-align: center;
-}
-
-.t-istock a{
-    text-decoration: none;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 0.2rem;
-    background-color: rgb(0, 85, 255);
-    border-radius: 5px;
-    margin-left: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out
-}
-
-.t-istock a:hover{
-    background-color: rgb(0, 135, 255);
-    color: #fff;
-    transition: all 0.3s ease-in-out;
-
-}
-
-.t-price{
-    width: 15%;
-}
-
-.t-qr-d{
-    width: 15%;
-}
-
-.t-qr-d a{
-    text-decoration: none;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 0.2rem;
-    background-color: rgb(0, 85, 255);
-    border-radius: 5px;
-    margin-left: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out
-}
-
-.t-qr-d a:hover{
-    background-color: rgb(0, 135, 255);
-    color: #fff;
-    transition: all 0.3s ease-in-out;
-
-}
-
-.t-action{
-    width: 10%;
-}
-
+.t-istock a,
+.t-qr-d a,
 .t-edit{
     text-decoration: none;
     color: #fff;
@@ -253,15 +187,13 @@ thead tr th{
     background-color: rgb(0, 85, 255);
     border-radius: 5px;
     margin-left: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out
+    transition: 0.3s;
 }
 
+.t-istock a:hover,
+.t-qr-d a:hover,
 .t-edit:hover{
     background-color: rgb(0, 135, 255);
-    color: #fff;
-    transition: all 0.3s ease-in-out;
-
 }
 
 .t-delete{
@@ -273,14 +205,11 @@ thead tr th{
     background-color: rgb(255, 0, 0);
     border-radius: 5px;
     margin-left: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out
+    transition: 0.3s;
 }
 
 .t-delete:hover{
     background-color: rgb(255, 74, 74);
-    color: #fff;
-    transition: all 0.3s ease-in-out;
 }
 
 .add-stock-form{
@@ -298,36 +227,28 @@ thead tr th{
 
 .new-stok{
     display: flex;
-    justify-content: space-between;
 }
 
+.qr-code,
 .add-stock{
     width: 50%;
-    height: 100%;
-    border-radius: 15px;
-    border: 1px solid #000;
-    padding: 1rem;
-    margin-left:0.5rem ;
-    margin-bottom: 1rem;
-}
-
-.qr-code{
-    width: 50%;
-    height: 100%;
     border-radius: 15px;
     border: 1px solid #000;
     padding: 1rem;
     margin-bottom: 1rem;
-    margin-right: 0.5rem;
 }
 
-.qr-code label, .add-stock label{
+.qr-code{ margin-right: 0.5rem; }
+.add-stock{ margin-left: 0.5rem; }
+
+.qr-code label,
+.add-stock label{
     font-size: 1rem;
     font-weight: bold;
-    padding-bottom: 0.2rem;
 }
 
-.qr-code input, .add-stock input{
+.qr-code input,
+.add-stock input{
     width: 100%;
     padding: 0.2rem;
     font-size: 1rem;
@@ -348,12 +269,127 @@ thead tr th{
     font-size: 1.2rem;
     padding: 0.6rem 1.2rem;
     background-color: rgb(0, 85, 255);
-    transition: all 0.3s ease-in-out;
     color: #fff;
+    transition: 0.3s;
 }
 
 .body-button button:hover{
     background-color: rgb(0, 135, 255);
-    color: #fff;
-    transition: all 0.3s ease-in-out;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (min-width:1000px) and (max-width: 1500px){
+    .chart-stock{
+        overflow-y: scroll;
+    }
+}
+
+
+@media (max-width: 1024px){
+    .head-main{
+        flex-direction: column;
+    }
+
+    .add-product,
+    .information-list{
+        width: 100%;
+        margin-left: 0;
+        padding-left: 1rem;
+    }
+}
+
+@media (max-width: 1000px){
+    .information-list .flex{
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .sub-products{
+        width: 100%;
+    }
+
+    .sub-chart-stock{
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 12px;
+    }
+
+    .chart-stock{
+        min-width: 420px;
+        justify-content: center;
+    }
+
+    #stockOverlay{
+        min-width: 260px;
+    }
+}
+
+@media (max-width: 768px){
+    main{
+        padding: 1rem;
+    }
+
+    .new-stok{
+        flex-direction: column;
+    }
+
+    .qr-code,
+    .add-stock{
+        width: 100%;
+        margin: 0 0 1rem 0;
+    }
+
+    .button-submit,
+    .body-button{
+        justify-content: center;
+    }
+
+    .button-submit button,
+    .body-button button{
+        width: 100%;
+    }
+
+    .product-list table{
+        min-width: 900px;
+    }
+
+    .table-container{
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px){
+    .list-body h2{
+        font-size: 1.3rem;
+    }
+
+    thead tr th{
+        font-size: 1rem;
+    }
+
+    tbody tr td{
+        font-size: 0.95rem;
+    }
+
+    .chart-stock{
+        margin-left: 7rem;
+        min-width: 100%;
+    }
+}
+
+@media (min-width: 1200px){
+    main{
+        max-width: 1400px;
+        overflow-x: hidden;
+    }
+}
+
+@media (max-width: 768px){
+    main{
+        padding: 1rem;
+    }
+}
+
+body{
+    overflow-x: hidden;
 }

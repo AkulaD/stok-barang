@@ -27,7 +27,7 @@ $history_log = mysqli_query($conn," SELECT log_stok.*, produk.nama_produk FROM l
 </head>
 <body>
     <div class="container-all-history">
-        <a href="index.php">Back</a>
+        <a href="product-out.php">Back</a>
         <h2>All History</h2>
         <hr>
         <div class="table-container">
