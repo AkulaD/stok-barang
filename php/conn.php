@@ -2,7 +2,7 @@
 $server = "localhost";
 $username = "wdeleudk_asta";
 $password = "a3DS2Rfn8KW4S@R";
-$database = "stok_barang";
+$database = "wdeleudk_stok_barang";
 
 $conn = new mysqli($server,$username,$password,$database);
 
