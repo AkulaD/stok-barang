@@ -1,7 +1,7 @@
 <?php 
 $server = "localhost";
-$username = "root";
-$password = "";
+$username = "wdeleudk_asta";
+$password = "a3DS2Rfn8KW4S@R";
 $database = "stok_barang";
 
 $conn = new mysqli($server,$username,$password,$database);
