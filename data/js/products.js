@@ -34,3 +34,7 @@ const mobileNav = document.querySelector('.nav-mobile');
 toggle.addEventListener('click', () => {
     mobileNav.classList.toggle('active');
 });
+
+window.addEventListener('scroll', () => {
+    document.querySelector('header').classList.toggle('scrolled', window.scrollY > 20)
+})

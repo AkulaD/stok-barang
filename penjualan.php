@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(!isset($_SESSION['login'])){
+if (!isset($_SESSION['login'])) {
     header('location:login.php');
     exit;
 }
@@ -13,63 +13,79 @@ if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'finance') {
 
 include 'php/conn.php';
 
-$totalItemsQuery = "
+$totalItems = $conn->query("
     SELECT IFNULL(SUM(jumlah),0) AS total
     FROM log_stok
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
-";
-$totalItems = $conn->query($totalItemsQuery)->fetch_assoc();
+")->fetch_assoc();
 
-$totalRevenueQuery = "
+$totalRevenue = $conn->query("
     SELECT IFNULL(SUM(jumlah * harga),0) AS total
     FROM log_stok
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
-";
-$totalRevenue = $conn->query($totalRevenueQuery)->fetch_assoc();
+")->fetch_assoc();
 
-$totalTransactionQuery = "
+$totalTransaction = $conn->query("
     SELECT COUNT(id_log) AS total
     FROM log_stok
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
-";
-$totalTransaction = $conn->query($totalTransactionQuery)->fetch_assoc();
+")->fetch_assoc();
 
-$averageRevenue = 0;
-if ($totalTransaction['total'] > 0) {
-    $averageRevenue = $totalRevenue['total'] / $totalTransaction['total'];
-}
+$averageRevenue = $totalTransaction['total'] > 0
+    ? $totalRevenue['total'] / $totalTransaction['total']
+    : 0;
 
-$hourlyQuery = "
-    SELECT HOUR(tanggal) AS hour, SUM(jumlah) AS total
+$hourlyResult = $conn->query("
+    SELECT HOUR(tanggal) AS jam, SUM(jumlah) AS total
     FROM log_stok
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
     GROUP BY HOUR(tanggal)
-    ORDER BY hour
-";
-$hourlyResult = $conn->query($hourlyQuery);
+    ORDER BY jam
+");
 
 $hours = [];
 $totals = [];
 
 while ($row = $hourlyResult->fetch_assoc()) {
-    $hours[] = str_pad($row['hour'], 2, '0', STR_PAD_LEFT) . ':00';
+    $hours[] = str_pad($row['jam'], 2, '0', STR_PAD_LEFT) . ':00';
     $totals[] = $row['total'];
 }
 
-$allProductQuery = "
-    SELECT p.nama_produk, SUM(l.jumlah) AS total
+$shipmentResult = $conn->query("
+    SELECT IFNULL(penjualan,'Unknown') AS lokasi,
+           SUM(jumlah) AS total_item,
+           SUM(jumlah * harga) AS total_revenue
+    FROM log_stok
+    WHERE tipe = 'keluar'
+    AND DATE(tanggal) = CURDATE()
+    GROUP BY lokasi
+");
+
+$shipLabels = [];
+$shipTotals = [];
+$shipRevenue = [];
+
+while ($row = $shipmentResult->fetch_assoc()) {
+    $shipLabels[] = $row['lokasi'];
+    $shipTotals[] = $row['total_item'];
+    $shipRevenue[] = $row['total_revenue'];
+}
+
+$allProductResult = $conn->query("
+    SELECT 
+        p.nama_produk,
+        SUM(l.jumlah) AS total,
+        SUM(l.jumlah * l.harga) AS revenue
     FROM log_stok l
     JOIN produk p ON l.id_produk = p.id_produk
     WHERE l.tipe = 'keluar'
     AND DATE(l.tanggal) = CURDATE()
     GROUP BY l.id_produk
-    ORDER BY p.nama_produk ASC
-";
-$allProductResult = $conn->query($allProductQuery);
+");
 ?>
 
 <!DOCTYPE html>
@@ -77,57 +93,14 @@ $allProductResult = $conn->query($allProductQuery);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="data/js/userM.js" defer></script>
     <link rel="stylesheet" href="data/css/style.css">
     <link rel="stylesheet" href="data/css/penjualan.css">
     <title>Sales Dashboard</title>
 </head>
 <body>
 
-<header>
-    <nav class="nav-desktop">
-        <div class="left-side">
-            <ul>
-                <li><a href="product-in.php">Product In</a></li>
-                <li><a href="product-out.php">Product Out</a></li>
-                <li><a href="penjualan.php">Sales</a></li>
-                <?php
-                if($_SESSION['role'] === 'admin'){
-                    echo '<li><a href="user-management.php">User</a></li>';
-                }
-                ?>
-            </ul>
-        </div>
-        <div class="right-side">
-            <ul>
-                <li><a href="php/logout.php">Log Out</a></li>
-                <li><p><?= $_SESSION['username']; ?></p></li>
-            </ul>
-        </div>
-    </nav>
-
-    <nav class="nav-mobile">
-        <div class="nav-mobile-head">
-            <span class="brand">Stok Barang</span>
-            <button class="nav-toggle">☰</button>
-        </div>
-
-        <ul class="nav-mobile-menu">
-            <li><a href="product-in.php">Product In</a></li>
-            <li><a href="product-out.php">Product Out</a></li>
-            <li><a href="penjualan.php">Sales</a></li>
-
-            <?php
-            if($_SESSION['role'] === 'admin'){
-                echo '<li><a href="user-management.php">User</a></li>';
-            }
-            ?>
-
-            <li class="divider"></li>
-            <li class="user"><?= $_SESSION['username']; ?></li>
-            <li><a href="php/logout.php">Log Out</a></li>
-        </ul>
-    </nav>
-</header>
+<?php include 'Partials/nav.php'; ?>
 
 <main>
     <section class="sidebar">
@@ -139,6 +112,7 @@ $allProductResult = $conn->query($allProductQuery);
     </section>
 
     <section class="main">
+
         <div class="list-card">
             <h2>Today's Statistics</h2>
 
@@ -159,41 +133,73 @@ $allProductResult = $conn->query($allProductQuery);
                 </div>
 
                 <div class="list-body">
-                    <p>Average Revenue / Transaction</p>
+                    <p>Average Revenue</p>
                     <p>Rp <?= number_format($averageRevenue, 0, ',', '.'); ?></p>
                 </div>
             </div>
         </div>
 
-        <div class="list-card">
-            <h2>Hourly Sales</h2>
-            <canvas id="salesChart" height="120"></canvas>
-        </div>
+
+        <div class="chart-grid">
+
+            <div class="list-card chart-card">
+                <h2>Hourly Sales</h2>
+                <div class="chart-scroll">
+                    <div class="chart-canvas">
+                        <canvas id="hourlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-card chart-card">
+                <h2>Shipment Revenue Today</h2>
+                <div class="chart-scroll">
+                    <div class="chart-canvas">
+                        <canvas id="shipmentChart"></canvas>
+                    </div>
+
+                    <div class="shipment-info">
+                        <?php foreach ($shipLabels as $i => $loc): ?>
+                            <div class="ship-row">
+                                <span><?= $loc; ?></span>
+                                <strong>Rp <?= number_format($shipRevenue[$i], 0, ',', '.'); ?></strong>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+        </div>  
 
         <div class="list-card">
             <h2>All Sold Products Today</h2>
 
-            <table cellpadding="8" cellspacing="0">
+            <table>
                 <tr>
                     <th>No</th>
-                    <th>Product Name</th>
+                    <th>Product</th>
                     <th>Sold</th>
+                    <th>Revenue</th>
                 </tr>
+
                 <?php
                 $no = 1;
                 if ($allProductResult->num_rows > 0) {
                     while ($row = $allProductResult->fetch_assoc()) {
-                        echo "<tr>
-                                <td>{$no}</td>
-                                <td>{$row['nama_produk']}</td>
-                                <td>{$row['total']}</td>
-                            </tr>";
+                        echo "
+                        <tr>
+                            <td>{$no}</td>
+                            <td>{$row['nama_produk']}</td>
+                            <td>{$row['total']}</td>
+                            <td>Rp " . number_format($row['revenue'], 0, ',', '.') . "</td>
+                        </tr>";
                         $no++;
                     }
                 } else {
-                    echo "<tr>
-                            <td colspan='3'>No sales today</td>
-                        </tr>";
+                    echo "
+                    <tr>
+                        <td colspan='4'>No sales today</td>
+                    </tr>";
                 }
                 ?>
             </table>
@@ -201,29 +207,47 @@ $allProductResult = $conn->query($allProductQuery);
 
     </section>
 </main>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const ctx = document.getElementById('salesChart');
-new Chart(ctx, {
+new Chart(document.getElementById('hourlyChart'), {
     type: 'line',
     data: {
         labels: <?= json_encode($hours); ?>,
         datasets: [{
-            label: 'Items Sold',
             data: <?= json_encode($totals); ?>,
             borderWidth: 2,
-            fill: false
+            tension: 0.4
         }]
     },
     options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        resizeDelay: 100,
         scales: {
-            y: {
-                beginAtZero: true
-            }
+            y: { beginAtZero: true }
         }
     }
 });
+
+new Chart(document.getElementById('shipmentChart'), {
+    type: 'bar',
+    data: {
+        labels: <?= json_encode($shipLabels); ?>,
+        datasets: [{
+            data: <?= json_encode($shipTotals); ?>,
+            borderRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        resizeDelay: 100,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
 </script>
 
 </body>

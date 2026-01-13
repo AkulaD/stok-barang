@@ -10,9 +10,19 @@ form.addEventListener('submit', function () {
 });
 
 
-const toggle = document.querySelector('.nav-toggle');
-const mobileNav = document.querySelector('.nav-mobile');
+document.addEventListener('DOMContentLoaded', () => {
 
-toggle.addEventListener('click', () => {
-    mobileNav.classList.toggle('active');
+    const toggle = document.getElementById('menuToggle');
+    const menu = document.getElementById('menu');
+
+    if (toggle && menu) {
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    }
+
 });
+
+window.addEventListener('scroll', () => {
+    document.querySelector('header').classList.toggle('scrolled', window.scrollY > 20)
+})
