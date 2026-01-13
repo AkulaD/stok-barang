@@ -277,7 +277,6 @@ tbody tr td{
     background-color: rgb(0, 135, 255);
 }
 
-/* ================= RESPONSIVE ================= */
 @media (min-width:1000px) and (max-width: 1500px){
     .chart-stock{
         overflow-y: scroll;

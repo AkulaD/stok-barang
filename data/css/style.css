@@ -10,7 +10,6 @@ header{
     width: 100vw;
 }
 
-/* ================= LAYOUT ================= */
 main,footer{
     min-height: calc(100vh - 4rem);
     max-width: 2000px;
@@ -18,7 +17,6 @@ main,footer{
     margin: auto;
 }
 
-/* ================= DESKTOP NAV ================= */
 nav{
     display: flex;
     justify-content: space-between;
@@ -63,7 +61,6 @@ nav a:hover{
     gap: 1.5rem;
 }
 
-/* ================= TOGGLE ================= */
 .nav-toggle{
     display: none;
     background: none;
@@ -73,7 +70,6 @@ nav a:hover{
     cursor: pointer;
 }
 
-/* ================= MODE ================= */
 .nav-desktop{
     display: absolute;
 }
@@ -82,7 +78,6 @@ nav a:hover{
     display: none;
 }
 
-/* ================= MOBILE ================= */
 @media (max-width: 768px){
 
     .nav-desktop{

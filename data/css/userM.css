@@ -224,9 +224,7 @@ hr{
     to { transform: rotate(360deg); }
 }
 
-/* ================= RESPONSIVE ================= */
 
-/* ===== TABLET ===== */
 @media (max-width: 1024px){
 
     .inp-content{
@@ -255,14 +253,12 @@ hr{
     }
 }
 
-/* ===== MOBILE ===== */
 @media (max-width: 768px){
 
     h1{
         font-size: 1.8rem;
     }
 
-    /* Add New User → column */
     .inp-content{
         flex-direction: column;
     }
@@ -275,7 +271,6 @@ hr{
         justify-content: center;
     }
 
-    /* Section bawah */
     .flex{
         flex-direction: column;
     }
@@ -291,13 +286,11 @@ hr{
         padding-left: 1.2rem;
     }
 
-    /* List user card */
     .body-user{
         width: 100%;
         padding: 1rem;
     }
 
-    /* Form edit user */
     .left-body,
     .right-body{
         width: 100%;
@@ -320,7 +313,6 @@ hr{
     }
 }
 
-/* ===== SMALL MOBILE (≤480px) ===== */
 @media (max-width: 480px){
 
     main{

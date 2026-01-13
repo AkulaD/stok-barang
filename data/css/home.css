@@ -268,11 +268,6 @@ main{
     color: #fff;
 }
 
-/* =========================
-   RESPONSIVE: TABLET & MOBILE
-   ========================= */
-
-/* Tablet (≤ 1024px) */
 @media (max-width: 1024px) {
 
     .content-main {
@@ -311,7 +306,6 @@ main{
     }
 }
 
-/* Mobile (≤ 600px) */
 @media (max-width: 600px) {
 
     main {
