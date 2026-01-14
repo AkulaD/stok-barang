@@ -5,9 +5,13 @@ if (!isset($_SESSION['login'])) {
     header('location:login.php');
     exit;
 }
+if (!isset($_SESSION['role'])) {
+    header('location: login.php');
+    exit;
+}
 
-if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'finance') {
-    header('location: product-out.php');
+if (!in_array($_SESSION['role'], ['admin', 'viewer', 'finance'])) {
+    header('location: product-in.php');
     exit;
 }
 
@@ -96,7 +100,7 @@ $allProductResult = $conn->query("
     <script src="data/js/userM.js" defer></script>
     <link rel="stylesheet" href="data/css/style.css">
     <link rel="stylesheet" href="data/css/penjualan.css">
-    <title>Sales Dashboard</title>
+    <title>Sales - Stock | Stok Barang</title>
 </head>
 <body>
 
@@ -204,9 +208,12 @@ $allProductResult = $conn->query("
                 ?>
             </table>
         </div>
-
+        <?php include "partials/info-penjualan-m.php"; ?>
     </section>
+    
 </main>
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 new Chart(document.getElementById('hourlyChart'), {

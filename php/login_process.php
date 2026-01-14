@@ -48,5 +48,29 @@ $_SESSION['login'] = true;
 $_SESSION['username'] = $user['username'];
 $_SESSION['role'] = $user['role'];
 
-header("Location: ../product-in.php");
+switch ($user['role']) {
+    case 'admin':
+        header("Location: ../product-in.php");
+        break;
+
+    case 'viewer':
+        header("Location: ../product-in.php");
+        break;
+
+    case 'uploader':
+        header("Location: ../product-in.php");
+        break;
+
+    case 'cashier':
+        header("Location: ../product-out.php");
+        break;
+
+    case 'finance':
+        header("Location: ../penjualan.php");
+        break;
+
+    default:
+        header("Location: ../index.php?error=Role tidak dikenal");
+}
+
 exit;

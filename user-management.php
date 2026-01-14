@@ -6,8 +6,8 @@ if(!isset($_SESSION['login'])){
     exit;
 }
 
-if ($_SESSION['role']!=='admin'){
-    header('location:product-out.php');
+if ($_SESSION['role'] !== 'admin') {
+    header('location: product-in.php');
     exit;
 }
 
@@ -57,6 +57,7 @@ $result = mysqli_query($conn, "SELECT * FROM user ORDER BY tanggal DESC");
                             <option value="uploader">In-put</option>
                             <option value="cashier">Out-put</option>
                             <option value="viewer">Output-Input</option>
+                            <option value="finance">Finance</option>
                         </select>
                     </div>
                 </div>
@@ -85,6 +86,10 @@ $result = mysqli_query($conn, "SELECT * FROM user ORDER BY tanggal DESC");
                         <li>
                             <p><b>Output-Input</b></p>
                             <p>Bisa memiliki akses untuk Output (product-out) dan Input (Product-in).</p>
+                        </li>
+                        <li>
+                            <p><b>Finance</b></p>
+                            <p>Hanya memiliki akses untuk bagian penghasilan dan mutasi.</p>
                         </li>
                     </ul>
                 </div>
@@ -120,6 +125,7 @@ $result = mysqli_query($conn, "SELECT * FROM user ORDER BY tanggal DESC");
                                         <option value="uploader"<?= $row['role']=='uploader' ? 'selected' : '' ?>>In-put</option>
                                         <option value="cashier" <?= $row['role']=='cashier' ? 'selected' : '' ?>>Out-put</option>
                                         <option value="viewer"  <?= $row['role']=='viewer' ? 'selected' : '' ?>>Output-Input</option>
+                                        <option value="finance"  <?= $row['role']=='finance' ? 'selected' : '' ?>>finance</option>
                                     </select>
                                 </div>
                             </div>

@@ -6,8 +6,8 @@ if (!isset($_SESSION['login'])) {
     exit;
 }
 
-if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader') {
-    header('location: ../products.php');
+if (!in_array($_SESSION['role'], ['admin', 'viewer', 'uploader'])) {
+    header('location: product-out.php');
     exit;
 }
 

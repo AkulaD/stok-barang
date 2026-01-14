@@ -6,7 +6,12 @@ if (!isset($_SESSION['login'])) {
     exit;
 }
 
-if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'uploader' && $_SESSION['role'] !== 'viewer') {
+if (!isset($_SESSION['role'])) {
+    header('location: login.php');
+    exit;
+}
+
+if (!in_array($_SESSION['role'], ['admin', 'viewer', 'uploader'])) {
     header('location: product-out.php');
     exit;
 }
@@ -177,6 +182,8 @@ $no = 1;
                 </div>
             </div>
         </section>
+        
+        <?php include "partials/info-product-in.php"; ?>
     </main>
 
 <script>
