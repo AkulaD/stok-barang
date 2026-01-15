@@ -78,7 +78,7 @@ if ($from && $to) {
 </head>
 <body>
 
-<?php include 'Partials/nav.php' ?>
+<?php include 'partials/nav.php' ?>
 
 <main>
     <section class="sidebar">

@@ -39,7 +39,7 @@ $no = 1;
     <script src="data/js/products.js" defer></script>
 </head>
 <body>
-    <?php include 'Partials/nav.php'; ?>
+    <?php include 'partials/nav.php'; ?>
     
     <main>
         <div id="loading-overlay" style="display:none;">

@@ -28,7 +28,7 @@ $result = mysqli_query($conn, "SELECT * FROM user ORDER BY tanggal DESC");
     <title>User - Management</title>
 </head>
 <body>
-<?php include 'Partials/nav.php'; ?>
+<?php include 'partials/nav.php'; ?>
     <main>
         <div id="loading-overlay" style="display:none;">
             <div class="spinner"></div>
