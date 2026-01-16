@@ -30,7 +30,6 @@ hr{
 .input-new-user h2{
     margin-bottom: 1rem;
     font-size: 1.5rem;
-    text-transform: uppercase;
 }
 
 .inp-content{
@@ -69,21 +68,6 @@ hr{
     display: flex;
     justify-content: end;
     margin: 1rem 0;
-}
-
-.action-add button{
-    padding: 0.5rem 1rem;
-    border: none;
-    margin: 0.5rem 1rem;
-    font-size: 1.2rem;
-    border-radius: 10px;
-    background-color: rgb(0, 85, 255);
-    color: #fff;
-    cursor: pointer;
-}
-
-.action-add button:hover{
-    background-color: rgb(0, 105, 255);
 }
 
 .information-body{
@@ -174,19 +158,6 @@ hr{
     margin-bottom: 1rem;
 }
 
-.action button{
-    padding: 0.5rem 1rem;
-    border: none;
-    color: #fff;
-    background-color: rgb(0, 85, 255);
-    border-radius: 10px;
-    font-size: 1.2rem;
-}
-
-.action button:hover{
-    background-color: rgb(0, 105, 255);
-}
-
 .action a, .action p{
     padding: 0.5rem 0;
     font-size: 1rem;
@@ -271,6 +242,10 @@ hr{
         justify-content: center;
     }
 
+    .action-add .btn-submit{
+        width: 100%;
+    }
+
     .flex{
         flex-direction: column;
     }
@@ -303,7 +278,7 @@ hr{
         align-items: flex-start;
     }
 
-    .action button{
+    .action .btn-submit{
         width: 100%;
         text-align: center;
     }

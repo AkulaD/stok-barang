@@ -97,7 +97,7 @@ if ($from && $to) {
             <form method="GET" class="filter-form">
                 <input type="date" name="from" value="<?= $from ?>" required>
                 <input type="date" name="to" value="<?= $to ?>" required>
-                <button type="submit">Tampilkan</button>
+                <button class="btn-submit" type="submit">Tampilkan</button>
             </form>
         </div>
 
@@ -134,8 +134,8 @@ if ($from && $to) {
             <h2>Transaksi Penjualan</h2>
 
             <div class="download-wrap">
-                <a href="php/export_excel.php?from=<?= $from ?>&to=<?= $to ?>" class="btn">Download Excel</a>
-                <a href="php/export_pdf.php?from=<?= $from ?>&to=<?= $to ?>" class="btn">Download PDF</a>
+                <a class="a-submit" href="php/export_excel.php?from=<?= $from ?>&to=<?= $to ?>">Download Excel</a>
+                <a class="a-submit" href="php/export_pdf.php?from=<?= $from ?>&to=<?= $to ?>">Download PDF</a>
             </div>
 
             <div class="table-wrap">
@@ -179,6 +179,7 @@ if ($from && $to) {
     </section>
 </main>
 
+<?php include "partials/footer.php" ?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 

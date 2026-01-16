@@ -1,3 +1,7 @@
+body{
+    background: #f4f5f7;
+}
+
 #loading-overlay {
     position: fixed;
     inset: 0;
@@ -56,8 +60,8 @@ main{
 }
 
 .form-out{
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 25px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
     background-color: #fff;
     padding: 2rem;;
     margin-bottom: 2rem;
@@ -69,9 +73,12 @@ main{
 }
 
 .inp-body{
+    display: flex;
+    flex-direction: wrap;
+    align-items: center;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 0.5rem;
+    padding: 1rem;
     width: 90%;
     margin: 0 0.5rem;
 }
@@ -88,6 +95,7 @@ main{
 .inp-body label{
     font-size: 1.2rem;
     width: 20%;
+    min-width: max-content;
 }
 
 .inp-body select{
@@ -112,26 +120,9 @@ main{
     padding-right: 2rem;
 }
 
-.form-out button{
-    border: none;
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 0.4rem;
-    background-color: rgb(0, 85, 255);
-    border-radius: 5px;
-    margin-left: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out
-}
-
-.form-out button:hover{
-    background-color: rgb(0, 100, 255);
-    color: #fff;
-}
-
 .content-main{
     display: flex;
+    padding-bottom: 1rem;;
 }
 
 .left-body{
@@ -140,10 +131,11 @@ main{
 
 .main-body{
     width: 40%;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border: 1px solid #ddd;
     padding: 1rem;
-    border-radius: 25px;
+    border-radius: 15px;
     margin: 0 1rem;
+    background-color: white;
 }
 
 .main-body h2{
@@ -167,6 +159,10 @@ main{
     padding-top: 1rem;
 }
 
+.chart-wrapper{
+    overflow-x: scroll;
+}
+
 .chart-container {
     display: flex;
     align-items: center;
@@ -178,7 +174,7 @@ main{
     max-height: 220px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    border: 1px solid #ddd;
     padding: 10px;
 }
 
@@ -228,19 +224,6 @@ main{
     margin: 0 0.5rem;
 }
 
-.chart-filter form button{
-    border: none;
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 0.4rem;
-    background-color: rgb(0, 85, 255);
-    border-radius: 5px;
-    margin-left: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out
-}
-
 .container-all-history{
     padding: 1rem;
 }
@@ -266,6 +249,21 @@ main{
 .container-all-history a:hover{
     background-color: rgb(0, 100, 255);
     color: #fff;
+}
+
+.inp-fil{
+    display: flex;
+    flex-direction: wrap;
+    align-items: center;
+}
+
+.inp-fil input{
+    border: 1px solid #ccc;
+    outline: none;
+    background: none;
+    font-size: 1.2rem;
+    margin: 0 0.5rem;
+    padding: 0.5rem;
 }
 
 @media (max-width: 1024px) {
@@ -331,7 +329,7 @@ main{
     .inp-body input,
     .inp-body select {
         width: 100%;
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
     .submit-body {

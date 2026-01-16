@@ -73,7 +73,7 @@ $chart_produk = mysqli_query($conn, "
         </div>
 
         <form class="form-out" action="php/out-form.php" method="post">
-            <h2>FORM OUT</h2>
+            <h2>Form Out</h2>
             <div class="qr-number">
                 <div class="inp-body">
                     <label>Enter QR Code Number:</label>
@@ -91,7 +91,7 @@ $chart_produk = mysqli_query($conn, "
                 <br>
             </div>
             <div class="submit-body">
-                <button type="submit">Submit</button>
+                <button class="btn-submit" type="submit">Submit</button>
             </div>
         </form>
         <div class="content-main">
@@ -100,13 +100,17 @@ $chart_produk = mysqli_query($conn, "
                     <h2>Distribusi Penjualan (Barang Keluar)</h2>
                     <section class="chart-filter">
                         <form method="GET">
-                            <label>Dari Tanggal</label>
-                            <input type="date" name="from" value="<?= $_GET['from'] ?? '' ?>">
+                            <div class="inp-fil">
+                                <label>Dari Tanggal</label>
+                                <input type="date" name="from" value="<?= $_GET['from'] ?? '' ?>">
+                            </div>
 
-                            <label>Sampai</label>
-                            <input type="date" name="to" value="<?= $_GET['to'] ?? '' ?>">
+                            <div class="inp-fil">
+                                <label>Sampai</label>
+                                <input type="date" name="to" value="<?= $_GET['to'] ?? '' ?>">
+                            </div>
 
-                            <button type="submit">Filter</button>
+                            <button class="btn-submit" type="submit">Filter</button>
                         </form>
                     </section>
 
@@ -155,8 +159,8 @@ $chart_produk = mysqli_query($conn, "
                 </script>
 
                 <section class="history-body">
-                        <h2>History Stock</h2>
-                        <a href="all-history.php">Show All</a>
+                    <h2>History Stock</h2>
+                    <a href="all-history.php">Show All</a>
                     <div class="table-container">
                         <table>
                             <thead>
@@ -189,7 +193,7 @@ $chart_produk = mysqli_query($conn, "
                                     <?php endwhile; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6">No history found.</td>
+                                        <td colspan="7">No history found.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -231,6 +235,9 @@ $chart_produk = mysqli_query($conn, "
 
         <?php include "partials/info-product-out.php"; ?>
     </main>
+    
+    <?php include "partials/footer.php" ?>
+
     <script>
         function generateColors(count) {
             return Array.from({ length: count }, (_, i) =>

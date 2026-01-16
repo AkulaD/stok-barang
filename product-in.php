@@ -71,7 +71,7 @@ $no = 1;
                         </div>
                     </div>
                     <div class="button-submit">
-                        <button type="submit">Submit</button>
+                        <button class="btn-submit" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -118,17 +118,17 @@ $no = 1;
                 <div class="form-add-body">
                     <div class="new-stok">
                         <div class="qr-code">
-                            <label for="qr-code">Qr Code</label>
+                            <label for="qr-code">QR Code:</label>
                             <input type="text" name="qr-code" id="qr-code">
                         </div>
                         <div class="add-stock">
-                            <label for="stock">Stock</label>
+                            <label for="stock">Stock:</label>
                             <input type="number" name="stock" id="stock">
                         </div>
                     </div>
                 </div>
                 <div class="body-button">
-                    <button type="submit">Submit</button>
+                    <button class="btn-submit" type="submit">Submit</button>
                 </div>
             </form>
         </section>
@@ -154,18 +154,18 @@ $no = 1;
                                     <td class="t-no"><?= $no++; ?></td>
                                     <td class="t-name"><?= htmlspecialchars($row['nama_produk']); ?></td>
                                     <td class="t-stock"><?= $row['stok']; ?></td>
-                                    <td class="t-istock"><a href="php/input-stock.php?id=<?= $row['id_produk']; ?>">Add</a></td>
+                                    <td class="t-istock"><a class="a-submit" href="php/input-stock.php?id=<?= $row['id_produk']; ?>">Add</a></td>
                                     <td class="price">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
 
                                     <td class="t-qr-d">
-                                        <a href="php/barcode.php?code=<?= urlencode($row['barcode']); ?>" target="_blank">
+                                        <a class="a-submit" href="php/barcode.php?code=<?= urlencode($row['barcode']); ?>" target="_blank">
                                             Download QR
                                         </a>
                                     </td>
 
                                     <td class="t-action">
-                                        <a class="t-edit" href="php/edit-product.php?id=<?= $row['id_produk']; ?>">Edit</a> |
-                                        <a class="t-delete" href="php/delete.php?id=<?= $row['id_produk']; ?>"
+                                        <a class="a-submit" class="t-edit" href="php/edit-product.php?id=<?= $row['id_produk']; ?>">Edit</a> |
+                                        <a class="a-delete" class="t-delete" href="php/delete.php?id=<?= $row['id_produk']; ?>"
                                         onclick="return confirm('Delete this product?')">
                                         Delete
                                         </a>
@@ -185,6 +185,8 @@ $no = 1;
         
         <?php include "partials/info-product-in.php"; ?>
     </main>
+    
+<?php include "partials/footer.php" ?>
 
 <script>
 function generateColors(count) {

@@ -204,6 +204,8 @@ $allProductResult = $conn->query("
     </section>
 </main>
 
+<?php include "partials/footer.php" ?>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 new Chart(document.getElementById('hourlyChart'), {
