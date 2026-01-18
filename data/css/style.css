@@ -345,3 +345,26 @@ footer{
 .a-delete:hover{
     opacity: 0.85;
 }
+
+.search-bar{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin: 0.5rem 0;
+}
+
+.search-bar input{
+    padding: 0.5rem 1rem;
+    width: 35%;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #374151;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.search-bar input:focus{
+    outline: none;
+    border-color: #000000;
+}

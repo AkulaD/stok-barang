@@ -23,6 +23,10 @@
             <h4>4.All Sold Products Today</h4>
             <p>Bagian ini menampilkan informasi produk yang terjual pada hari ini</p>
         </li>
+        <li>
+            <h4>5.All List History Sold Products Today</h4>
+            <p>Bagian ini menampilkan informasi produk yang terjual pada hari ini per setiap transaksi, anda dapat mengedit harganya pada bagian edit.</p>
+        </li>
     </ul>
     <div class="readme-box">
         Bagian ini hanya menampilkan informasi statistik tidak ada yang dapat diubah

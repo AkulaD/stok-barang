@@ -42,12 +42,12 @@ window.addEventListener('scroll', () => {
 const barcodeInput = document.getElementById('barcode')
 const productSelect = document.getElementById('productSelect')
 
-barcodeInput.addEventListener('input', function () {
-    const barcode = this.value.trim()
+barcodeInput.addEventListener('input', () => {
+    const code = barcodeInput.value.trim()
     let found = false
 
     for (let option of productSelect.options) {
-        if (option.dataset.barcode === barcode) {
+        if (option.dataset.barcode === code) {
             productSelect.value = option.value
             found = true
             break
@@ -57,4 +57,9 @@ barcodeInput.addEventListener('input', function () {
     if (!found) {
         productSelect.value = ''
     }
+})
+
+productSelect.addEventListener('change', () => {
+    const selected = productSelect.options[productSelect.selectedIndex]
+    barcodeInput.value = selected.dataset.barcode || ''
 })

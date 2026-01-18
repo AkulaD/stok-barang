@@ -142,8 +142,17 @@ $no = 1;
         <section class="product-list">
             <div class="list-body">
                 <h2>Product List</h2>
+                <div class="search-bar">
+                    <input 
+                        type="text" 
+                        id="productSearch" 
+                        placeholder="Search product name..."
+                        autocomplete="off"
+                    >
+                </div>
+
                 <div class="table-container">
-                    <table>
+                    <table id="productTable">
                         <thead>
                             <tr>
                                 <th class="t-no">No</th>
@@ -154,7 +163,7 @@ $no = 1;
                                 <th class="t-action">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="productTableBody">
                             <?php if (mysqli_num_rows($result) > 0): ?>
                                 <?php while ($row = mysqli_fetch_assoc($result)): ?>
                                 <tr>
@@ -189,7 +198,7 @@ $no = 1;
                 </div>
             </div>
         </section>
-        
+        <br>    
         <?php include "partials/info-product-in.php"; ?>
     </main>
     
@@ -269,6 +278,18 @@ function renderOverlayList(data) {
 
 drawPie('chartStock', chartStock);
 renderOverlayList(chartStock);
+
+const searchInput = document.getElementById('productSearch');
+const rows = document.querySelectorAll('#productTableBody tr');
+
+searchInput.addEventListener('keyup', () => {
+    const keyword = searchInput.value.toLowerCase();
+
+    rows.forEach(row => {
+        const productName = row.querySelector('.t-name').textContent.toLowerCase();
+        row.style.display = productName.includes(keyword) ? '' : 'none';
+    });
+});
 </script>
 </body>
 </html>

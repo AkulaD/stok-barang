@@ -104,8 +104,6 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
 
-<?php include '../partials/nav.php'; ?>
-
 <main class="restock-container">
 
     <div class="restock-card">

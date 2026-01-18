@@ -89,6 +89,7 @@ $warehouseStock = mysqli_fetch_assoc(
     <title>Warehouse | Stok Barang</title>
     <link rel="stylesheet" href="data/css/style.css">
     <link rel="stylesheet" href="data/css/warehouse.css">
+    <script src="data/js/products.js" defer></script>
 </head>
 <body>
 
@@ -151,8 +152,8 @@ $warehouseStock = mysqli_fetch_assoc(
         <h2>Add Stock Warehouse</h2>
 
         <div class="inp-body">
-            <label>Scan / Input Barcode</label>
-            <input type="text" id="barcode" placeholder="Scan barcode here">
+            <label>Scan Barcode</label>
+            <input type="text" id="barcode" placeholder="Scan barcode here" autocomplete="off">
         </div>
 
         <div class="inp-body">
@@ -210,6 +211,9 @@ $warehouseStock = mysqli_fetch_assoc(
 </div>
 
 </section>
+<br>
+
+<?php include "partials/warehouse-1.php"; ?>
 </main>
 </body>
 </html>

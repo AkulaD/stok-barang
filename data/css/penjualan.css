@@ -159,6 +159,25 @@ table th {
     font-weight: 600;
 }
 
+.table-sales {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    overflow-y: auto;
+    max-height: 420px;
+}
+
+.table-sales table{
+    width: 100%;
+    min-width: max-content;
+}
+
+.table-sales table thead,
+.table-sales table tbody,
+.table-sales table tr {
+    min-width: max-content;
+}
+
 /* RESPONSIVE */
 @media (min-width: 901px) {
     .chart-grid {

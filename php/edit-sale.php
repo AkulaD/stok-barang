@@ -46,6 +46,7 @@ if (isset($_POST['update'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Harga</title>
     <link rel="stylesheet" href="../data/css/style.css">
     <link rel="stylesheet" href="../data/css/edit-sale.css">
@@ -74,7 +75,7 @@ if (isset($_POST['update'])) {
             </div>
 
             <div class="form-btn">
-                <button type="submit" name="update">Update Harga</button>
+                <button class="btn-submit" type="submit" name="update">Update Harga</button>
                 <a href="../penjualan.php">Cancel</a>
             </div>
         </form>

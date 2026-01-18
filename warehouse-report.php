@@ -168,12 +168,12 @@ $warehouseStock = mysqli_fetch_assoc(
 
             <div class="summary-box">
                 <div>
-                    <h4>Total Masuk Warehouse</h4>
+                    <h4>Total Warehouse Intake</h4>
                     <p><?= $totalMasukWarehouse ?? 0 ?></p>
                 </div>
 
                 <div>
-                    <h4>Total Keluar Warehouse</h4>
+                    <h4>Total Warehouse Outgoing</h4>
                     <p><?= $totalKeluarWarehouse ?? 0 ?></p>
                 </div>
 
@@ -247,6 +247,7 @@ $warehouseStock = mysqli_fetch_assoc(
         </div>
     </div>
 </section>
+<?php include "partials/warehouse-2.php"; ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>

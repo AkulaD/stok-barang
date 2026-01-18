@@ -97,7 +97,7 @@ if ($from && $to) {
             <form method="GET" class="filter-form">
                 <input type="date" name="from" value="<?= $from ?>" required>
                 <input type="date" name="to" value="<?= $to ?>" required>
-                <button class="btn-submit" type="submit">Tampilkan</button>
+                <button class="btn-submit" type="submit">Apply</button>
             </form>
         </div>
 

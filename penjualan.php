@@ -228,46 +228,48 @@ $allProductResult = $conn->query("
 
         <div class="list-card">
             <h2>All List History Sold Products Today</h2>
+            <div class="table-sales">
+                <table>
+                    <tr>
+                        <th>No</th>
+                        <th>Time</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Location</th>
+                        <th>Edit</th>
+                    </tr>
 
-            <table>
-                <tr>
-                    <th>No</th>
-                    <th>Time</th>
-                    <th>Product</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                    <th>Location</th>
-                    <th>Edit</th>
-                </tr>
-
-                <?php
-                $no = 1;
-                if ($historyResult->num_rows > 0) {
-                    while ($row = $historyResult->fetch_assoc()) {
+                    <?php
+                    $no = 1;
+                    if ($historyResult->num_rows > 0) {
+                        while ($row = $historyResult->fetch_assoc()) {
+                            echo "
+                            <tr>
+                                <td>{$no}</td>
+                                <td>".date('H:i', strtotime($row['tanggal']))."</td>
+                                <td>{$row['nama_produk']}</td>
+                                <td>{$row['jumlah']}</td>
+                                <td>Rp ".number_format($row['harga'],0,',','.')."</td>
+                                <td>Rp ".number_format($row['total'],0,',','.')."</td>
+                                <td>{$row['lokasi']}</td>
+                                <td>
+                                    <a href='php/edit-sale.php?id={$row['id_log']}'>Edit</a>
+                                </td>
+                            </tr>";
+                            $no++;
+                        }
+                    } else {
                         echo "
                         <tr>
-                            <td>{$no}</td>
-                            <td>".date('H:i', strtotime($row['tanggal']))."</td>
-                            <td>{$row['nama_produk']}</td>
-                            <td>{$row['jumlah']}</td>
-                            <td>Rp ".number_format($row['harga'],0,',','.')."</td>
-                            <td>Rp ".number_format($row['total'],0,',','.')."</td>
-                            <td>{$row['lokasi']}</td>
-                            <td>
-                                <a href='php/edit-sale.php?id={$row['id_log']}'>Edit</a>
-                            </td>
+                            <td colspan='8'>No sales today</td>
                         </tr>";
-                        $no++;
                     }
-                } else {
-                    echo "
-                    <tr>
-                        <td colspan='8'>No sales today</td>
-                    </tr>";
-                }
-                ?>
-            </table>
+                    ?>
+                </table>
+
+            </div>
         </div>
 
     <?php include "partials/info-penjualan-m.php"; ?>
