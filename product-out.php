@@ -24,7 +24,9 @@ $history_log = mysqli_query($conn,"
     SELECT log_stok.*, produk.nama_produk
     FROM log_stok
     JOIN produk ON log_stok.id_produk = produk.id_produk
-    WHERE DATE(log_stok.tanggal) = CURDATE()
+    WHERE 
+        log_stok.tipe = 'keluar'
+        AND DATE(log_stok.tanggal) = CURDATE()
     ORDER BY log_stok.tanggal DESC
 ");
 

@@ -348,3 +348,30 @@ tbody tr td{
 body{
     overflow-x: hidden;
 }
+
+
+.nav-product{
+    background-color: white;
+    margin: 0.5rem 0;
+    padding: 0.3rem;
+    border: 1px solid #ddd;   
+    border-radius: 10px;
+}
+
+.nav-product ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+    padding: 0.3rem 0;
+}
+
+.nav-product ul li a{
+    color: #333;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.nav-product ul li a:hover{
+    opacity: 0.8;
+}

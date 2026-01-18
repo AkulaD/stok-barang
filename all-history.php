@@ -13,7 +13,13 @@ if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'cashier' && $_SESSIO
 
 include 'php/conn.php';
 
-$history_log = mysqli_query($conn," SELECT log_stok.*, produk.nama_produk FROM log_stok JOIN produk ON log_stok.id_produk = produk.id_produk ORDER BY log_stok.tanggal DESC ");
+$history_log = mysqli_query($conn,"
+    SELECT log_stok.*, produk.nama_produk
+    FROM log_stok
+    JOIN produk ON log_stok.id_produk = produk.id_produk
+    WHERE log_stok.tipe = 'keluar'
+    ORDER BY log_stok.tanggal DESC
+");
 
 ?>
 <!DOCTYPE html>

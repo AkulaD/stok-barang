@@ -51,6 +51,23 @@ $hourlyResult = $conn->query("
     ORDER BY jam
 ");
 
+$historyResult = $conn->query("
+    SELECT 
+        l.id_log,
+        l.tanggal,
+        p.nama_produk,
+        l.jumlah,
+        l.harga,
+        (l.jumlah * l.harga) AS total,
+        IFNULL(l.penjualan,'-') AS lokasi
+    FROM log_stok l
+    JOIN produk p ON l.id_produk = p.id_produk
+    WHERE l.tipe = 'keluar'
+    AND DATE(l.tanggal) = CURDATE()
+    ORDER BY l.tanggal DESC
+");
+
+
 $hours = [];
 $totals = [];
 
@@ -208,7 +225,52 @@ $allProductResult = $conn->query("
                 ?>
             </table>
         </div>
-        <?php include "partials/info-penjualan-m.php"; ?>
+
+        <div class="list-card">
+            <h2>All List History Sold Products Today</h2>
+
+            <table>
+                <tr>
+                    <th>No</th>
+                    <th>Time</th>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Location</th>
+                    <th>Edit</th>
+                </tr>
+
+                <?php
+                $no = 1;
+                if ($historyResult->num_rows > 0) {
+                    while ($row = $historyResult->fetch_assoc()) {
+                        echo "
+                        <tr>
+                            <td>{$no}</td>
+                            <td>".date('H:i', strtotime($row['tanggal']))."</td>
+                            <td>{$row['nama_produk']}</td>
+                            <td>{$row['jumlah']}</td>
+                            <td>Rp ".number_format($row['harga'],0,',','.')."</td>
+                            <td>Rp ".number_format($row['total'],0,',','.')."</td>
+                            <td>{$row['lokasi']}</td>
+                            <td>
+                                <a href='php/edit-sale.php?id={$row['id_log']}'>Edit</a>
+                            </td>
+                        </tr>";
+                        $no++;
+                    }
+                } else {
+                    echo "
+                    <tr>
+                        <td colspan='8'>No sales today</td>
+                    </tr>";
+                }
+                ?>
+            </table>
+        </div>
+
+    <?php include "partials/info-penjualan-m.php"; ?>
     </section>
     
 </main>

@@ -1,0 +1,66 @@
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.edit-container{
+    min-width: max-content;
+    width: 30%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.edit-card{
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.2rem;
+    border: 1px solid #ddd;
+}
+
+.edit-card h2{
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.form-row{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.8rem;
+}
+
+.form-row label{
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    color: #444;
+}
+
+.form-row input{
+    padding: 0.45rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.form-btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.form-btn button{
+    padding: 0.45rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #222;
+    color: #fff;
+}
+
+.form-btn a{
+    font-size: 0.85rem;
+    color: #555;
+    text-decoration: none;
+}

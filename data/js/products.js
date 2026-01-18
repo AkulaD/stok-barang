@@ -38,3 +38,23 @@ toggle.addEventListener('click', () => {
 window.addEventListener('scroll', () => {
     document.querySelector('header').classList.toggle('scrolled', window.scrollY > 20)
 })
+
+const barcodeInput = document.getElementById('barcode')
+const productSelect = document.getElementById('productSelect')
+
+barcodeInput.addEventListener('input', function () {
+    const barcode = this.value.trim()
+    let found = false
+
+    for (let option of productSelect.options) {
+        if (option.dataset.barcode === barcode) {
+            productSelect.value = option.value
+            found = true
+            break
+        }
+    }
+
+    if (!found) {
+        productSelect.value = ''
+    }
+})

@@ -1,0 +1,159 @@
+body {
+    background: #f4f5f7;
+    color: #333;
+}
+
+.nav-product{
+    background-color: white;
+    margin: 0.5rem 0;
+    padding: 0.3rem;
+    border: 1px solid #ddd;   
+    border-radius: 10px;
+}
+
+.nav-product ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+    padding: 0.3rem 0;
+}
+
+.nav-product ul li a{
+    color: #333;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.nav-product ul li a:hover{
+    opacity: 0.8;
+}
+
+.nav-product-1{
+    background-color: white;
+    margin: 0.5rem 0;
+    padding: 0.3rem;
+}
+
+.nav-product-1 ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+    padding: 0.3rem 0;
+}
+
+.nav-product-1 ul li a{
+    color: #333;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.nav-product-1 ul li a:hover{
+    opacity: 0.8;
+}
+
+.info-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.info-wrap > div {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.info-wrap h2 {
+    font-size: 13px;
+    color: #777;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.info-wrap p {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.summary-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.summary-box div {
+    padding: 10px;
+}
+
+.summary-box h4 {
+    font-size: 14px;
+    color: #666;
+}
+
+.summary-box p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #222;
+}
+
+.table-section, .chart-box {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.table-section h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+table th {
+    background: #f9f9f9;
+    color: #555;
+}
+
+input[type="month"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .info-wrap {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .summary-box {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-wrap {
+        grid-template-columns: 1fr;
+    }
+}

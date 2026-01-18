@@ -2,12 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location: login.php');
+    header('location: index.php');
     exit;
 }
 
 if (!isset($_SESSION['role'])) {
-    header('location: login.php');
+    header('location: index.php');
     exit;
 }
 
@@ -46,6 +46,13 @@ $no = 1;
             <div class="spinner"></div>
             <p>Processing...</p>
         </div>
+
+        <section class="nav-product">
+            <ul>
+                <li><a href="product-in.php">Main</a></li>
+                <li><a href="warehouse.php">Warehouse</a></li>
+            </ul>
+        </section>
 
         <section class="head-main">
             <div class="add-product">
