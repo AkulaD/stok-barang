@@ -18,39 +18,37 @@ if (!$from || !$to) {
 
 $query = $conn->query("
     SELECT 
-        l.tanggal,
-        p.nama_produk,
-        l.jumlah,
-        l.harga,
-        (l.jumlah * l.harga) AS subtotal,
-        l.penjualan,
-        l.keterangan
-    FROM log_stok l
-    JOIN produk p ON l.id_produk = p.id_produk
-    WHERE l.tipe = 'keluar'
-    AND DATE(l.tanggal) BETWEEN '$from' AND '$to'
-    ORDER BY l.tanggal ASC
+        id_log,
+        tanggal,
+        nama_produk, -- Mengambil data mandiri dari tabel transaksi
+        jumlah,
+        harga,
+        penjualan,
+        keterangan
+    FROM transaksi
+    WHERE tipe = 'keluar'
+    AND DATE(tanggal) BETWEEN '$from' AND '$to'
+    ORDER BY tanggal ASC
 ");
 
 $totalQty = 0;
-$totalSubtotal = 0;
-
+$totalHarga = 0;
 $rows = '';
 $no = 1;
 
 while ($d = $query->fetch_assoc()) {
     $totalQty += $d['jumlah'];
-    $totalSubtotal += $d['subtotal'];
+    $totalHarga += ($d['jumlah'] * $d['harga']);
 
     $rows .= "
         <tr>
-            <td>{$no}</td>
-            <td>".date('d-m-Y H:i', strtotime($d['tanggal']))."</td>
+            <td class='center'>{$no}</td>
+            <td class='center'>".date('d-m-Y H:i', strtotime($d['tanggal']))."</td>
             <td>{$d['nama_produk']}</td>
-            <td align='center'>{$d['jumlah']}</td>
-            <td align='right'>Rp ".number_format($d['harga'],2,',','.')."</td>
-            <td align='right'>Rp ".number_format($d['subtotal'],2,',','.')."</td>
-            <td>{$d['penjualan']}</td>
+            <td class='center'>{$d['jumlah']}</td>
+            <td class='right'>Rp ".number_format($d['harga'],2,',','.')."</td>
+            <td class='center'>{$d['id_log']}</td>
+            <td class='center'>{$d['penjualan']}</td>
             <td>{$d['keterangan']}</td>
         </tr>
     ";
@@ -65,41 +63,55 @@ $html = "
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset='UTF-8'>
 <style>
 body {
     font-family: DejaVu Sans, sans-serif;
     font-size: 10px;
+    color: #000;
 }
-h1 {
-    text-align: center;
-    color: #0d47a1;
-    margin-bottom: 4px;
-}
-.periode {
+.header {
     text-align: center;
     margin-bottom: 15px;
+}
+.header h1 {
+    font-size: 16px;
+    margin: 0;
+    color: #0d47a1;
+}
+.header .periode {
+    font-size: 11px;
+    margin-top: 4px;
 }
 table {
     width: 100%;
     border-collapse: collapse;
 }
 th {
-    background-color: #1e88e5 !important;
-    color: #ffffff !important;
+    background-color: #1565c0;
+    color: #fff;
     padding: 6px;
     border: 1px solid #000;
-    font-weight: bold;
+    text-align: center;
+    font-size: 10px;
 }
 td {
     padding: 5px;
     border: 1px solid #000;
+    font-size: 9.5px;
+}
+.center {
+    text-align: center;
+}
+.right {
+    text-align: right;
 }
 .total {
-    background: #c8e6c9;
+    background-color: #c8e6c9;
     font-weight: bold;
 }
 .footer {
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: right;
     font-size: 9px;
 }
@@ -107,30 +119,33 @@ td {
 </head>
 <body>
 
-<h1>LAPORAN TRANSAKSI PENJUALAN</h1>
-<div class='periode'>{$judulTanggal}</div>
+<div class='header'>
+    <h1>LAPORAN TRANSAKSI PENJUALAN</h1>
+    <div class='periode'>{$judulTanggal}</div>
+</div>
 
 <table>
+<thead>
 <tr>
     <th>No</th>
     <th>Tanggal</th>
     <th>Produk</th>
     <th>Qty</th>
     <th>Harga</th>
-    <th>Subtotal</th>
+    <th>ID Transaksi</th>
     <th>Lokasi</th>
     <th>Keterangan</th>
 </tr>
-
+</thead>
+<tbody>
 {$rows}
-
 <tr class='total'>
-    <td colspan='3' align='center'>TOTAL</td>
-    <td align='center'>{$totalQty}</td>
-    <td></td>
-    <td align='right'>Rp ".number_format($totalSubtotal,2,',','.')."</td>
-    <td colspan='2'></td>
+    <td colspan='3' class='center'>TOTAL</td>
+    <td class='center'>{$totalQty}</td>
+    <td class='right'>Rp ".number_format($totalHarga,2,',','.')."</td>
+    <td colspan='3'></td>
 </tr>
+</tbody>
 </table>
 
 <div class='footer'>

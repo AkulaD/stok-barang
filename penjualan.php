@@ -19,21 +19,21 @@ include 'php/conn.php';
 
 $totalItems = $conn->query("
     SELECT IFNULL(SUM(jumlah),0) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
 ")->fetch_assoc();
 
 $totalRevenue = $conn->query("
     SELECT IFNULL(SUM(jumlah * harga),0) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
 ")->fetch_assoc();
 
 $totalTransaction = $conn->query("
     SELECT COUNT(id_log) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
 ")->fetch_assoc();
@@ -44,7 +44,7 @@ $averageRevenue = $totalTransaction['total'] > 0
 
 $hourlyResult = $conn->query("
     SELECT HOUR(tanggal) AS jam, SUM(jumlah) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
     GROUP BY HOUR(tanggal)
@@ -60,7 +60,7 @@ $historyResult = $conn->query("
         l.harga,
         (l.jumlah * l.harga) AS total,
         IFNULL(l.penjualan,'-') AS lokasi
-    FROM log_stok l
+    FROM transaksi l
     JOIN produk p ON l.id_produk = p.id_produk
     WHERE l.tipe = 'keluar'
     AND DATE(l.tanggal) = CURDATE()
@@ -80,7 +80,7 @@ $shipmentResult = $conn->query("
     SELECT IFNULL(penjualan,'Unknown') AS lokasi,
            SUM(jumlah) AS total_item,
            SUM(jumlah * harga) AS total_revenue
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
     GROUP BY lokasi
@@ -101,7 +101,7 @@ $allProductResult = $conn->query("
         p.nama_produk,
         SUM(l.jumlah) AS total,
         SUM(l.jumlah * l.harga) AS revenue
-    FROM log_stok l
+    FROM transaksi l
     JOIN produk p ON l.id_produk = p.id_produk
     WHERE l.tipe = 'keluar'
     AND DATE(l.tanggal) = CURDATE()
@@ -128,6 +128,7 @@ $allProductResult = $conn->query("
         <ul>
             <li><a href="penjualan.php">Main</a></li>
             <li><a href="mutasi.php">Excel</a></li>
+            <li><a href="edit-transaction.php">Edit</a></li>
             <li><a href="report.php">Report</a></li>
         </ul>
     </section>
@@ -236,7 +237,7 @@ $allProductResult = $conn->query("
                         <th>Product</th>
                         <th>Qty</th>
                         <th>Price</th>
-                        <th>Total</th>
+                        <th>ID Transaction</th>
                         <th>Location</th>
                         <th>Edit</th>
                     </tr>
@@ -252,7 +253,7 @@ $allProductResult = $conn->query("
                                 <td>{$row['nama_produk']}</td>
                                 <td>{$row['jumlah']}</td>
                                 <td>Rp ".number_format($row['harga'],0,',','.')."</td>
-                                <td>Rp ".number_format($row['total'],0,',','.')."</td>
+                                <td>{$row['id_log']}</td>
                                 <td>{$row['lokasi']}</td>
                                 <td>
                                     <a href='php/edit-sale.php?id={$row['id_log']}'>Edit</a>

@@ -38,7 +38,7 @@ $sheet->getStyle('A2')->getFont()->setSize(11);
 $sheet->getStyle('A1:A2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
 $sheet->fromArray([
-    ['No','Tanggal','Produk','Jumlah','Harga','Subtotal','Lokasi','Keterangan']
+    ['No','Tanggal','Produk','Jumlah','Harga','ID Transaksi','Lokasi','Keterangan']
 ], null, 'A4');
 
 $sheet->getStyle('A4:H4')->applyFromArray([
@@ -61,24 +61,23 @@ $sheet->getStyle('A4:H4')->applyFromArray([
 
 $query = $conn->query("
     SELECT 
-        l.tanggal,
-        p.nama_produk,
-        l.jumlah,
-        l.harga,
-        (l.jumlah * l.harga) AS subtotal,
-        l.penjualan,
-        l.keterangan
-    FROM log_stok l
-    JOIN produk p ON l.id_produk = p.id_produk
-    WHERE l.tipe = 'keluar'
-    AND DATE(l.tanggal) BETWEEN '$from' AND '$to'
-    ORDER BY l.tanggal ASC
+        id_log,
+        tanggal,
+        nama_produk, -- Mengambil dari tabel transaksi
+        jumlah,
+        harga,
+        penjualan,
+        keterangan
+    FROM transaksi
+    WHERE tipe = 'keluar'
+      AND DATE(tanggal) BETWEEN '$from' AND '$to'
+    ORDER BY tanggal ASC
 ");
 
 $row = 5;
 $no = 1;
 $totalQty = 0;
-$totalSubtotal = 0;
+$totalHarga = 0;
 
 while ($d = $query->fetch_assoc()) {
     $sheet->setCellValue('A'.$row, $no++);
@@ -86,30 +85,30 @@ while ($d = $query->fetch_assoc()) {
     $sheet->setCellValue('C'.$row, $d['nama_produk']);
     $sheet->setCellValue('D'.$row, $d['jumlah']);
     $sheet->setCellValue('E'.$row, $d['harga']);
-    $sheet->setCellValue('F'.$row, $d['subtotal']);
+    $sheet->setCellValue('F'.$row, $d['id_log']);
     $sheet->setCellValue('G'.$row, $d['penjualan']);
     $sheet->setCellValue('H'.$row, $d['keterangan']);
 
-    $sheet->getStyle('E'.$row.':F'.$row)
+    $sheet->getStyle('E'.$row)
         ->getNumberFormat()
-        ->setFormatCode('"Rp" #,##0.00');
+        ->setFormatCode('"Rp" #,##0');
 
     $sheet->getStyle('A'.$row.':H'.$row)
         ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
     $totalQty += $d['jumlah'];
-    $totalSubtotal += $d['subtotal'];
+    $totalHarga += ($d['jumlah'] * $d['harga']);
     $row++;
 }
 
 $sheet->mergeCells('A'.$row.':C'.$row);
 $sheet->setCellValue('A'.$row, 'TOTAL');
 $sheet->setCellValue('D'.$row, $totalQty);
-$sheet->setCellValue('F'.$row, $totalSubtotal);
+$sheet->setCellValue('E'.$row, $totalHarga);
 
-$sheet->getStyle('F'.$row)
+$sheet->getStyle('E'.$row)
     ->getNumberFormat()
-    ->setFormatCode('"Rp" #,##0.00');
+    ->setFormatCode('"Rp" #,##0');
 
 $sheet->getStyle('A'.$row.':H'.$row)->applyFromArray([
     'font' => ['bold' => true],

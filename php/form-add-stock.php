@@ -35,9 +35,10 @@ if (mysqli_num_rows($qProduk) === 0) {
 
 $produk = mysqli_fetch_assoc($qProduk);
 
-$id_produk = $produk['id_produk'];
-$stok_lama = (int) $produk['stok'];
-$harga     = (int) $produk['harga'];
+$id_produk   = $produk['id_produk'];
+$nama_produk = mysqli_real_escape_string($conn, $produk['nama_produk']); // Ambil nama produk
+$stok_lama   = (int) $produk['stok'];
+$harga       = (int) $produk['harga'];
 
 $stok_baru = $stok_lama + $jumlah;
 
@@ -47,13 +48,13 @@ mysqli_query($conn, "
     WHERE id_produk = '$id_produk'
 ");
 
-$id_log = 'IN-' . strtoupper(bin2hex(random_bytes(6)));
+$id_log = 'IN-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
 
 mysqli_query($conn, "
     INSERT INTO log_stok 
-    (id_log, id_produk, tipe, jumlah, keterangan, harga)
+    (id_log, id_produk, nama_produk, tipe, jumlah, keterangan, harga)
     VALUES 
-    ('$id_log', '$id_produk', 'masuk', $jumlah, 'Add Stock', $harga)
+    ('$id_log', '$id_produk', '$nama_produk', 'masuk', $jumlah, 'Add Stock', $harga)
 ");
 
 header('location: ../product-in.php?success=1');

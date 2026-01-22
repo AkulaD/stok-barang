@@ -24,7 +24,7 @@ $totalMasukWarehouse = mysqli_fetch_assoc(mysqli_query($conn,"
     SELECT SUM(jumlah) AS total
     FROM log_stok
     WHERE tipe='masuk'
-    AND keterangan='warehouse'
+    AND keterangan='Warehouse In'
     AND DATE_FORMAT(tanggal,'%Y-%m')='$bulan'
 "))['total'] ?? 0;
 
@@ -36,31 +36,25 @@ $totalKeluarWarehouse = mysqli_fetch_assoc(mysqli_query($conn,"
 "))['total'] ?? 0;
 
 $topOutProduk = mysqli_query($conn,"
-    SELECT produk.nama_produk, SUM(log_stok.jumlah) AS total
+    SELECT nama_produk, SUM(jumlah) AS total
     FROM log_stok
-    JOIN produk ON log_stok.id_produk = produk.id_produk
-    WHERE log_stok.tipe='keluar'
-    AND DATE_FORMAT(log_stok.tanggal,'%Y-%m')='$bulan'
-    GROUP BY produk.nama_produk
+    WHERE tipe='keluar'
+    AND DATE_FORMAT(tanggal,'%Y-%m')='$bulan'
+    GROUP BY nama_produk
     ORDER BY total DESC
     LIMIT 5
 ");
 
 $warehouseHistory = mysqli_query($conn,"
-    SELECT log_stok.*, produk.nama_produk
+    SELECT *
     FROM log_stok
-    JOIN produk ON log_stok.id_produk = produk.id_produk
-    WHERE keterangan='warehouse'
+    WHERE (keterangan='Warehouse In' OR keterangan='warehouse')
     AND DATE_FORMAT(tanggal,'%Y-%m')='$bulan'
     ORDER BY tanggal DESC
 ");
 
-
-$productForm = mysqli_query($conn, "SELECT id_produk, nama_produk, barcode FROM produk");
-
 $tableQuery = "
     SELECT 
-        p.id_produk,
         p.nama_produk,
         p.stok AS stok_toko,
         g.stok_gudang

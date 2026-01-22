@@ -19,9 +19,8 @@ $penjualan = trim($_POST['penjualan']);
 mysqli_begin_transaction($conn);
 
 try {
-
     $stmt = $conn->prepare(
-        "SELECT id_produk, stok, harga 
+        "SELECT id_produk, stok, harga, nama_produk 
          FROM produk 
          WHERE barcode = ? 
          FOR UPDATE"
@@ -40,7 +39,6 @@ try {
         throw new Exception('Stok habis');
     }
 
-
     $stmt = $conn->prepare(
         "UPDATE produk 
          SET stok = stok - 1 
@@ -53,19 +51,21 @@ try {
         throw new Exception('Gagal update stok');
     }
 
-    $log_id = 'TRX-' . bin2hex(random_bytes(6));
+    $log_id = 'TRX-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
 
     $stmt = $conn->prepare(
-        "INSERT INTO log_stok
-        (id_log, id_produk, tipe, jumlah, keterangan, penjualan, harga)
-        VALUES (?, ?, 'keluar', 1, 'Scan barcode', ?, ?)"
+        "INSERT INTO transaksi
+        (id_log, id_produk, tipe, jumlah, keterangan, penjualan, harga, nama_produk)
+        VALUES (?, ?, 'keluar', 1, 'Scan barcode', ?, ?, ?)"
     );
+    
     $stmt->bind_param(
-        "ssss",
+        "sssss",
         $log_id,
         $product['id_produk'],
         $penjualan,
-        $product['harga']
+        $product['harga'],
+        $product['nama_produk']
     );
     $stmt->execute();
 
@@ -75,7 +75,6 @@ try {
     exit;
 
 } catch (Exception $e) {
-
     mysqli_rollback($conn);
     header("Location: ../product-out.php?out=failure&msg=" . urlencode($e->getMessage()));
     exit;

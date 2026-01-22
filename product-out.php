@@ -17,44 +17,41 @@ if (!in_array($_SESSION['role'], ['admin', 'viewer', 'cashier'])) {
 }
 
 include 'php/conn.php';
+
 $result = mysqli_query($conn,"SELECT * FROM produk ORDER BY created_at DESC");
-$no = 1;
 
 $history_log = mysqli_query($conn,"
-    SELECT log_stok.*, produk.nama_produk
-    FROM log_stok
-    JOIN produk ON log_stok.id_produk = produk.id_produk
-    WHERE 
-        log_stok.tipe = 'keluar'
-        AND DATE(log_stok.tanggal) = CURDATE()
-    ORDER BY log_stok.tanggal DESC
+    SELECT transaksi.*, produk.nama_produk
+    FROM transaksi
+    JOIN produk ON transaksi.id_produk = produk.id_produk
+    WHERE transaksi.tipe = 'keluar'
+    AND DATE(transaksi.tanggal) = CURDATE()
+    ORDER BY transaksi.tanggal DESC
 ");
 
 $whereDate = "";
 if (!empty($_GET['from']) && !empty($_GET['to'])) {
     $from = $_GET['from'] . " 00:00:00";
     $to   = $_GET['to'] . " 23:59:59";
-    $whereDate = "AND log_stok.tanggal BETWEEN '$from' AND '$to'";
+    $whereDate = "AND transaksi.tanggal BETWEEN '$from' AND '$to'";
 }
-
 
 $chart_penjualan = mysqli_query($conn, "
     SELECT penjualan, SUM(jumlah) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar' $whereDate
     GROUP BY penjualan
 ");
 
 $chart_produk = mysqli_query($conn, "
-    SELECT produk.nama_produk, SUM(log_stok.jumlah) AS total
-    FROM log_stok
-    JOIN produk ON log_stok.id_produk = produk.id_produk
-    WHERE log_stok.tipe = 'keluar' $whereDate
+    SELECT produk.nama_produk, SUM(transaksi.jumlah) AS total
+    FROM transaksi
+    JOIN produk ON transaksi.id_produk = produk.id_produk
+    WHERE transaksi.tipe = 'keluar' $whereDate
     GROUP BY produk.nama_produk
 ");
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -215,7 +212,7 @@ $chart_produk = mysqli_query($conn, "
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if(mysqli_num_rows($result) > 0): ?>
+                            <?php $no = 1; if(mysqli_num_rows($result) > 0): ?>
                                 <?php while($row = mysqli_fetch_assoc($result)): ?>
                                 <tr>
                                     <td><?= $no++; ?></td>

@@ -17,7 +17,7 @@ $data = mysqli_fetch_assoc(mysqli_query($conn,"
         l.jumlah,
         l.harga,
         p.nama_produk
-    FROM log_stok l
+    FROM transaksi l
     JOIN produk p ON l.id_produk = p.id_produk
     WHERE l.id_log = '$id'
     AND l.tipe = 'keluar'
@@ -32,8 +32,9 @@ if (isset($_POST['update'])) {
     $harga = (int) $_POST['harga'];
 
     mysqli_query($conn,"
-        UPDATE log_stok 
-        SET harga = $harga
+        UPDATE transaksi 
+        SET harga = $harga,
+        status = '1'
         WHERE id_log = '$id'
     ");
 

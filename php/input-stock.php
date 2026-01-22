@@ -26,6 +26,7 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
 $id_product = $_GET['id'];
+$nama_produk = $row['nama_produk']; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $added_stock = (int) $_POST['stock'];
@@ -39,12 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute()) {
         $history_log = "INSERT INTO log_stok
-                (id_log, id_produk, tipe, jumlah, keterangan) 
-                VALUES (?, ?, 'masuk', ?, 'Add stock')";
-        $id_log = 'UPD -' . bin2hex(random_bytes(6));
+                (id_log, id_produk, nama_produk, tipe, jumlah, keterangan) 
+                VALUES (?, ?, ?, 'masuk', ?, 'Add stock')";
+        
+        $id_log = 'IN-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
 
         $log_stmt = $conn->prepare($history_log);
-        $log_stmt->bind_param("ssi", $id_log, $id_product, $added_stock);
+
+        $log_stmt->bind_param("sssi", $id_log, $id_product, $nama_produk, $added_stock);
         $log_stmt->execute();
         
         header("Location: ../product-in.php?stock_add=success");

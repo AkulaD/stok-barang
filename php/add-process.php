@@ -16,11 +16,11 @@ date_default_timezone_set('Asia/Jakarta');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $product_name = $_POST['product'];
+    $product_name = trim($_POST['product']);
     $stock        = (int) $_POST['stock'];
     $price        = (int) $_POST['price'];
 
-    $id_product = 'PRD' . bin2hex(random_bytes(10));
+    $id_product = 'PRD-' . date('YmdHis') . bin2hex(random_bytes(4));
 
     $query = "SELECT COUNT(*) AS total FROM produk WHERE DATE(created_at) = CURDATE()";
     $result = mysqli_query($conn, $query);
@@ -37,24 +37,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         . date('H')
         . date('i');
 
-    $stmt = $conn->prepare(
-        "INSERT INTO produk (id_produk, barcode, nama_produk, stok, harga)
-         VALUES (?, ?, ?, ?, ?)"
-    );
+    mysqli_begin_transaction($conn);
 
-    $stmt->bind_param(
-        "sssii",
-        $id_product,
-        $barcode,
-        $product_name,
-        $stock,
-        $price
-    );
+    try {
+        $stmt = $conn->prepare(
+            "INSERT INTO produk (id_produk, barcode, nama_produk, stok, harga)
+             VALUES (?, ?, ?, ?, ?)"
+        );
 
-    if ($stmt->execute()) {
+        $stmt->bind_param(
+            "sssii",
+            $id_product,
+            $barcode,
+            $product_name,
+            $stock,
+            $price
+        );
+        $stmt->execute();
+
+        $id_log = 'NEW-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
+        $log_stmt = $conn->prepare(
+            "INSERT INTO log_stok (id_log, id_produk, nama_produk, tipe, jumlah, keterangan, harga) 
+             VALUES (?, ?, ?, 'masuk', ?, 'Produk Baru', ?)"
+        );
+        
+        $log_stmt->bind_param("sssii", $id_log, $id_product, $product_name, $stock, $price);
+        $log_stmt->execute();
+
+        mysqli_commit($conn);
         header("Location: ../product-in.php?add=success");
         exit;
-    } else {
+
+    } catch (Exception $e) {
+        mysqli_rollback($conn);
         header("Location: ../product-in.php?add=failure");
         exit;
     }

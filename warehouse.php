@@ -1,12 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['login'])) {
-    header('location: index.php');
-    exit;
-}
-
-if (!isset($_SESSION['role'])) {
+if (!isset($_SESSION['login']) || !isset($_SESSION['role'])) {
     header('location: index.php');
     exit;
 }
@@ -17,14 +12,21 @@ if (!in_array($_SESSION['role'], ['admin', 'viewer', 'uploader'])) {
 }
 
 include 'php/conn.php';
+date_default_timezone_set('Asia/Jakarta');
 
 $statusG = 1;
 
 if (isset($_POST['submit'])) {
-    $id_produk = $_POST['id_produk'];
+    $id_produk = mysqli_real_escape_string($conn, $_POST['id_produk']);
     $stok = (int) $_POST['stok'];
 
+    $qInfo = mysqli_query($conn, "SELECT nama_produk, harga FROM produk WHERE id_produk = '$id_produk'");
+    $info = mysqli_fetch_assoc($qInfo);
+    $nama_produk = mysqli_real_escape_string($conn, $info['nama_produk']);
+    $harga = $info['harga'];
+
     $cek = mysqli_query($conn, "SELECT id_gudang FROM gudang WHERE id_barang = '$id_produk'");
+    
     if (mysqli_num_rows($cek) > 0) {
         mysqli_query($conn, "
             UPDATE gudang 
@@ -32,20 +34,23 @@ if (isset($_POST['submit'])) {
             WHERE id_barang = '$id_produk'
         ");
     } else {
-        $id_gudang = uniqid('GD-');
+        $id_gudang = 'WHR-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
         mysqli_query($conn, "
-            INSERT INTO gudang (id_gudang, id_barang, stok_gudang, status) 
-            VALUES ('$id_gudang', '$id_produk', $stok, $statusG)
+            INSERT INTO gudang (id_gudang, id_barang, nama_produk, stok_gudang, status) 
+            VALUES ('$id_gudang', '$id_produk', '$nama_produk', $stok, $statusG)
         ");
     }
 
-    $id_log = uniqid('LG-');
+    $id_log = 'LG-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
     mysqli_query($conn, "
         INSERT INTO log_stok 
-        (id_log, id_produk, tipe, jumlah, keterangan) 
+        (id_log, id_produk, nama_produk, tipe, jumlah, keterangan, harga) 
         VALUES 
-        ('$id_log', '$id_produk', 'masuk', $stok, 'warehouse')
+        ('$id_log', '$id_produk', '$nama_produk', 'masuk', $stok, 'Warehouse In', '$harga')
     ");
+    
+    header("Location: warehouse.php?status=success");
+    exit;
 }
 
 $productForm = mysqli_query($conn, "SELECT id_produk, nama_produk, barcode FROM produk");

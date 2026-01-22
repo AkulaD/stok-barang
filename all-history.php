@@ -14,11 +14,11 @@ if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'cashier' && $_SESSIO
 include 'php/conn.php';
 
 $history_log = mysqli_query($conn,"
-    SELECT log_stok.*, produk.nama_produk
-    FROM log_stok
-    JOIN produk ON log_stok.id_produk = produk.id_produk
-    WHERE log_stok.tipe = 'keluar'
-    ORDER BY log_stok.tanggal DESC
+    SELECT transaksi.*, produk.nama_produk
+    FROM transaksi
+    JOIN produk ON transaksi.id_produk = produk.id_produk
+    WHERE transaksi.tipe = 'keluar'
+    ORDER BY transaksi.tanggal DESC
 ");
 
 ?>
@@ -42,7 +42,7 @@ $history_log = mysqli_query($conn,"
                     <tr>
                         <th>No</th>
                         <th>Product Name</th>
-                        <th>Type</th>
+                        <th>ID Transaction</th>
                         <th>Quantity</th>
                         <th>Date</th>
                         <th>Note</th>
@@ -57,13 +57,11 @@ $history_log = mysqli_query($conn,"
                         <tr>
                             <td><?= $no_log++; ?></td>
                             <td><?= htmlspecialchars($row_log['nama_produk']) ?></td>
-                            <td>
-                        <?= $row_log['tipe'] === 'keluar' ? 'OUT' : 'IN'; ?>
-                        </td>
-                        <td><?= $row_log['jumlah'] ?></td>
-                        <td><?= $row_log['tanggal'] ?></td>
-                        <td><?= htmlspecialchars($row_log['keterangan']) ?></td>
-                        <td><?= $row_log['penjualan'] ?></td>
+                            <td><?= $row_log['id_log'] ?></td>
+                            <td><?= $row_log['jumlah'] ?></td>
+                            <td><?= $row_log['tanggal'] ?></td>
+                            <td><?= htmlspecialchars($row_log['keterangan']) ?></td>
+                            <td><?= $row_log['penjualan'] ?></td>
                     </tr>
                     <?php endwhile; ?>
                     <?php else: ?>

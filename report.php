@@ -15,19 +15,19 @@ include 'php/conn.php';
 
 $totalItems = $conn->query("
     SELECT IFNULL(SUM(jumlah),0) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
 ")->fetch_assoc();
 
 $totalRevenue = $conn->query("
     SELECT IFNULL(SUM(jumlah * harga),0) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
 ")->fetch_assoc();
 
 $totalTransaction = $conn->query("
     SELECT COUNT(id_log) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
 ")->fetch_assoc();
 
@@ -37,7 +37,7 @@ $averageRevenue = $totalTransaction['total'] > 0
 
 $hourlyResult = $conn->query("
     SELECT DATE(tanggal) AS tanggal, SUM(jumlah) AS total
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
     GROUP BY DATE(tanggal)
     ORDER BY tanggal
@@ -55,7 +55,7 @@ $shipmentResult = $conn->query("
     SELECT IFNULL(penjualan,'Unknown') AS lokasi,
            SUM(jumlah) AS total_item,
            SUM(jumlah * harga) AS total_revenue
-    FROM log_stok
+    FROM transaksi
     WHERE tipe = 'keluar'
     GROUP BY lokasi
 ");
@@ -75,7 +75,7 @@ $allProductResult = $conn->query("
         p.nama_produk,
         SUM(l.jumlah) AS total,
         SUM(l.jumlah * l.harga) AS revenue
-    FROM log_stok l
+    FROM transaksi l
     JOIN produk p ON l.id_produk = p.id_produk
     WHERE l.tipe = 'keluar'
     GROUP BY l.id_produk
@@ -101,6 +101,7 @@ $allProductResult = $conn->query("
         <ul>
             <li><a href="penjualan.php">Main</a></li>
             <li><a href="mutasi.php">Excel</a></li>
+            <li><a href="edit-transaction.php">Edit</a></li>
             <li><a href="report.php">Report</a></li>
         </ul>
     </section>
