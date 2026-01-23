@@ -17,38 +17,46 @@ date_default_timezone_set('Asia/Jakarta');
 $statusG = 1;
 
 if (isset($_POST['submit'])) {
+    $barcode   = mysqli_real_escape_string($conn, $_POST['barcode']);
     $id_produk = mysqli_real_escape_string($conn, $_POST['id_produk']);
-    $stok = (int) $_POST['stok'];
+    $stok      = (int) $_POST['stok'];
 
     $qInfo = mysqli_query($conn, "SELECT nama_produk, harga FROM produk WHERE id_produk = '$id_produk'");
     $info = mysqli_fetch_assoc($qInfo);
-    $nama_produk = mysqli_real_escape_string($conn, $info['nama_produk']);
-    $harga = $info['harga'];
 
-    $cek = mysqli_query($conn, "SELECT id_gudang FROM gudang WHERE id_barang = '$id_produk'");
-    
-    if (mysqli_num_rows($cek) > 0) {
+    if ($info) {
+        $nama_produk = mysqli_real_escape_string($conn, $info['nama_produk']);
+        $harga = $info['harga'];
+
+        $cek = mysqli_query($conn, "SELECT id_gudang FROM gudang WHERE id_barang = '$id_produk'");
+
+        if (mysqli_num_rows($cek) > 0) {
+            mysqli_query($conn, "
+                UPDATE gudang 
+                SET 
+                    stok_gudang = stok_gudang + $stok,
+                    barcode = '$barcode'
+                WHERE id_barang = '$id_produk'
+            ");
+        } else {
+            $id_gudang = 'WHR-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
+            mysqli_query($conn, "
+                INSERT INTO gudang 
+                (id_gudang, id_barang, nama_produk, barcode, stok_gudang, status) 
+                VALUES 
+                ('$id_gudang', '$id_produk', '$nama_produk', '$barcode', $stok, $statusG)
+            ");
+        }
+
+        $id_log = 'LG-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
         mysqli_query($conn, "
-            UPDATE gudang 
-            SET stok_gudang = stok_gudang + $stok 
-            WHERE id_barang = '$id_produk'
-        ");
-    } else {
-        $id_gudang = 'WHR-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
-        mysqli_query($conn, "
-            INSERT INTO gudang (id_gudang, id_barang, nama_produk, stok_gudang, status) 
-            VALUES ('$id_gudang', '$id_produk', '$nama_produk', $stok, $statusG)
+            INSERT INTO log_stok
+            (id_log, id_produk, nama_produk, tipe, jumlah, keterangan, harga)
+            VALUES
+            ('$id_log', '$id_produk', '$nama_produk', 'masuk', $stok, 'Warehouse In', '$harga')
         ");
     }
 
-    $id_log = 'LG-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
-    mysqli_query($conn, "
-        INSERT INTO log_stok 
-        (id_log, id_produk, nama_produk, tipe, jumlah, keterangan, harga) 
-        VALUES 
-        ('$id_log', '$id_produk', '$nama_produk', 'masuk', $stok, 'Warehouse In', '$harga')
-    ");
-    
     header("Location: warehouse.php?status=success");
     exit;
 }
@@ -158,7 +166,7 @@ $warehouseStock = mysqli_fetch_assoc(
 
         <div class="inp-body">
             <label>Scan Barcode</label>
-            <input type="text" id="barcode" placeholder="Scan barcode here" autocomplete="off">
+            <input type="text" id="barcode" name="barcode" placeholder="Scan barcode here" autocomplete="off">
         </div>
 
         <div class="inp-body">
@@ -220,5 +228,7 @@ $warehouseStock = mysqli_fetch_assoc(
 
 <?php include "partials/warehouse-1.php"; ?>
 </main>
+<?php include 'partials/footer.php'; ?>
+
 </body>
 </html>

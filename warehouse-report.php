@@ -312,5 +312,7 @@ new Chart(document.getElementById('stockCompareChart'), {
 
 
 </main>
+<?php include 'partials/footer.php'; ?>
+
 </body>
 </html>

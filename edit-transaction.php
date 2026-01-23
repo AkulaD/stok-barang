@@ -204,6 +204,9 @@ $historyResult = $conn->query("
                 </button>
             </form>
         </div>
+
+        <?php include "partials/info-penjualan-edit.php"; ?>
     </section>
 </main>
+<?php include 'partials/footer.php'; ?>
 </body>

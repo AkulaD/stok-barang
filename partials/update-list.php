@@ -147,6 +147,12 @@ if (!isset($_SESSION['login'])) {
     </header>
     <main>
         <section>
+            <h1>V2.7A</h1>
+            <p>Jan 23, 2026</p>
+            <p>Perbaikan tampilan dan database.</p>
+        </section>
+
+        <section>
             <h1>V2.7</h1>
             <p>Jan 23, 2026</p>
             <p>Perbaikan terhadap tabel SQL dan perbaikan terhadap bug query dan penambahan fitur Baru.</p>
