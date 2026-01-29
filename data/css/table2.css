@@ -1,0 +1,92 @@
+body {
+    margin: 0;
+    background: #f4f5f7;
+    overflow-x: hidden;
+    font-size: 1rem;
+}
+
+.container-all-history {
+    max-width: 2000px;
+    margin: auto;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+.container-all-history a {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    color: #2f80ed;
+    text-decoration: none;
+}
+
+.container-all-history a:hover {
+    text-decoration: underline;
+}
+
+.container-all-history h2 {
+    margin: 0.5rem 0;
+    font-size: 1.125rem;
+    color: #111;
+}
+
+.container-all-history hr {
+    border: none;
+    border-top: 0.0625rem solid #ddd;
+    margin: 1rem 0;
+}
+
+.table-container {
+    background: #ffffff;
+    border: 0.0625rem solid #ddd;
+    border-radius: 0.625rem;
+    padding: 1.25rem;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 0.875rem;
+}
+
+.table-container th,
+.table-container td {
+    padding: 0.625rem;
+    border: 0.0625rem solid #ddd;
+    text-align: left;
+}
+
+.table-container th {
+    background: #f8f8f8;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.table-container td {
+    font-size: 0.875rem;
+}
+
+.table-container tbody tr:hover {
+    background: #fafafa;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+    .container-all-history {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .container-all-history {
+        padding: 0.75rem;
+    }
+
+    .table-container table {
+        min-width: 48rem;
+    }
+}

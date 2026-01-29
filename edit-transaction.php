@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location:login.php');
+    header('location:index.php');
     exit;
 }
 
@@ -132,6 +132,7 @@ $historyResult = $conn->query("
         <div class="list-card">
             <h2>List Transactions</h2>
             <p>list of transactions whose prices have not been updated</p>
+            <a href="activity-log.php">View History</a>
 
             <form method="get" class="filter-bar">
                 <input type="date" name="start" value="<?= $_GET['start'] ?? '' ?>">

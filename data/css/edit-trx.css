@@ -235,3 +235,13 @@ input[type="checkbox"]:checked {
         padding: 16px;
     }
 }
+
+.list-card a{
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: #2f80ed;
+}
+
+.list-card a:hover {
+    text-decoration: underline;
+}

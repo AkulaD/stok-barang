@@ -2,12 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location: login.php');
+    header('location: index.php');
     exit;
 }
 
 if (!isset($_SESSION['role'])) {
-    header('location: login.php');
+    header('location: index.php');
     exit;
 }
 

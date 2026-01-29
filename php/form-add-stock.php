@@ -2,12 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location: ../login.php');
+    header('location: ../index.php');
     exit;
 }
 
 if (!in_array($_SESSION['role'], ['admin', 'viewer', 'uploader'])) {
-    header('location: product-out.php');
+    header('location: ../product-out.php');
     exit;
 }
 

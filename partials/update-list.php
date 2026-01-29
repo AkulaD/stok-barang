@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header('location: ../login.php');
+    header('location: ../index.php');
     exit;
 }
 ?>
@@ -146,6 +146,12 @@ if (!isset($_SESSION['login'])) {
         <a href="../php/logout.php">Back (log Out)</a>
     </header>
     <main>
+        <section>
+            <h1>V2.8</h1>
+            <p>Jan 29, 2026</p>
+            <p>Penyesuaian interface, penambahan histori untuk perubahan harga dan perbaikan bug login.</p>
+        </section>
+
         <section>
             <h1>V2.7A</h1>
             <p>Jan 23, 2026</p>

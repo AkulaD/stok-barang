@@ -1,9 +1,8 @@
-
 <?php
 session_start();
 
 if (!isset($_SESSION['login']) || !in_array($_SESSION['role'], ['admin','finance'])) {
-    header('location: penjualan.php');
+    header('location: ../penjualan.php');
     exit;
 }
 
@@ -29,12 +28,23 @@ if (!$data) {
 }
 
 if (isset($_POST['update'])) {
-    $harga = (int) $_POST['harga'];
+    $hargaBaru = (int) $_POST['harga'];
+    $hargaLama = (int) $data['harga'];
+    $namaProduk = $data['nama_produk'];
+    $idLog = $data['id_log'];
+    $idHistory = 'HIS -' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
+
+    mysqli_query($conn,"
+        INSERT INTO history_perubahan 
+        (id, id_log, nama_produk, hargaLama, hargaBaru)
+        VALUES 
+        ('$idHistory', '$idLog', '$namaProduk', $hargaLama, $hargaBaru)
+    ");
 
     mysqli_query($conn,"
         UPDATE transaksi 
-        SET harga = $harga,
-        status = '1'
+        SET harga = $hargaBaru,
+            status = '1'
         WHERE id_log = '$id'
     ");
 
