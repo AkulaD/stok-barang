@@ -53,19 +53,19 @@ $hourlyResult = $conn->query("
 
 $historyResult = $conn->query("
     SELECT 
-        l.id_log,
-        l.tanggal,
-        p.nama_produk,
-        l.jumlah,
-        l.harga,
-        (l.jumlah * l.harga) AS total,
-        IFNULL(l.penjualan,'-') AS lokasi
-    FROM transaksi l
-    JOIN produk p ON l.id_produk = p.id_produk
-    WHERE l.tipe = 'keluar'
-    AND DATE(l.tanggal) = CURDATE()
-    ORDER BY l.tanggal DESC
+        id_log,
+        tanggal,
+        nama_produk,
+        jumlah,
+        harga,
+        (jumlah * harga) AS total,
+        IFNULL(penjualan,'-') AS lokasi
+    FROM transaksi
+    WHERE tipe = 'keluar'
+    AND DATE(tanggal) = CURDATE()
+    ORDER BY tanggal DESC
 ");
+
 
 
 $hours = [];
@@ -98,15 +98,15 @@ while ($row = $shipmentResult->fetch_assoc()) {
 
 $allProductResult = $conn->query("
     SELECT 
-        p.nama_produk,
-        SUM(l.jumlah) AS total,
-        SUM(l.jumlah * l.harga) AS revenue
-    FROM transaksi l
-    JOIN produk p ON l.id_produk = p.id_produk
-    WHERE l.tipe = 'keluar'
-    AND DATE(l.tanggal) = CURDATE()
-    GROUP BY l.id_produk
+        nama_produk,
+        SUM(jumlah) AS total,
+        SUM(jumlah * harga) AS revenue
+    FROM transaksi
+    WHERE tipe = 'keluar'
+    AND DATE(tanggal) = CURDATE()
+    GROUP BY nama_produk
 ");
+
 ?>
 
 <!DOCTYPE html>
@@ -115,6 +115,7 @@ $allProductResult = $conn->query("
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="data/js/userM.js" defer></script>
+    <script src="data/js/script.js"></script>
     <link rel="stylesheet" href="data/css/style.css">
     <link rel="stylesheet" href="data/css/penjualan.css">
     <title>Sales - Stock | Stok Barang</title>

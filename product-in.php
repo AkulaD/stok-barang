@@ -37,6 +37,7 @@ $no = 1;
     <link rel="stylesheet" href="data/css/products.css">
     <link rel="stylesheet" href="data/css/style.css">
     <script src="data/js/products.js" defer></script>
+    <script src="data/js/script.js"></script>
 </head>
 <body>
     <?php include 'partials/nav.php'; ?>
@@ -56,7 +57,7 @@ $no = 1;
 
         <section class="head-main">
             <div class="add-product">
-            <h2>Add Product</h2>
+                <h2>Add Product</h2>
                 <form action="php/add-process.php" method="post" class="safe-submit">
                     <div class="form-add">
                         <div class="input-product">
@@ -77,6 +78,7 @@ $no = 1;
                             <input type="number" name="price" required>
                         </div>
                     </div>
+                    <br>
                     <div class="button-submit">
                         <button class="btn-submit" type="submit">Submit</button>
                     </div>
@@ -84,7 +86,7 @@ $no = 1;
             </div>
             <div class="information-list">
                 <h2>Information Products</h2>
-                <div class="flex">
+                <div class="flex-info">
                     <div class="sub-products">
                         <div class="sub-total">
                             <h3>Total Product</h3>
@@ -101,17 +103,16 @@ $no = 1;
                             <canvas id="chartStock" width="300" height="300"></canvas>
                             <div id="stockOverlay"></div>
                         </div>
-                        <!-- JS -->
                         <script>
                             const chartStock = [
                             <?php
-                            $p = [];
+                            $p_data = [];
                             while ($row = mysqli_fetch_assoc($chart_stock)) {
                                 $label = addslashes($row['nama_produk']);
                                 $value = (int)$row['stok'];
-                                $p[] = "{ label: '$label', value: $value }";
+                                $p_data[] = "{ label: '$label', value: $value }";
                             }
-                            echo implode(",", $p);
+                            echo implode(",", $p_data);
                             ?>
                             ];
                         </script>
@@ -119,36 +120,43 @@ $no = 1;
                 </div>
             </div>
         </section>
+
         <section class="add-stock-form">
-            <form action="php/form-add-stock.php" method="post" class="safe-submit">
-                <h2>Add Stock</h2>
-                <div class="form-add-body">
-                    <div class="new-stok">
-                        <div class="qr-code">
-                            <label for="qr-code">QR Code:</label>
-                            <input type="text" name="qr-code" id="qr-code">
-                        </div>
-                        <div class="add-stock">
-                            <label for="stock">Stock:</label>
-                            <input type="number" name="stock" id="stock">
-                        </div>
-                    </div>
+            <h2>Add Stock</h2>
+            <form action="php/form-add-stock.php" method="post" class="safe-submit form-grid-product-in">
+                <div class="field">
+                    <label for="qr_code_input">QR Code:</label>
+                    <input type="text" name="qr-code" id="qr_code_input" autocomplete="off">
+                </div>
+                <div class="field">
+                    <label for="product_name_select">Product Name:</label>
+                    <select name="name" id="product_name_select">
+                        <option value="">-- Select Product --</option>
+                        <?php 
+                        $prod = mysqli_query($conn, "SELECT * FROM produk ORDER BY nama_produk ASC");
+                        while($p = mysqli_fetch_assoc($prod)):
+                        ?>
+                        <option value="<?= $p['id_produk'] ?>" data-qr="<?= $p['barcode'] ?>">
+                            <?= $p['nama_produk'] ?>
+                        </option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="stock">Stock:</label>
+                    <input type="number" name="stock" id="stock">
                 </div>
                 <div class="body-button">
                     <button class="btn-submit" type="submit">Submit</button>
                 </div>
             </form>
         </section>
+
         <section class="product-list">
             <div class="list-body">
                 <h2>Product List</h2>
                 <div class="search-bar">
-                    <input 
-                        type="text" 
-                        id="productSearch" 
-                        placeholder="Search product name..."
-                        autocomplete="off"
-                    >
+                    <input type="text" id="productSearch" placeholder="Search product name..." autocomplete="off">
                 </div>
 
                 <div class="table-container">
@@ -172,25 +180,22 @@ $no = 1;
                                     <td class="t-stock"><?= $row['stok']; ?></td>
                                     <td class="t-istock"><a class="a-submit" href="php/input-stock.php?id=<?= $row['id_produk']; ?>">Add</a></td>
                                     <td class="price">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
-
                                     <td class="t-qr-d">
                                         <a class="a-submit" href="php/barcode.php?code=<?= urlencode($row['barcode']); ?>" target="_blank">
                                             Download QR
                                         </a>
                                     </td>
-
                                     <td class="t-action">
-                                        <a class="a-submit" class="t-edit" href="php/edit-product.php?id=<?= $row['id_produk']; ?>">Edit</a> |
-                                        <a class="a-delete" class="t-delete" href="php/delete.php?id=<?= $row['id_produk']; ?>"
-                                        onclick="return confirm('Delete this product?')">
-                                        Delete
+                                        <a class="a-submit" href="php/edit-product.php?id=<?= $row['id_produk']; ?>">Edit</a> |
+                                        <a class="a-delete" href="php/delete.php?id=<?= $row['id_produk']; ?>" onclick="return confirm('Delete this product?')">
+                                            Delete
                                         </a>
                                     </td>
                                 </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="6" style="text-align:center;">No products found</td>
+                                    <td colspan="7" style="text-align:center;">No products found</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -198,98 +203,10 @@ $no = 1;
                 </div>
             </div>
         </section>
-        <br>    
+        <br>     
         <?php include "partials/info-product-in.php"; ?>
     </main>
     
-<?php include "partials/footer.php" ?>
-
-<script>
-function generateColors(count) {
-    return Array.from({ length: count }, (_, i) =>
-        `hsl(${(360 / count) * i}, 70%, 55%)`
-    );
-}
-
-function drawPie(canvasId, data) {
-    const canvas = document.getElementById(canvasId);
-    const ctx = canvas.getContext('2d');
-
-    const colors = generateColors(data.length);
-    const total = data.reduce((s, d) => s + d.value, 0);
-
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
-    const radius = 120;
-
-    let angle = 0;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    data.forEach((d, i) => {
-        const slice = (d.value / total) * Math.PI * 2;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, radius, angle, angle + slice);
-        ctx.fillStyle = colors[i];
-        ctx.fill();
-        d.color = colors[i];
-        angle += slice;
-    });
-}
-
-function renderOverlayList(data) {
-    const box = document.getElementById('stockOverlay');
-
-    let html = `
-        <div style="
-            width:220px;
-            max-height:220px;
-            overflow-y:auto;
-            background:#fff;
-            border:1px solid #ddd;
-            padding:10px;
-            box-shadow:0 4px 10px rgba(0,0,0,.15);
-            border-radius:6px;
-            font-size:13px
-        ">
-        <strong>List Stok</strong>
-        <ul style="list-style:none;padding:0;margin:8px 0 0 0">
-    `;
-
-    data.forEach(d => {
-        html += `
-            <li style="display:flex;align-items:center;margin-bottom:6px">
-                <span style="
-                    width:12px;
-                    height:12px;
-                    background:${d.color};
-                    display:inline-block;
-                    margin-right:8px;
-                    border-radius:3px
-                "></span>
-                ${d.label} (${d.value})
-            </li>
-        `;
-    });
-
-    html += "</ul></div>";
-    box.innerHTML = html;
-}
-
-drawPie('chartStock', chartStock);
-renderOverlayList(chartStock);
-
-const searchInput = document.getElementById('productSearch');
-const rows = document.querySelectorAll('#productTableBody tr');
-
-searchInput.addEventListener('keyup', () => {
-    const keyword = searchInput.value.toLowerCase();
-
-    rows.forEach(row => {
-        const productName = row.querySelector('.t-name').textContent.toLowerCase();
-        row.style.display = productName.includes(keyword) ? '' : 'none';
-    });
-});
-</script>
+    <?php include "partials/footer.php" ?>
 </body>
 </html>

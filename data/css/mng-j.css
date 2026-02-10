@@ -1,0 +1,215 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #f3f4f6;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    width: 100%;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+    overflow-x: hidden;
+}
+
+.list-card {
+    background: #fff;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    margin-bottom: 25px;
+    overflow: hidden;
+    width: 100%;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #111827;
+}
+
+form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+form input,
+form select {
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    flex: 1 1 200px;
+    min-width: 0;
+    width: 100%;
+}
+
+form input[type="date"] {
+    flex: 1 1 150px;
+}
+
+form select {
+    width: 100%;
+}
+
+.btn-submit {
+    height: 42px;
+    padding: 0 22px;
+    background: #2563eb;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+.table-sales {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+thead th {
+    text-align: left;
+    background: #f3f4f6;
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background: #f9fafb;
+}
+
+.form-table {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.form-table input[type="text"] {
+    flex: 1;
+    min-width: 50px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+.form-table .btn-submit {
+    height: 36px;
+    padding: 0 15px;
+    font-size: 13px;
+    flex: 0 0 auto;
+}
+
+table a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.table-sales{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+.table-sales table{
+    width:max-content;
+    min-width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+thead th,
+tfoot th{
+    text-align:left;
+    background:#f3f4f6;
+    padding:12px;
+    border:1px solid #ddd;
+    border-bottom:1px solid #e5e7eb;
+    color:#111827;
+}
+
+tbody td{
+    padding:12px;
+    border:1px solid #ddd;
+    border-bottom:1px solid #f1f5f9;
+    vertical-align:middle;
+    color:#374151;
+    word-wrap:break-word;
+}
+
+tbody tr:hover{
+    background:#f9fafb;
+}
+
+tfoot th{
+    font-weight:700;
+    background:#f9fafb;
+}
+
+table a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:500;
+}
+
+@media (max-width: 1024px) {
+    form input,
+    form select {
+        flex: 1 1 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+
+    table td{
+        padding:8px 6px;
+        font-size:13px;
+    }
+
+    form {
+        gap: 10px;
+    }
+
+    form input,
+    form select,
+    .btn-submit {
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .form-table {
+        flex-wrap: nowrap;
+    }
+}

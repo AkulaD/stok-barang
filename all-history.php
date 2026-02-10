@@ -14,12 +14,12 @@ if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'cashier' && $_SESSIO
 include 'php/conn.php';
 
 $history_log = mysqli_query($conn,"
-    SELECT transaksi.*, produk.nama_produk
+    SELECT *
     FROM transaksi
-    JOIN produk ON transaksi.id_produk = produk.id_produk
-    WHERE transaksi.tipe = 'keluar'
-    ORDER BY transaksi.tanggal DESC
+    WHERE tipe = 'keluar'
+    ORDER BY tanggal DESC
 ");
+
 
 ?>
 <!DOCTYPE html>
@@ -45,7 +45,7 @@ $history_log = mysqli_query($conn,"
                         <th>Quantity</th>
                         <th>Date</th>
                         <th>Note</th>
-                        <th>Shipment Location</th>
+                        <th>Sales Channel</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -147,6 +147,16 @@ if (!isset($_SESSION['login'])) {
     </header>
     <main>
         <section>
+            <h1>2.9</h1>
+            <p>Feb 11, 2026</p>
+            <p>Perbaikan Bug dan interface product-out dan product-in, dan fitur baru sebagai berikut:</p>
+            <ul>
+                <li>Penambahan fitur management COA</li>
+                <li>Penambahan ledger</li>
+            </ul>
+        </section>
+
+        <section>
             <h1>V2.8</h1>
             <p>Jan 29, 2026</p>
             <p>Penyesuaian interface, penambahan histori untuk perubahan harga dan perbaikan bug login.</p>

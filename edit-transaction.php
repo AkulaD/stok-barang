@@ -46,34 +46,36 @@ $where = [];
 
 if (isset($_GET['status']) && $_GET['status'] !== '') {
     $status = (int) $_GET['status'];
-    $where[] = "t.status = $status";
+    $where[] = "status = $status";
 } else if (!isset($_GET['status'])) {
-    $status = 0;
-    $where[] = "t.status = 0";
+    $where[] = "status = 0";
 }
 
 if (!empty($_GET['start']) && !empty($_GET['end'])) {
     $start = $conn->real_escape_string($_GET['start']);
     $end = $conn->real_escape_string($_GET['end']);
-    $where[] = "DATE(t.tanggal) BETWEEN '$start' AND '$end'";
+    $where[] = "DATE(tanggal) BETWEEN '$start' AND '$end'";
 }
 
 if (!empty($_GET['search'])) {
     $search = $conn->real_escape_string($_GET['search']);
-    $where[] = "(p.nama_produk LIKE '%$search%' OR t.keterangan LIKE '%$search%')";
+    $where[] = "(nama_produk LIKE '%$search%' OR keterangan LIKE '%$search%')";
 }
 
 $whereSQL = $where ? 'AND ' . implode(' AND ', $where) : '';
 
 $historyResult = $conn->query("
-    SELECT t.id_log, t.tanggal, t.harga, t.status,
-           p.nama_produk,
-           t.keterangan AS lokasi
-    FROM transaksi t
-    JOIN produk p ON t.id_produk = p.id_produk
-    WHERE t.tipe = 'keluar'
+    SELECT 
+        id_log,
+        tanggal,
+        harga,
+        status,
+        nama_produk,
+        keterangan AS lokasi
+    FROM transaksi
+    WHERE tipe = 'keluar'
     $whereSQL
-    ORDER BY t.tanggal DESC
+    ORDER BY tanggal DESC
 ");
 
 
@@ -86,6 +88,7 @@ $historyResult = $conn->query("
     <link rel="stylesheet" href="data/css/style.css">
     <link rel="stylesheet" href="data/css/edit-trx.css">
     <script src="data/js/penjualan.js" defer></script>
+    <script src="data/js/script.js"></script>
     <title>Edit Transaction - Sales</title>
 </head>
 <body>

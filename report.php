@@ -72,13 +72,12 @@ while ($row = $shipmentResult->fetch_assoc()) {
 
 $allProductResult = $conn->query("
     SELECT 
-        p.nama_produk,
-        SUM(l.jumlah) AS total,
-        SUM(l.jumlah * l.harga) AS revenue
-    FROM transaksi l
-    JOIN produk p ON l.id_produk = p.id_produk
-    WHERE l.tipe = 'keluar'
-    GROUP BY l.id_produk
+        nama_produk,
+        SUM(jumlah) AS total,
+        SUM(jumlah * harga) AS revenue
+    FROM transaksi
+    WHERE tipe = 'keluar'
+    GROUP BY nama_produk
 ");
 ?>
 
@@ -91,6 +90,7 @@ $allProductResult = $conn->query("
     <link rel="stylesheet" href="data/css/style.css">
     <link rel="stylesheet" href="data/css/penjualan.css">
     <title>Report - Stock | Stok Barang</title>
+    <script src="data/js/script.js"></script>
 </head>
 <body>
 

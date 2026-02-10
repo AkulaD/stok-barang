@@ -7,7 +7,17 @@
                 <li><a href="product-out.php">Product Out</a></li>
                 <li><a href="penjualan.php">Penjualan</a></li>
                 <?php
-                if($_SESSION['role'] === 'admin'){
+                if(isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
+                    echo '
+                    <li class="dropdown">
+                        <a href="#">Management ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="management-report.php">Report</a></li>
+                            <li><a href="management-jurnal.php">Jurnal</a></li>
+                            <li><a href="management-ledger.php">Ledger</a></li>
+                            <li><a href="management-p&l.php">P&L</a></li>
+                        </ul>
+                    </li>';
                     echo '<li><a href="user-management.php">User</a></li>';
                 }
                 ?>
@@ -34,7 +44,17 @@
             <li><a href="penjualan.php">Penjualan</a></li>
 
             <?php
-            if($_SESSION['role'] === 'admin'){
+            if(isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
+                echo '
+                <li class="dropdown">
+                    <a href="#">Management ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="management-report.php">Report</a></li>
+                        <li><a href="management-jurnal.php">Jurnal</a></li>
+                        <li><a href="management-ledger.php">Ledger</a></li>
+                        <li><a href="management-p&l.php">P&L</a></li>
+                    </ul>
+                </li>';
                 echo '<li><a href="user-management.php">User</a></li>';
             }
             ?>

@@ -25,7 +25,7 @@ $result = mysqli_query($conn, "SELECT * FROM user ORDER BY tanggal DESC");
     <link rel="stylesheet" href="data/css/userM.css">
     <link rel="stylesheet" href="data/css/style.css">
     <script src="data/js/userM.js" defer></script>
-    <title>User - Management</title>
+    <title>User - Management | Stok Barang</title>
 </head>
 <body>
 <?php include 'partials/nav.php'; ?>
@@ -159,6 +159,6 @@ $result = mysqli_query($conn, "SELECT * FROM user ORDER BY tanggal DESC");
 </main>
 
 <?php include "partials/footer.php" ?>
-
+<script src="data/js/script.js" defer></script>
 </body>
 </html>

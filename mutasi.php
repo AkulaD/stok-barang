@@ -26,19 +26,18 @@ if ($from && $to) {
 
     $query = $conn->query("
         SELECT
-            t.id_log,
-            t.tanggal,
-            p.nama_produk,
-            t.jumlah,
-            t.harga,
-            (t.jumlah * t.harga) AS revenue,
-            t.penjualan,
-            t.keterangan
-        FROM transaksi t
-        JOIN produk p ON t.id_produk = p.id_produk
-        WHERE t.tipe = 'keluar'
-          AND DATE(t.tanggal) BETWEEN '$from' AND '$to'
-        ORDER BY t.tanggal DESC
+            id_log,
+            tanggal,
+            nama_produk,
+            jumlah,
+            harga,
+            (jumlah * harga) AS revenue,
+            penjualan,
+            keterangan
+        FROM transaksi
+        WHERE tipe = 'keluar'
+        AND DATE(tanggal) BETWEEN '$from' AND '$to'
+        ORDER BY tanggal DESC
     ");
 
     while ($row = $query->fetch_assoc()) {
@@ -73,6 +72,7 @@ if ($from && $to) {
     <link rel="stylesheet" href="data/css/style.css">
     <link rel="stylesheet" href="data/css/mutasi.css">
     <title>Mutation | Stok Barang</title>
+    <script src="data/js/script.js"></script>
 </head>
 <body>
 

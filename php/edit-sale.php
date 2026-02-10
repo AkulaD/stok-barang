@@ -12,18 +12,17 @@ $id = $_GET['id'] ?? '';
 
 $data = mysqli_fetch_assoc(mysqli_query($conn,"
     SELECT 
-        l.id_log,
-        l.jumlah,
-        l.harga,
-        p.nama_produk
-    FROM transaksi l
-    JOIN produk p ON l.id_produk = p.id_produk
-    WHERE l.id_log = '$id'
-    AND l.tipe = 'keluar'
+        id_log,
+        jumlah,
+        harga,
+        nama_produk
+    FROM transaksi
+    WHERE id_log = '$id'
+    AND tipe = 'keluar'
 "));
 
 if (!$data) {
-    header('location: penjualan.php');
+    header('location: ../penjualan.php');
     exit;
 }
 

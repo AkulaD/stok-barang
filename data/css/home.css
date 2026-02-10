@@ -1,347 +1,192 @@
-body{
-    background: #f4f5f7;
+body {
+    overflow-x: hidden;
+    background-color: #f3f4f6;
 }
 
-#loading-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
+main {
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    color: #fff;
-    font-size: 18px;
+    gap: 2rem;
 }
 
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #fff;
-    border-top: 4px solid transparent;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 10px;
+.card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.875rem;
+    padding: 1.375rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+.card h2 {
+    font-size: 1.375rem;
+    margin-bottom: 1rem;
+    color: #111827;
 }
 
-.chart {
-    width: 100% ;
-    max-width: none ;
+.card h3 {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+    color: #111827;
 }
 
-.chart-wrapper {
-    display: flex ;
-    justify-content: space-between;
-}
-
-.chart-box {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 340px;  
-    box-sizing: border-box;
-}
-
-
-.chart-filter form {
+.flex-content {
     display: flex;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 1.5rem;
+    align-items: flex-start;
 }
 
-main{
-    min-height: 100vh;
-    padding: 2rem;
+.left-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.form-out{
-    border: 1px solid #ddd;
-    border-radius: 15px;
+.right-column {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.grid-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    align-items: end;
+}
+
+.form-grid-product-out {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    align-items: end;
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.btn-submit {
+    width: auto;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.field label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.field input,
+.field select {
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    font-size: 0.875rem;
     background-color: #fff;
-    padding: 2rem;;
-    margin-bottom: 2rem;
 }
 
-.form-out h2{
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.inp-body{
-    display: flex;
-    flex-direction: wrap;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 1rem;
-    width: 90%;
-    margin: 0 0.5rem;
-}
-
-.inp-body input{
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-    width:75%;
-}
-
-.inp-body label{
-    font-size: 1.2rem;
-    width: 20%;
-    min-width: max-content;
-}
-
-.inp-body select{
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-    width:75%;
-    margin: 0 0.5rem;
-}
-
-.qr-number{
-    display: flex;
-    justify-content:space-between ;
-}
-
-.submit-body{
-    padding-top: 0.5rem;
-    display: flex;
-    justify-content: end;
-    padding-right: 2rem;
-}
-
-.content-main{
-    display: flex;
-    padding-bottom: 1rem;;
-}
-
-.left-body{
-    width: 60%;
-}
-
-.main-body{
-    width: 40%;
-    border: 1px solid #ddd;
-    padding: 1rem;
-    border-radius: 15px;
-    margin: 0 1rem;
-    background-color: white;
-}
-
-.main-body h2{
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.table-container table{
-    width: 100%;
-}
-
-.table-container table th, .table-container table td{
-    padding: 0.5rem;
-    border-collapse: collapse;
-    text-align: center;
-    font-size: 1rem;
-}
-
-.table-container table td{
-    border-bottom: 1px solid #ccc;
-    padding-top: 1rem;
-}
-
-.chart-wrapper{
-    overflow-x: scroll;
-}
-
-.chart-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.legend-box {
-    width: 200px;
-    max-height: 220px;
-    background: #fff;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-.legend-box h4 {
-    margin: 0 0 8px;
-    font-size: 14px;
-}
-
-.legend-list {
-    max-height: 170px;
+.table-wrap.scrollable {
+    max-height: 400px;
     overflow-y: auto;
+    overflow-x: auto;
 }
 
-.legend-item {
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 0.875rem;
+}
+
+.custom-table th,
+.custom-table td {
+    padding: 0.625rem;
+    border: 0.0625rem solid #ddd;
+    text-align: left;
+}
+
+.custom-table th {
+    position: sticky;
+    top: 0;
+    background: #f8f8f8;
+    font-weight: 600;
+    font-size: 0.875rem;
+    z-index: 5;
+}
+
+.custom-table td {
+    font-size: 0.875rem;
+}
+
+.custom-table tbody tr:hover {
+    background: #fafafa;
+}
+
+canvas {
+    margin: 0.625rem auto;
+    display: block;
+}
+
+#legendPenjualan, #legendProduk {
+    margin-top: 0.75rem;
     display: flex;
-    align-items: center;
-    margin-bottom: 6px;
-    font-size: 13px;
+    flex-direction: column;
+    gap: 0.375rem;
+    font-size: 0.875rem;
 }
 
-.legend-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    margin-right: 8px;
-}
-
-.history-body h2{
-    font-size: 1.5rem;
-}
-
-.history-body a{
+.table-card a{
+    font-size: 0.875rem;
     text-decoration: none;
     color: #2f80ed;
-    display: block;
-    padding: 0.625rem 0.75rem;
-    border-radius: 0.375rem;
-    font-size: 0.975rem;
 }
 
-.history-body a:hover{
+.table-card a:hover {
     text-decoration: underline;
 }
 
-.chart-filter form label{
-    font-size: 1.2rem;
-    margin: 0 0.5rem;
-}
-
-.chart-filter form input{
-    border: 1px solid #ccc;
-    outline: none;
-    background: none;
-    font-family: 1.2rem;
-    margin: 0 0.5rem;
-}
-
-.inp-fil{
-    display: flex;
-    flex-direction: wrap;
-    align-items: center;
-}
-
-.inp-fil input{
-    border: 1px solid #ccc;
-    outline: none;
-    background: none;
-    font-size: 1.2rem;
-    margin: 0 0.5rem;
-    padding: 0.5rem;
-}
-
-@media (max-width: 1024px) {
-
-    .content-main {
+@media (max-width: 1200px) {
+    .flex-content {
         flex-direction: column;
     }
-
-    .left-body,
-    .main-body {
+    .left-column, .right-column {
         width: 100%;
-        margin: 0;
-    }
-
-    .main-body {
-        margin-top: 2rem;
-    }
-
-    .chart-wrapper {
-        flex-direction: column;
-        gap: 2rem;
-    }
-
-    .chart-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .legend-box {
-        width: 100%;
-        max-width: 300px;
-        margin-top: 1rem;
-    }
-
-    canvas {
-        max-width: 100%;
-        height: auto;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
+    .form-grid-product-out {
+        grid-template-columns: 1fr;
+    }
+}
 
-    main {
-        padding: 1rem;
+@media (max-width: 768px) {
+    .grid-charts, .form-grid {
+        grid-template-columns: 1fr;
     }
 
-    .qr-number {
-        flex-direction: column;
-        gap: 1rem;
+    .form-actions {
+        justify-content: stretch;
     }
-
-    .inp-body {
+    
+    .btn-submit {
         width: 100%;
-        margin: 0;
-        flex-direction: column;
-    }
-
-    .inp-body label {
-        width: 100%;
-        margin-bottom: 0.3rem;
-    }
-
-    .inp-body input,
-    .inp-body select {
-        width: 100%;
-        font-size: 1.2rem;
-    }
-
-    .submit-body {
-        justify-content: center;
-        padding-right: 0;
-    }
-
-    .form-out button {
-        width: 100%;
-    }
-
-    .chart-filter form {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .chart-filter form input,
-    .chart-filter form button {
-        width: 100%;
-    }
-
-    .table-container {
-        overflow-x: auto;
-    }
-
-    .table-container table {
-        min-width: 600px;
-    }
-
-    .legend-box {
-        width: 100%;
-        max-width: none;
     }
 }

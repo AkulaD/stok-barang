@@ -5,7 +5,7 @@
             <h4>1.Form Out</h4>
             <p>
                 Bagian ini berfungsi untuk mencatat pengiriman produk keluar dari toko. dimana terdapat 2 form yaitu enter QR code number,
-                dan shipment location. Cara nya adalah ketika ada produk terjual/terkirim maka user bisa memasukkan kode QR code produk dan
+                dan Sales Channel. Cara nya adalah ketika ada produk terjual/terkirim maka user bisa memasukkan kode QR code produk dan
                 lokasi pengiriman produk tersebut. setelah itu user bisa menekan tombol submit untuk menyimpan data tersebut. Nantinya data akan
                 disimpan oleh sistem ke dalam database.
             </p>
