@@ -13,29 +13,38 @@ if ($_SESSION['role'] !== 'admin') {
 
 include 'php/conn.php';
 
-$pendapatan_q = mysqli_query($conn, "
+$rev_q = mysqli_query($conn, "
+    SELECT SUM(j.kredit - j.debit) as total
+    FROM jurnal_detail j
+    JOIN coa c ON j.kode_akun = c.kode_akun
+    WHERE c.tipe_akun = 'Revenue'
+");
+$r = mysqli_fetch_assoc($rev_q);
+$revenue = $r['total'] ?? 0;
+
+$cogs_q = mysqli_query($conn, "
     SELECT SUM(j.debit - j.kredit) as total
     FROM jurnal_detail j
     JOIN coa c ON j.kode_akun = c.kode_akun
-    WHERE c.tipe_akun = 'pendapatan'
+    WHERE c.tipe_akun = 'COGS'
 ");
+$c = mysqli_fetch_assoc($cogs_q);
+$cogs = $c['total'] ?? 0;
 
-$beban_q = mysqli_query($conn, "
+$exp_q = mysqli_query($conn, "
     SELECT SUM(j.debit - j.kredit) as total
     FROM jurnal_detail j
     JOIN coa c ON j.kode_akun = c.kode_akun
-    WHERE c.tipe_akun = 'beban'
+    WHERE c.tipe_akun = 'Expense'
 ");
+$e = mysqli_fetch_assoc($exp_q);
+$expense = $e['total'] ?? 0;
 
-$p = mysqli_fetch_assoc($pendapatan_q);
-$b = mysqli_fetch_assoc($beban_q);
-
-$total_pendapatan = $p['total'] ?? 0;
-$total_beban = $b['total'] ?? 0;
-$laba = $total_pendapatan - $total_beban;
+$gross_profit = $revenue - $cogs;
+$net_profit   = $gross_profit - $expense;
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,45 +55,56 @@ $laba = $total_pendapatan - $total_beban;
 </head>
 <body>
 
-<?php include 'partials/nav.php'; ?>
+    <?php include 'partials/nav.php'; ?>
 
-<main>
-    <div class="list-card">
-        <h2>Laporan Laba Rugi</h2>
-        <br>
-        <div class="table-sales">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Keterangan</th>
-                        <th>Nilai (IDR)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Total Pendapatan</td>
-                        <td><?= number_format($total_pendapatan) ?></td>
-                    </tr>
-                    <tr>
-                        <td>Total Beban</td>
-                        <td><?= number_format($total_beban) ?></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr class="row-total">
-                        <th>Laba / Rugi Bersih</th>
-                        <th><?= number_format($laba) ?></th>
-                    </tr>
-                </tfoot>
-            </table>
+    <main>
+        <div class="main">
+            <div class="list-card">
+                <h2>Laporan Laba Rugi (P&L)</h2>
+                <br>
+                <div class="table-sales">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Keterangan</th>
+                                <th>Nilai (IDR)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Revenue (Pendapatan)</td>
+                                <td><?= number_format($revenue, 0, ',', '.') ?></td>
+                            </tr>
+                            <tr>
+                                <td>COGS (HPP)</td>
+                                <td><?= number_format($cogs, 0, ',', '.') ?></td>
+                            </tr>
+                            <tr style="font-weight:bold; background:#f2f2f2;">
+                                <td>Gross Profit (Laba Kotor)</td>
+                                <td><?= number_format($gross_profit, 0, ',', '.') ?></td>
+                            </tr>
+                            <tr>
+                                <td>Operating Expense (Beban Operasional)</td>
+                                <td><?= number_format($expense, 0, ',', '.') ?></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="row-total" style="font-weight:bold; background:#e7ffe7;">
+                                <th>Net Profit (Laba Bersih)</th>
+                                <th><?= number_format($net_profit, 0, ',', '.') ?></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <br>
+                <a href="php/mng-download.php" class="btn-submit">Download Excel Laporan</a>
+                <br>
+            </div>
+            <?php include 'partials/mng-pnl.php' ?>
         </div>
-        <br>
-        <a href="php/mng-download.php" class="btn-submit">Download Excel Laporan</a>
-        <br>
-    </div>
-    <?php include 'partials/mng-pnl.php' ?>
-</main>
+    </main>
 
-<?php include "partials/footer.php"; ?>
+    <?php include "partials/footer.php"; ?>
+
 </body>
 </html>

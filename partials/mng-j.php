@@ -1,82 +1,67 @@
 <section class="readme">
     <h2>Penjelasan Jurnal Umum</h2>
     <ul>
-
         <li>
-            <h4>1. Input Jurnal</h4>
-            <p>Bagian ini digunakan untuk mencatat transaksi keuangan harian.</p>
+            <h4>1. Mekanisme Input Jurnal</h4>
+            <p>
+                Modul ini digunakan untuk mencatat setiap peristiwa ekonomi perusahaan ke dalam sistem secara kronologis.
+            </p>
             <ul>
-                <li>Wajib mengisi tanggal transaksi.</li>
-                <li>Deskripsi membantu pelacakan transaksi.</li>
-                <li>Satu form mewakili satu transaksi.</li>
+                <li><strong>Tanggal:</strong> Menentukan periode pelaporan transaksi tersebut.</li>
+                <li><strong>Deskripsi:</strong> Keterangan singkat untuk memudahkan audit dan pelacakan di masa depan.</li>
+                <li><strong>Nominal:</strong> Nilai moneter transaksi yang harus bernilai positif.</li>
             </ul>
         </li>
 
         <li>
-            <h4>2. Akun Debit</h4>
-            <p>Akun debit adalah akun yang menerima nilai transaksi.</p>
+            <h4>2. Prinsip Double-Entry (Debit & Kredit)</h4>
+            <p>
+                Setiap transaksi harus melibatkan minimal dua akun untuk menjaga keseimbangan persamaan akuntansi.
+            </p>
             <ul>
-                <li>Kas bertambah dicatat di debit.</li>
-                <li>Perlengkapan bertambah dicatat di debit.</li>
-                <li>Beban dicatat di debit.</li>
+                <li><strong>Akun Debit:</strong> Digunakan untuk mencatat peningkatan aset/beban atau penurunan kewajiban/modal.</li>
+                <li><strong>Akun Kredit:</strong> Digunakan untuk mencatat penurunan aset atau peningkatan kewajiban/modal/pendapatan.</li>
+                <li>Sistem secara otomatis memastikan nilai Debit dan Kredit selalu seimbang (balance).</li>
             </ul>
         </li>
 
         <li>
-            <h4>3. Akun Kredit</h4>
-            <p>Akun kredit adalah akun yang mengeluarkan nilai transaksi.</p>
+            <h4>3. Struktur Data Jurnal</h4>
+            <p>
+                Sistem membagi penyimpanan data jurnal ke dalam dua entitas tabel untuk efisiensi database.
+            </p>
             <ul>
-                <li>Kas berkurang dicatat di kredit.</li>
-                <li>Utang bertambah dicatat di kredit.</li>
-                <li>Pendapatan dicatat di kredit.</li>
+                <li><strong>Jurnal Header:</strong> Menyimpan informasi umum seperti ID unik, tanggal, dan siapa pengguna yang melakukan input.</li>
+                <li><strong>Jurnal Detail:</strong> Menyimpan rincian setiap baris akun yang terlibat beserta nominal debit atau kreditnya.</li>
             </ul>
         </li>
 
         <li>
-            <h4>4. Nominal Transaksi</h4>
-            <p>Nominal adalah jumlah uang yang dicatat.</p>
+            <h4>4. Validasi & Keamanan Transaksi</h4>
+            <p>
+                Sistem melakukan pengecekan otomatis (server-side validation) sebelum data masuk ke database.
+            </p>
             <ul>
-                <li>Harus berupa angka.</li>
-                <li>Debit dan kredit bernilai sama.</li>
-                <li>Jurnal tidak seimbang dianggap tidak valid.</li>
+                <li><strong>Mencegah Duplikasi:</strong> Penggunaan ID Jurnal berbasis timestamp dan random bytes untuk menghindari konflik data.</li>
+                <li><strong>Integritas Akun:</strong> Akun debit dan kredit tidak diperbolehkan menggunakan akun yang sama dalam satu jurnal.</li>
+                <li><strong>Transaction Rollback:</strong> Jika terjadi kegagalan sistem saat menyimpan salah satu baris, maka seluruh transaksi akan dibatalkan otomatis.</li>
             </ul>
         </li>
 
         <li>
-            <h4>5. Penyimpanan Jurnal</h4>
-            <p>Sistem menyimpan jurnal dalam dua bagian.</p>
+            <h4>5. History & Penelusuran</h4>
+            <p>
+                Riwayat transaksi ditampilkan secara terkelompok berdasarkan ID Jurnal untuk memudahkan pembacaan.
+            </p>
             <ul>
-                <li>Jurnal Header menyimpan tanggal, deskripsi, dan user.</li>
-                <li>Jurnal Detail menyimpan akun debit & kredit.</li>
-                <li>ID jurnal dibuat otomatis oleh sistem.</li>
+                <li>Data diurutkan dari transaksi terbaru (descending) untuk mempermudah pengawasan.</li>
+                <li>Nama pengguna (User Input) dicatat untuk keperluan akuntabilitas data.</li>
+                <li>Garis pemisah visual otomatis muncul di antara ID Jurnal yang berbeda pada tabel history.</li>
             </ul>
         </li>
-
-        <li>
-            <h4>6. Validasi Sistem</h4>
-            <p>Sistem melakukan pengecekan sebelum menyimpan.</p>
-            <ul>
-                <li>Akun debit dan kredit tidak boleh sama.</li>
-                <li>Nominal harus diisi.</li>
-                <li>Semua field wajib diisi.</li>
-            </ul>
-        </li>
-
-        <li>
-            <h4>7. History Jurnal</h4>
-            <p>Bagian ini menampilkan seluruh riwayat jurnal yang pernah dicatat.</p>
-            <ul>
-                <li>Menampilkan tanggal dan ID jurnal.</li>
-                <li>Menampilkan user yang menginput.</li>
-                <li>Menampilkan akun, debit, dan kredit.</li>
-                <li>Data diurutkan dari transaksi terbaru.</li>
-            </ul>
-        </li>
-
     </ul>
 
     <div class="readme-box">
-        Jurnal umum adalah dasar seluruh laporan akuntansi. 
-        Data dari sini digunakan untuk buku besar, neraca, dan laporan laba rugi.
+        Penting: Jurnal Umum adalah sumber data utama bagi Buku Besar. Pastikan pemilihan akun sudah sesuai dengan klasifikasi COA agar laporan saldo komulatif di Ledger tetap akurat.
     </div>
 </section>

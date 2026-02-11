@@ -1,64 +1,68 @@
 <section class="readme">
-    <h2>Penjelasan COA</h2>
+    <h2>Penjelasan Chart of Accounts (COA)</h2>
     <ul>
         <li>
-            <h4>1. Input COA</h4>
+            <h4>1. Input Kode Akun</h4>
             <p>
-                Bagian ini digunakan untuk menambahkan akun baru ke dalam Chart of Accounts.
-                Kode akun terdiri dari 3 bagian angka (X.XX.XX) yang mewakili kategori,
-                sub kategori, dan detail akun. Nama akun adalah nama rekeningnya,
-                tipe akun menentukan klasifikasi laporan keuangan,
-                dan saldo awal adalah nilai awal akun saat dibuat.
+                Sistem menggunakan format penomoran bertingkat (X.XX.XX) untuk pengorganisasian data yang sistematis.
             </p>
+            <ul>
+                <li><strong>Bagian 1 (2 digit):</strong> Mewakili kategori utama akun.</li>
+                <li><strong>Bagian 2 (3 digit):</strong> Mewakili sub-kategori atau kelompok akun.</li>
+                <li><strong>Bagian 3 (3 digit):</strong> Mewakili detail spesifik akun tersebut.</li>
+            </ul>
         </li>
 
         <li>
-            <h4>2. Tipe Akun</h4>
+            <h4>2. Klasifikasi Tipe Akun</h4>
             <p>
-                Tipe akun terbagi menjadi Aset, Kewajiban, Ekuitas, Pendapatan, dan Beban.
-                Pengelompokan ini penting karena digunakan dalam laporan keuangan
-                seperti Neraca dan Profit & Loss.
+                Setiap akun harus memiliki tipe yang jelas karena menentukan perlakuan saldo dan posisi di laporan keuangan.
             </p>
+            <ul>
+                <li><strong>Neraca:</strong> Asset (Harta), Liability (Hutang), dan Equity (Modal).</li>
+                <li><strong>Laba Rugi:</strong> Revenue (Pendapatan), COGS (HPP), dan Expense (Beban).</li>
+                <li>Tipe Laba Rugi tidak memiliki saldo awal (otomatis diset ke 0).</li>
+            </ul>
         </li>
 
         <li>
-            <h4>3. Pencarian COA</h4>
+            <h4>3. Manajemen Data & Pencarian</h4>
             <p>
-                Bagian pencarian memungkinkan Anda mencari akun berdasarkan
-                kode atau nama akun. Filter tipe akun membantu menampilkan
-                kategori tertentu saja.
+                Fitur untuk memudahkan pengelolaan ribuan akun dalam satu antarmuka.
             </p>
+            <ul>
+                <li>Pencarian fleksibel berdasarkan kode angka maupun nama akun.</li>
+                <li>Filter kategori untuk menampilkan kelompok akun tertentu saja.</li>
+                <li>Opsi sembunyikan nonaktif untuk membersihkan tampilan dari akun lama.</li>
+            </ul>
         </li>
 
         <li>
-            <h4>4. Sembunyikan Nonaktif</h4>
+            <h4>4. Integrasi Ledger & Transaksi</h4>
             <p>
-                Opsi ini akan menyembunyikan akun yang berstatus nonaktif
-                sehingga hanya akun aktif yang ditampilkan.
+                COA berfungsi sebagai pondasi utama bagi seluruh modul keuangan di dalam sistem.
             </p>
+            <ul>
+                <li>Menjadi referensi utama saat melakukan input Jurnal Umum.</li>
+                <li>Menentukan bagaimana saldo dihitung pada laporan Buku Besar.</li>
+                <li>Akun yang dinonaktifkan tidak akan muncul dalam pilihan input transaksi baru.</li>
+            </ul>
         </li>
 
         <li>
-            <h4>5. Data COA</h4>
+            <h4>5. Status dan Validasi</h4>
             <p>
-                Tabel ini menampilkan seluruh akun yang tersimpan.
-                Anda dapat mengubah nama akun langsung pada tabel,
-                serta mengaktifkan atau menonaktifkan akun.
+                Keamanan data dipastikan melalui validasi sistem saat proses penyimpanan.
             </p>
-        </li>
-
-        <li>
-            <h4>6. Status Akun</h4>
-            <p>
-                Status Aktif berarti akun bisa digunakan dalam transaksi.
-                Status Nonaktif berarti akun disimpan sebagai arsip
-                dan tidak digunakan lagi dalam pencatatan.
-            </p>
+            <ul>
+                <li>Sistem mencegah duplikasi kode akun yang sama.</li>
+                <li>Perubahan nama akun dapat dilakukan langsung pada tabel data.</li>
+                <li>Status nonaktif digunakan untuk arsip tanpa menghapus riwayat transaksi lama.</li>
+            </ul>
         </li>
     </ul>
 
     <div class="readme-box">
-        Halaman COA adalah dasar sistem akuntansi. Semua transaksi
-        keuangan akan mengacu pada daftar akun di halaman ini.
+        Penting: Pastikan struktur pengkodean akun sudah direncanakan dengan matang, karena konsistensi kode akun sangat berpengaruh pada kerapihan laporan keuangan akhir.
     </div>
 </section>

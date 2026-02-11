@@ -15,6 +15,8 @@ include 'php/conn.php';
 
 $info = '';
 
+$allowedTipe = ['Asset', 'Liability', 'Equity', 'Revenue', 'COGS', 'Expense'];
+
 if (isset($_POST['simpan'])) {
 
     $kode_d = preg_replace('/\D/', '', $_POST['kode_d'] ?? '');
@@ -25,37 +27,36 @@ if (isset($_POST['simpan'])) {
     $nama  = trim($_POST['nama'] ?? '');
     $saldo = (int)($_POST['saldo'] ?? 0);
 
-    if ($kode_d == '' || $kode_t == '' || $kode_a == '' || $tipe == '' || $nama == '') {
+    if ($kode_d == '' || $kode_t == '' || $kode_a == '' || $nama == '' || !in_array($tipe, $allowedTipe)) {
         $info = "Form belum lengkap";
     } else {
 
-        if (in_array($tipe, ['pendapatan', 'beban'])) {
+        if (in_array($tipe, ['Revenue', 'Expense', 'COGS'])) {
             $saldo = 0;
         }
 
-        $kd = str_pad($kode_d, 2, '0', STR_PAD_LEFT);
-        $kt = str_pad($kode_t, 3, '0', STR_PAD_LEFT);
-        $ka = str_pad($kode_a, 3, '0', STR_PAD_LEFT);
+        $kode = str_pad($kode_d, 2, '0', STR_PAD_LEFT) . '.'
+              . str_pad($kode_t, 3, '0', STR_PAD_LEFT) . '.'
+              . str_pad($kode_a, 3, '0', STR_PAD_LEFT);
 
-        $kode = "$kd.$kt.$ka";
+        $cek = $conn->prepare("SELECT id_coa FROM coa WHERE kode_akun=?");
+        $cek->bind_param("s", $kode);
+        $cek->execute();
+        $cek->store_result();
 
-        $nama = mysqli_real_escape_string($conn, $nama);
-        $tipe = mysqli_real_escape_string($conn, $tipe);
-
-        $cek = mysqli_query($conn, "SELECT id_coa FROM coa WHERE kode_akun='$kode'");
-
-        if (mysqli_num_rows($cek) > 0) {
+        if ($cek->num_rows > 0) {
             $info = "Kode sudah ada";
         } else {
-
             $id = 'COA-' . date('YmdHis') . '-' . bin2hex(random_bytes(3));
 
-            mysqli_query($conn, "
+            $stmt = $conn->prepare("
                 INSERT INTO coa 
                 (id_coa, kode_akun, nama_akun, tipe_akun, saldo_awal, status, created_at) 
-                VALUES 
-                ('$id', '$kode', '$nama', '$tipe', '$saldo', 1, NOW())
+                VALUES (?, ?, ?, ?, ?, 1, NOW())
             ");
+
+            $stmt->bind_param("ssssi", $id, $kode, $nama, $tipe, $saldo);
+            $stmt->execute();
 
             $info = "Berhasil disimpan";
         }
@@ -63,45 +64,66 @@ if (isset($_POST['simpan'])) {
 }
 
 if (isset($_POST['update'])) {
-    $id = mysqli_real_escape_string($conn, $_POST['id']);
-    $nama = mysqli_real_escape_string($conn, trim($_POST['nama_edit']));
-    mysqli_query($conn, "UPDATE coa SET nama_akun='$nama' WHERE id_coa='$id'");
-    $info = "Berhasil diupdate";
+    $id = $_POST['id'] ?? '';
+    $nama = trim($_POST['nama_edit'] ?? '');
+
+    if ($id != '' && $nama != '') {
+        $stmt = $conn->prepare("UPDATE coa SET nama_akun=? WHERE id_coa=?");
+        $stmt->bind_param("ss", $nama, $id);
+        $stmt->execute();
+        $info = "Berhasil diupdate";
+    }
 }
 
 if (isset($_GET['nonaktif'])) {
-    $id = mysqli_real_escape_string($conn, $_GET['nonaktif']);
-    mysqli_query($conn, "UPDATE coa SET status=0 WHERE id_coa='$id'");
+    $stmt = $conn->prepare("UPDATE coa SET status=0 WHERE id_coa=?");
+    $stmt->bind_param("s", $_GET['nonaktif']);
+    $stmt->execute();
 }
 
 if (isset($_GET['aktif'])) {
-    $id = mysqli_real_escape_string($conn, $_GET['aktif']);
-    mysqli_query($conn, "UPDATE coa SET status=1 WHERE id_coa='$id'");
+    $stmt = $conn->prepare("UPDATE coa SET status=1 WHERE id_coa=?");
+    $stmt->bind_param("s", $_GET['aktif']);
+    $stmt->execute();
 }
 
 $search = trim($_GET['cari'] ?? '');
 $filter = trim($_GET['tipe'] ?? '');
 $hide_nonaktif = $_GET['hide_nonaktif'] ?? '';
 
-$search = mysqli_real_escape_string($conn, $search);
-$filter = mysqli_real_escape_string($conn, $filter);
-
 $where = "WHERE 1=1";
+$params = [];
+$types = "";
 
 if ($search != '') {
-    $where .= " AND (kode_akun LIKE '%$search%' OR nama_akun LIKE '%$search%')";
+    $where .= " AND (kode_akun LIKE ? OR nama_akun LIKE ?)";
+    $like = "%$search%";
+    $params[] = $like;
+    $params[] = $like;
+    $types .= "ss";
 }
 
-if ($filter != '') {
-    $where .= " AND tipe_akun='$filter'";
+if ($filter != '' && in_array($filter, $allowedTipe)) {
+    $where .= " AND tipe_akun=?";
+    $params[] = $filter;
+    $types .= "s";
 }
 
 if ($hide_nonaktif == '1') {
     $where .= " AND status=1";
 }
 
-$data = mysqli_query($conn, "SELECT * FROM coa $where ORDER BY kode_akun ASC");
+$sql = "SELECT * FROM coa $where ORDER BY kode_akun ASC";
+$stmt = $conn->prepare($sql);
+
+if ($types != "") {
+    $stmt->bind_param($types, ...$params);
+}
+
+$stmt->execute();
+$data = $stmt->get_result();
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -123,7 +145,7 @@ $data = mysqli_query($conn, "SELECT * FROM coa $where ORDER BY kode_akun ASC");
                 <h2>Input COA</h2>
 
                 <?php if ($info != ''): ?>
-                    <p><?= $info ?></p>
+                    <p><?= htmlspecialchars($info) ?></p>
                 <?php endif; ?>
 
                 <form method="post">
@@ -132,16 +154,14 @@ $data = mysqli_query($conn, "SELECT * FROM coa $where ORDER BY kode_akun ASC");
                     <input type="text" name="kode_a" id="ka" maxlength="3" pattern="\d{1,3}" required placeholder="XXX">
                     <input type="text" name="nama" required placeholder="Nama Akun">
 
-                    <select name="tipe" required>
+                    <select name="tipe" id="tipe_select" required>
                         <option value="">Tipe</option>
-                        <option value="aset">Aset</option>
-                        <option value="kewajiban">Kewajiban</option>
-                        <option value="ekuitas">Ekuitas</option>
-                        <option value="pendapatan">Pendapatan</option>
-                        <option value="beban">Beban</option>
+                        <?php foreach ($allowedTipe as $t): ?>
+                            <option value="<?= $t ?>"><?= $t ?></option>
+                        <?php endforeach; ?>
                     </select>
 
-                    <input type="number" name="saldo" min="0" step="1" required placeholder="Saldo Awal">
+                    <input type="number" name="saldo" id="saldo_input" min="0" step="1" placeholder="Saldo Awal">
 
                     <button class="btn-submit" name="simpan">Simpan</button>
                 </form>
@@ -151,17 +171,14 @@ $data = mysqli_query($conn, "SELECT * FROM coa $where ORDER BY kode_akun ASC");
 
             <div class="list-card">
                 <h2>Cari COA</h2>
-
                 <form method="get" class="filter-bar">
-                    <input type="text" name="cari" value="<?= htmlspecialchars($search) ?>">
+                    <input type="text" name="cari" value="<?= htmlspecialchars($search) ?>" placeholder="Cari kode/nama...">
 
                     <select name="tipe">
-                        <option value="">Semua</option>
-                        <option value="aset" <?= $filter == 'aset' ? 'selected' : '' ?>>Aset</option>
-                        <option value="kewajiban" <?= $filter == 'kewajiban' ? 'selected' : '' ?>>Kewajiban</option>
-                        <option value="ekuitas" <?= $filter == 'ekuitas' ? 'selected' : '' ?>>Ekuitas</option>
-                        <option value="pendapatan" <?= $filter == 'pendapatan' ? 'selected' : '' ?>>Pendapatan</option>
-                        <option value="beban" <?= $filter == 'beban' ? 'selected' : '' ?>>Beban</option>
+                        <option value="">Semua Tipe</option>
+                        <?php foreach ($allowedTipe as $t): ?>
+                            <option value="<?= $t ?>" <?= $filter == $t ? 'selected' : '' ?>><?= $t ?></option>
+                        <?php endforeach; ?>
                     </select>
 
                     <label>
@@ -178,7 +195,6 @@ $data = mysqli_query($conn, "SELECT * FROM coa $where ORDER BY kode_akun ASC");
             <div class="list-card">
                 <h2>Data COA</h2>
                 <br>
-
                 <div class="table-sales">
                     <table>
                         <thead>
@@ -191,31 +207,25 @@ $data = mysqli_query($conn, "SELECT * FROM coa $where ORDER BY kode_akun ASC");
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            <?php while ($d = mysqli_fetch_assoc($data)):
-                                $status = $d['status'] ?? 1;
-                            ?>
+                            <?php while ($d = $data->fetch_assoc()): $status = $d['status'] ?? 1; ?>
                                 <tr>
-                                    <td><?= $d['kode_akun'] ?></td>
-
+                                    <td><?= htmlspecialchars($d['kode_akun']) ?></td>
                                     <td>
                                         <form method="post" class="form-table">
-                                            <input type="hidden" name="id" value="<?= $d['id_coa'] ?>">
-                                            <input type="text" name="nama_edit" value="<?= $d['nama_akun'] ?>">
+                                            <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_coa']) ?>">
+                                            <input type="text" name="nama_edit" value="<?= htmlspecialchars($d['nama_akun']) ?>" required>
                                             <button class="btn-submit" name="update">Edit</button>
                                         </form>
                                     </td>
-
-                                    <td><?= ucfirst($d['tipe_akun']) ?></td>
+                                    <td><?= htmlspecialchars($d['tipe_akun']) ?></td>
                                     <td>Rp <?= number_format($d['saldo_awal'], 0, ',', '.') ?></td>
                                     <td><?= $status ? 'Aktif' : 'Nonaktif' ?></td>
-
                                     <td>
                                         <?php if ($status): ?>
-                                            <a href="?nonaktif=<?= $d['id_coa'] ?>">Nonaktif</a>
+                                            <a href="?nonaktif=<?= urlencode($d['id_coa']) ?>" onclick="return confirm('Nonaktifkan akun ini?')">Nonaktif</a>
                                         <?php else: ?>
-                                            <a href="?aktif=<?= $d['id_coa'] ?>">Aktif</a>
+                                            <a href="?aktif=<?= urlencode($d['id_coa']) ?>">Aktif</a>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -232,19 +242,32 @@ $data = mysqli_query($conn, "SELECT * FROM coa $where ORDER BY kode_akun ASC");
     <?php include "partials/footer.php" ?>
 
     <script>
-        function pad(el, len) {
-            el.value = el.value.replace(/\D/g, '').padStart(len, '0')
-        }
-        document.getElementById('kd').addEventListener('blur', function() {
-            pad(this, 2)
-        })
-        document.getElementById('kt').addEventListener('blur', function() {
-            pad(this, 3)
-        })
-        document.getElementById('ka').addEventListener('blur', function() {
-            pad(this, 3)
-        })
-    </script>
+        const kd = document.getElementById('kd');
+        const kt = document.getElementById('kt');
+        const ka = document.getElementById('ka');
+        const tipeSelect = document.getElementById('tipe_select');
+        const saldoInput = document.getElementById('saldo_input');
 
+        function pad(el, len) {
+            if (el.value !== "") {
+                el.value = el.value.replace(/\D/g, '').padStart(len, '0');
+            }
+        }
+
+        kd.onblur = () => pad(kd, 2);
+        kt.onblur = () => pad(kt, 3);
+        ka.onblur = () => pad(ka, 3);
+
+        tipeSelect.addEventListener('change', e => {
+            if (['Revenue', 'Expense', 'COGS'].includes(e.target.value)) {
+                saldoInput.value = 0;
+                saldoInput.readOnly = true;
+                saldoInput.style.backgroundColor = "#f0f0f0";
+            } else {
+                saldoInput.readOnly = false;
+                saldoInput.style.backgroundColor = "white";
+            }
+        });
+    </script>
 </body>
 </html>

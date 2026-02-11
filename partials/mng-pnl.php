@@ -1,70 +1,67 @@
 <section class="readme">
-    <h2>Penjelasan Laporan Laba Rugi</h2>
+    <h2>Penjelasan Laporan Laba Rugi (P&L)</h2>
     <ul>
-
         <li>
-            <h4>1. Tujuan Laporan</h4>
+            <h4>1. Konsep Dasar P&L</h4>
             <p>
-                Laporan laba rugi digunakan untuk mengetahui hasil usaha dalam periode tertentu.
+                Laporan Profit and Loss (P&L) menyajikan ringkasan pendapatan dan biaya untuk mengukur kinerja keuangan perusahaan.
             </p>
             <ul>
-                <li>Menunjukkan apakah bisnis untung atau rugi.</li>
-                <li>Menjadi dasar evaluasi kinerja usaha.</li>
-                <li>Membantu pengambilan keputusan.</li>
+                <li><strong>Profitabilitas:</strong> Menentukan apakah bisnis menghasilkan keuntungan atau kerugian bersih.</li>
+                <li><strong>Efisiensi:</strong> Melihat seberapa besar margin yang tersisa setelah menutupi biaya produksi.</li>
+                <li><strong>Periode:</strong> Data bersifat akumulatif dari seluruh transaksi yang tercatat di Jurnal.</li>
             </ul>
         </li>
 
         <li>
-            <h4>2. Total Pendapatan</h4>
+            <h4>2. Pendapatan & HPP (Gross Profit)</h4>
             <p>
-                Bagian ini menampilkan seluruh pendapatan yang diperoleh.
+                Tahap pertama perhitungan untuk mengetahui keuntungan langsung dari penjualan barang atau jasa.
             </p>
             <ul>
-                <li>Berasal dari akun tipe pendapatan.</li>
-                <li>Dihitung dari transaksi jurnal.</li>
-                <li>Semakin besar nilainya semakin baik.</li>
+                <li><strong>Revenue:</strong> Total nilai kredit dikurangi debit pada akun bertipe 'Revenue'.</li>
+                <li><strong>COGS (HPP):</strong> Beban pokok yang dikeluarkan langsung untuk barang yang terjual.</li>
+                <li><strong>Gross Profit:</strong> Hasil dari Pendapatan dikurangi HPP sebelum dipotong biaya operasional.</li>
             </ul>
         </li>
 
         <li>
-            <h4>3. Total Beban</h4>
+            <h4>3. Beban Operasional & Laba Bersih</h4>
             <p>
-                Bagian ini menampilkan seluruh biaya yang dikeluarkan.
+                Tahap akhir perhitungan yang mempertimbangkan biaya pendukung jalannya bisnis.
             </p>
             <ul>
-                <li>Berasal dari akun tipe beban.</li>
-                <li>Mencakup biaya operasional.</li>
-                <li>Perlu dikontrol agar tidak terlalu besar.</li>
+                <li><strong>Operating Expense:</strong> Mencakup biaya seperti gaji, sewa, listrik, dan biaya admin lainnya.</li>
+                <li><strong>Net Profit:</strong> Keuntungan murni yang siap digunakan atau diinvestasikan kembali (Gross Profit - Expense).</li>
+                <li>Jika Net Profit bernilai negatif, sistem akan menampilkannya sebagai indikasi kerugian.</li>
             </ul>
         </li>
 
         <li>
-            <h4>4. Laba / Rugi Bersih</h4>
+            <h4>4. Integritas Sumber Data</h4>
             <p>
-                Merupakan hasil akhir perhitungan.
+                Laporan ini tidak berdiri sendiri, melainkan hasil sintesa dari modul-modul sebelumnya.
             </p>
             <ul>
-                <li>Laba = Pendapatan - Beban.</li>
-                <li>Jika negatif berarti rugi.</li>
-                <li>Menunjukkan performa bisnis.</li>
+                <li><strong>Validasi COA:</strong> Hanya akun dengan tipe Revenue, COGS, dan Expense yang masuk ke perhitungan ini.</li>
+                <li><strong>Akurasi Jurnal:</strong> Setiap saldo diambil dari nilai riil yang diinput pada Jurnal Umum.</li>
+                <li><strong>Real-time:</strong> Angka akan berubah secara otomatis setiap kali ada transaksi jurnal baru yang disimpan.</li>
             </ul>
         </li>
 
         <li>
-            <h4>5. Sumber Data</h4>
+            <h4>5. Pelaporan & Analisis</h4>
             <p>
-                Semua nilai berasal dari jurnal umum.
+                Fasilitas tambahan untuk kebutuhan dokumentasi dan audit eksternal.
             </p>
             <ul>
-                <li>Data diambil dari jurnal_detail.</li>
-                <li>Dikelompokkan berdasarkan tipe akun COA.</li>
-                <li>Akurasi jurnal sangat penting.</li>
+                <li><strong>Export Excel:</strong> Memungkinkan data laporan diunduh untuk diolah lebih lanjut atau dicetak.</li>
+                <li><strong>Evaluasi:</strong> Digunakan manajemen untuk menentukan strategi efisiensi biaya pada periode berikutnya.</li>
             </ul>
         </li>
-
     </ul>
 
     <div class="readme-box">
-        Laporan laba rugi membantu memantau kesehatan bisnis. Pastikan jurnal dicatat dengan benar agar hasil laporan akurat.
+        Catatan: Pastikan semua akun biaya dikategorikan dengan benar sebagai 'COGS' atau 'Expense' di COA agar perhitungan Laba Kotor (Gross Profit) tidak tertukar dengan Laba Bersih.
     </div>
 </section>

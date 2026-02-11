@@ -1,75 +1,95 @@
-body{
-    background:#f3f4f6;
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    overflow-x:hidden;
+body {
+    background: #f8f9fa;
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #1f2937;
 }
 
-main{
-    max-width:1400px;
-    margin:40px auto;
-    padding:0 20px;
-    overflow-x:hidden;
+main {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-h2{
-    font-size:20px;
-    margin-bottom:15px;
-    color:#111827;
+.list-card {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f3f4f6;
+    margin-bottom: 25px;
 }
 
-.table-container{
-    background:#fff;
-    padding:22px;
-    border-radius:14px;
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-    overflow:hidden;
+h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #111827;
 }
 
-.table-container table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:14px;
-    table-layout:fixed;
+.table-sales {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-thead th{
-    text-align:left;
-    background:#f3f4f6;
-    padding:12px;
-    border:1px solid #ddd;
-    color:#111827;
+table {
+    width: 100%;
+    min-width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
 }
 
-tbody td{
-    padding:12px;
-    border:1px solid #ddd;
-    vertical-align:middle;
-    color:#374151;
-    word-wrap:break-word;
+thead th {
+    text-align: left;
+    background: #f9fafb;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    color: #4b5563;
+    font-weight: 600;
 }
 
-tbody tr:hover{
-    background:#f9fafb;
+tbody td {
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    vertical-align: middle;
+    color: #374151;
+    word-wrap: break-word;
 }
 
-.negative-balance{
-    color:#dc2626;
-    font-weight:600;
+tbody tr:hover {
+    background: #f9fafb;
 }
 
-@media(max-width:768px){
-    .table-container{
-        padding:12px;
-        overflow-x:auto;
+.account-group-header td {
+    background-color: #f3f4f6 !important;
+    color: #111827;
+    font-weight: 700;
+    border-left: 4px solid #2563eb;
+}
+
+.account-group-header small {
+    color: #6b7280;
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+    main {
+        margin: 20px auto;
+        padding: 0 10px;
     }
 
-    table{
-        min-width:600px;
+    .list-card {
+        padding: 16px;
     }
 
-    table td{
-        padding:8px 6px;
-        font-size:13px;
+    table {
+        min-width: 750px;
+    }
+
+    tbody td, thead th {
+        padding: 10px 8px;
+        font-size: 13px;
     }
 }
