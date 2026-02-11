@@ -12,6 +12,19 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
 
 $spreadsheet = new Spreadsheet();
 
+function getBulanIndo($bulan) {
+    $list = [
+        '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
+        '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
+        '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+    ];
+    return $list[$bulan] ?? $bulan;
+}
+
+$tgl_cetak = date('d/m/Y');
+$nama_bulan = getBulanIndo(date('m'));
+$file_name_format = "Laporan Akuntansi - " . date('d') . " " . $nama_bulan . " " . date('Y');
+
 $styleTitle = [
     'font' => ['bold' => true, 'size' => 16, 'color' => ['rgb' => 'FFFFFF']],
     'alignment' => ['horizontal' => 'center'],
@@ -34,7 +47,9 @@ $styleHeader = [
 ];
 
 $styleMoney = [
-    'numberFormat' => ['formatCode' => '#,##0']
+    'numberFormat' => [
+        'formatCode' => '_-[$Rp-421]* #,##0_-;_-[$Rp-421]* (#,##0)_-;_-[$Rp-421]* "-"_-;_-@_-'
+    ]
 ];
 
 /* ==========================================
@@ -57,6 +72,9 @@ $sheet0->mergeCells('A1:B1');
 $sheet0->setCellValue('A1', 'LAPORAN LABA RUGI');
 $sheet0->getStyle('A1')->applyFromArray($styleTitle);
 
+$sheet0->setCellValue('A2', "Dicetak Tanggal : $tgl_cetak");
+$sheet0->getStyle('A2')->getFont()->setItalic(true);
+
 $sheet0->fromArray([
     ['Keterangan', 'Nilai (IDR)'],
     ['Total Revenue (Pendapatan)', (int)$revenue],
@@ -64,14 +82,14 @@ $sheet0->fromArray([
     ['GROSS PROFIT', (int)$gross_profit],
     ['Total Operating Expense (Beban)', (int)$expense],
     ['NET PROFIT', (int)$net_profit]
-], NULL, 'A3');
+], NULL, 'A4');
 
-$sheet0->getStyle('A3:B3')->applyFromArray($styleHeader);
-$sheet0->getStyle('B4:B8')->applyFromArray($styleMoney);
-$sheet0->getStyle('A6:B6')->getFont()->setBold(true);
-$sheet0->getStyle('A8:B8')->getFont()->setBold(true);
+$sheet0->getStyle('A4:B4')->applyFromArray($styleHeader);
+$sheet0->getStyle('B5:B9')->applyFromArray($styleMoney);
+$sheet0->getStyle('A7:B7')->getFont()->setBold(true);
+$sheet0->getStyle('A9:B9')->getFont()->setBold(true);
 $sheet0->getColumnDimension('A')->setWidth(35);
-$sheet0->getColumnDimension('B')->setWidth(20);
+$sheet0->getColumnDimension('B')->setWidth(25);
 
 /* ==========================================
    SHEET 2: HISTORY JURNAL
@@ -90,10 +108,12 @@ $sheet1->mergeCells('A1:H1');
 $sheet1->setCellValue('A1', 'HISTORY JURNAL UMUM');
 $sheet1->getStyle('A1')->applyFromArray($styleTitle);
 
-$sheet1->fromArray(['Tanggal', 'ID Jurnal', 'Deskripsi', 'User Input', 'Kode Akun', 'Nama Akun', 'Debit', 'Kredit'], NULL, 'A3');
-$sheet1->getStyle('A3:H3')->applyFromArray($styleHeader);
+$sheet1->setCellValue('A2', "Dicetak Tanggal : $tgl_cetak");
 
-$r = 4;
+$sheet1->fromArray(['Tanggal', 'ID Jurnal', 'Deskripsi', 'User Input', 'Kode Akun', 'Nama Akun', 'Debit', 'Kredit'], NULL, 'A4');
+$sheet1->getStyle('A4:H4')->applyFromArray($styleHeader);
+
+$r = 5;
 while ($d = mysqli_fetch_assoc($history)) {
     $sheet1->fromArray([
         $d['tanggal'], $d['id_jurnal'], $d['deskripsi'], $d['user_input'],
@@ -101,7 +121,7 @@ while ($d = mysqli_fetch_assoc($history)) {
     ], NULL, "A$r");
     $r++;
 }
-$sheet1->getStyle("G4:H$r")->applyFromArray($styleMoney);
+$sheet1->getStyle("G5:H$r")->applyFromArray($styleMoney);
 foreach (range('A', 'H') as $col) $sheet1->getColumnDimension($col)->setAutoSize(true);
 
 /* ==========================================
@@ -122,10 +142,12 @@ $sheet2->mergeCells('A1:F1');
 $sheet2->setCellValue('A1', 'BUKU BESAR (GENERAL LEDGER)');
 $sheet2->getStyle('A1')->applyFromArray($styleTitle);
 
-$sheet2->fromArray(['Tanggal', 'Kode Akun', 'Nama Akun', 'Debit', 'Kredit', 'Balance'], NULL, 'A3');
-$sheet2->getStyle('A3:F3')->applyFromArray($styleHeader);
+$sheet2->setCellValue('A2', "Dicetak Tanggal : $tgl_cetak");
 
-$r = 4;
+$sheet2->fromArray(['Tanggal', 'Kode Akun', 'Nama Akun', 'Debit', 'Kredit', 'Balance'], NULL, 'A4');
+$sheet2->getStyle('A4:F4')->applyFromArray($styleHeader);
+
+$r = 5;
 $last_acc = '';
 $balance = 0;
 while ($l = mysqli_fetch_assoc($ledger_q)) {
@@ -146,13 +168,13 @@ while ($l = mysqli_fetch_assoc($ledger_q)) {
     ], NULL, "A$r");
     $r++;
 }
-$sheet2->getStyle("D4:F$r")->applyFromArray($styleMoney);
+$sheet2->getStyle("D5:F$r")->applyFromArray($styleMoney);
 foreach (range('A', 'F') as $col) $sheet2->getColumnDimension($col)->setAutoSize(true);
 
 /* ==========================================
    SHEET 4: DATA COA
    ========================================== */
-$coa_q = mysqli_query($conn, "SELECT kode_akun, nama_akun, tipe_akun, saldo_awal, status FROM coa ORDER BY kode_akun ASC");
+$coa_q = mysqli_query($conn, "SELECT kode_akun, nama_akun, tipe_akun, `group`, status FROM coa ORDER BY kode_akun ASC");
 
 $sheet3 = $spreadsheet->createSheet();
 $sheet3->setTitle('Data COA');
@@ -161,25 +183,23 @@ $sheet3->mergeCells('A1:E1');
 $sheet3->setCellValue('A1', 'CHART OF ACCOUNTS');
 $sheet3->getStyle('A1')->applyFromArray($styleTitle);
 
-$sheet3->fromArray(['Kode Akun', 'Nama Akun', 'Tipe', 'Saldo Awal', 'Status'], NULL, 'A3');
-$sheet3->getStyle('A3:E3')->applyFromArray($styleHeader);
+$sheet3->setCellValue('A2', "Dicetak Tanggal : $tgl_cetak");
 
-$r = 4;
+$sheet3->fromArray(['Kode Akun', 'Nama Akun', 'Tipe', 'Grup Akun', 'Status'], NULL, 'A4');
+$sheet3->getStyle('A4:E4')->applyFromArray($styleHeader);
+
+$r = 5;
 while ($c = mysqli_fetch_assoc($coa_q)) {
     $sheet3->fromArray([
         $c['kode_akun'], $c['nama_akun'], $c['tipe_akun'], 
-        (int)$c['saldo_awal'], ($c['status'] ? 'Aktif' : 'Nonaktif')
+        $c['group'], ($c['status'] ? 'Aktif' : 'Nonaktif')
     ], NULL, "A$r");
     $r++;
 }
-$sheet3->getStyle("D4:D$r")->applyFromArray($styleMoney);
 foreach (range('A', 'E') as $col) $sheet3->getColumnDimension($col)->setAutoSize(true);
 
-/* ==========================================
-   OUTPUT DOWNLOAD
-   ========================================== */
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="Laporan_Akuntansi_Lengkap_' . date('Ymd_His') . '.xlsx"');
+header('Content-Disposition: attachment;filename="' . $file_name_format . '.xlsx"');
 header('Cache-Control: max-age=0');
 
 $writer = new Xlsx($spreadsheet);

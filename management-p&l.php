@@ -73,25 +73,25 @@ $net_profit   = $gross_profit - $expense;
                         <tbody>
                             <tr>
                                 <td>Revenue (Pendapatan)</td>
-                                <td><?= number_format($revenue, 0, ',', '.') ?></td>
+                                <td>Rp <?= number_format($revenue, 0, ',', '.') ?></td>
                             </tr>
                             <tr>
                                 <td>COGS (HPP)</td>
-                                <td><?= number_format($cogs, 0, ',', '.') ?></td>
+                                <td>Rp <?= number_format($cogs, 0, ',', '.') ?></td>
                             </tr>
                             <tr style="font-weight:bold; background:#f2f2f2;">
                                 <td>Gross Profit (Laba Kotor)</td>
-                                <td><?= number_format($gross_profit, 0, ',', '.') ?></td>
+                                <td>Rp <?= number_format($gross_profit, 0, ',', '.') ?></td>
                             </tr>
                             <tr>
                                 <td>Operating Expense (Beban Operasional)</td>
-                                <td><?= number_format($expense, 0, ',', '.') ?></td>
+                                <td>Rp <?= number_format($expense, 0, ',', '.') ?></td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr class="row-total" style="font-weight:bold; background:#e7ffe7;">
                                 <th>Net Profit (Laba Bersih)</th>
-                                <th><?= number_format($net_profit, 0, ',', '.') ?></th>
+                                <th>Rp <?= number_format($net_profit, 0, ',', '.') ?></th>
                             </tr>
                         </tfoot>
                     </table>

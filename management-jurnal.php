@@ -23,7 +23,9 @@ if (isset($_POST['simpan'])) {
     $deskripsi = trim($_POST['deskripsi'] ?? '');
     $debit = $_POST['akun_debit'] ?? '';
     $kredit = $_POST['akun_kredit'] ?? '';
-    $nominal = (int)($_POST['nominal'] ?? 0);
+    
+    $nominal_raw = preg_replace('/\D/', '', $_POST['nominal'] ?? '0');
+    $nominal = (int)$nominal_raw;
 
     if (!$tanggal || !$deskripsi || !$debit || !$kredit || $nominal <= 0) {
         $info = "Data tidak valid";
@@ -132,7 +134,7 @@ $history = mysqli_query($conn, "
                         <?php endwhile; ?>
                     </select>
 
-                    <input type="number" name="nominal" placeholder="Nominal (Rp)" min="1" required>
+                    <input type="text" name="nominal" id="nominal" placeholder="Nominal (Rp)" required>
 
                     <button class="btn-submit" name="simpan" type="submit">Simpan Jurnal</button>
                 </form>
@@ -168,8 +170,8 @@ $history = mysqli_query($conn, "
                                     <td><?= ($last_id != $h['id_jurnal']) ? htmlspecialchars($h['user_input']) : '' ?></td>
                                     <td><?= $h['kode_akun'] ?></td>
                                     <td><?= htmlspecialchars($h['nama_akun']) ?></td>
-                                    <td><?= number_format($h['debit'], 0, ',', '.') ?></td>
-                                    <td><?= number_format($h['kredit'], 0, ',', '.') ?></td>
+                                    <td>Rp <?= number_format($h['debit'], 0, ',', '.') ?></td>
+                                    <td>Rp <?= number_format($h['kredit'], 0, ',', '.') ?></td>
                                 </tr>
                             <?php 
                                 $last_id = $h['id_jurnal'];
@@ -185,6 +187,20 @@ $history = mysqli_query($conn, "
     </main>
 
     <?php include "partials/footer.php"; ?>
+
+    <script>
+        const nominalInput = document.getElementById('nominal');
+
+        nominalInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            
+            if (value !== "") {
+                this.value = new Intl.NumberFormat('id-ID').format(value);
+            } else {
+                this.value = "";
+            }
+        });
+    </script>
 
 </body>
 </html>

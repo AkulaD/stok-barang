@@ -45,7 +45,7 @@ $last_account = null;
 
     <?php include 'partials/nav.php'; ?>
 
-<main>
+    <main>
         <div class="list-card">
             <h2>General Ledger</h2>
             
@@ -91,10 +91,10 @@ $last_account = null;
                                 <tr>
                                     <td><?= date('d/m/Y', strtotime($d['tanggal'])) ?></td>
                                     <td><?= htmlspecialchars($d['deskripsi']) ?></td>
-                                    <td><?= number_format($d['debit'], 0, ',', '.') ?></td>
-                                    <td><?= number_format($d['kredit'], 0, ',', '.') ?></td>
+                                    <td>Rp <?= number_format($d['debit'], 0, ',', '.') ?></td>
+                                    <td>Rp <?= number_format($d['kredit'], 0, ',', '.') ?></td>
                                     <td style="font-weight: bold; <?= $color_balance ?>">
-                                        <?= number_format($running_balance, 0, ',', '.') ?>
+                                        Rp <?= number_format($running_balance, 0, ',', '.') ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

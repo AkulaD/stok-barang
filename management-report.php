@@ -25,15 +25,11 @@ if (isset($_POST['simpan'])) {
 
     $tipe  = $_POST['tipe'] ?? '';
     $nama  = trim($_POST['nama'] ?? '');
-    $saldo = (int)($_POST['saldo'] ?? 0);
+    $group = trim($_POST['group'] ?? '');
 
-    if ($kode_d == '' || $kode_t == '' || $kode_a == '' || $nama == '' || !in_array($tipe, $allowedTipe)) {
+    if ($kode_d == '' || $kode_t == '' || $kode_a == '' || $nama == '' || $group == '' || !in_array($tipe, $allowedTipe)) {
         $info = "Form belum lengkap";
     } else {
-
-        if (in_array($tipe, ['Revenue', 'Expense', 'COGS'])) {
-            $saldo = 0;
-        }
 
         $kode = str_pad($kode_d, 2, '0', STR_PAD_LEFT) . '.'
               . str_pad($kode_t, 3, '0', STR_PAD_LEFT) . '.'
@@ -51,11 +47,11 @@ if (isset($_POST['simpan'])) {
 
             $stmt = $conn->prepare("
                 INSERT INTO coa 
-                (id_coa, kode_akun, nama_akun, tipe_akun, saldo_awal, status, created_at) 
+                (id_coa, kode_akun, nama_akun, tipe_akun, `group`, status, created_at) 
                 VALUES (?, ?, ?, ?, ?, 1, NOW())
             ");
 
-            $stmt->bind_param("ssssi", $id, $kode, $nama, $tipe, $saldo);
+            $stmt->bind_param("sssss", $id, $kode, $nama, $tipe, $group);
             $stmt->execute();
 
             $info = "Berhasil disimpan";
@@ -66,10 +62,11 @@ if (isset($_POST['simpan'])) {
 if (isset($_POST['update'])) {
     $id = $_POST['id'] ?? '';
     $nama = trim($_POST['nama_edit'] ?? '');
+    $group = trim($_POST['group_edit'] ?? '');
 
-    if ($id != '' && $nama != '') {
-        $stmt = $conn->prepare("UPDATE coa SET nama_akun=? WHERE id_coa=?");
-        $stmt->bind_param("ss", $nama, $id);
+    if ($id != '' && $nama != '' && $group != '') {
+        $stmt = $conn->prepare("UPDATE coa SET nama_akun=?, `group`=? WHERE id_coa=?");
+        $stmt->bind_param("sss", $nama, $group, $id);
         $stmt->execute();
         $info = "Berhasil diupdate";
     }
@@ -96,11 +93,12 @@ $params = [];
 $types = "";
 
 if ($search != '') {
-    $where .= " AND (kode_akun LIKE ? OR nama_akun LIKE ?)";
+    $where .= " AND (kode_akun LIKE ? OR nama_akun LIKE ? OR `group` LIKE ?)";
     $like = "%$search%";
     $params[] = $like;
     $params[] = $like;
-    $types .= "ss";
+    $params[] = $like;
+    $types .= "sss";
 }
 
 if ($filter != '' && in_array($filter, $allowedTipe)) {
@@ -145,7 +143,7 @@ $data = $stmt->get_result();
                 <h2>Input COA</h2>
 
                 <?php if ($info != ''): ?>
-                    <p><?= htmlspecialchars($info) ?></p>
+                    <p><strong><?= htmlspecialchars($info) ?></strong></p>
                 <?php endif; ?>
 
                 <form method="post">
@@ -153,15 +151,14 @@ $data = $stmt->get_result();
                     <input type="text" name="kode_t" id="kt" maxlength="3" pattern="\d{1,3}" required placeholder="XXX">
                     <input type="text" name="kode_a" id="ka" maxlength="3" pattern="\d{1,3}" required placeholder="XXX">
                     <input type="text" name="nama" required placeholder="Nama Akun">
+                    <input type="text" name="group" required placeholder="Grup (Contoh: Kas & Bank)">
 
-                    <select name="tipe" id="tipe_select" required>
+                    <select name="tipe" required>
                         <option value="">Tipe</option>
                         <?php foreach ($allowedTipe as $t): ?>
                             <option value="<?= $t ?>"><?= $t ?></option>
                         <?php endforeach; ?>
                     </select>
-
-                    <input type="number" name="saldo" id="saldo_input" min="0" step="1" placeholder="Saldo Awal">
 
                     <button class="btn-submit" name="simpan">Simpan</button>
                 </form>
@@ -172,7 +169,7 @@ $data = $stmt->get_result();
             <div class="list-card">
                 <h2>Cari COA</h2>
                 <form method="get" class="filter-bar">
-                    <input type="text" name="cari" value="<?= htmlspecialchars($search) ?>" placeholder="Cari kode/nama...">
+                    <input type="text" name="cari" value="<?= htmlspecialchars($search) ?>" placeholder="Cari kode/nama/grup...">
 
                     <select name="tipe">
                         <option value="">Semua Tipe</option>
@@ -200,9 +197,8 @@ $data = $stmt->get_result();
                         <thead>
                             <tr>
                                 <th>Kode</th>
-                                <th>Nama</th>
+                                <th>Nama & Grup Akun</th>
                                 <th>Tipe</th>
-                                <th>Saldo</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -214,12 +210,12 @@ $data = $stmt->get_result();
                                     <td>
                                         <form method="post" class="form-table">
                                             <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_coa']) ?>">
-                                            <input type="text" name="nama_edit" value="<?= htmlspecialchars($d['nama_akun']) ?>" required>
-                                            <button class="btn-submit" name="update">Edit</button>
+                                            <input type="text" name="nama_edit" value="<?= htmlspecialchars($d['nama_akun']) ?>" required placeholder="Nama">
+                                            <input type="text" name="group_edit" value="<?= htmlspecialchars($d['group']) ?>" required placeholder="Grup">
+                                            <button class="btn-submit" name="update">Update</button>
                                         </form>
                                     </td>
                                     <td><?= htmlspecialchars($d['tipe_akun']) ?></td>
-                                    <td>Rp <?= number_format($d['saldo_awal'], 0, ',', '.') ?></td>
                                     <td><?= $status ? 'Aktif' : 'Nonaktif' ?></td>
                                     <td>
                                         <?php if ($status): ?>
@@ -245,8 +241,6 @@ $data = $stmt->get_result();
         const kd = document.getElementById('kd');
         const kt = document.getElementById('kt');
         const ka = document.getElementById('ka');
-        const tipeSelect = document.getElementById('tipe_select');
-        const saldoInput = document.getElementById('saldo_input');
 
         function pad(el, len) {
             if (el.value !== "") {
@@ -257,17 +251,6 @@ $data = $stmt->get_result();
         kd.onblur = () => pad(kd, 2);
         kt.onblur = () => pad(kt, 3);
         ka.onblur = () => pad(ka, 3);
-
-        tipeSelect.addEventListener('change', e => {
-            if (['Revenue', 'Expense', 'COGS'].includes(e.target.value)) {
-                saldoInput.value = 0;
-                saldoInput.readOnly = true;
-                saldoInput.style.backgroundColor = "#f0f0f0";
-            } else {
-                saldoInput.readOnly = false;
-                saldoInput.style.backgroundColor = "white";
-            }
-        });
     </script>
 </body>
 </html>
