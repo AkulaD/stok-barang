@@ -17,11 +17,19 @@ if (!in_array($_SESSION['role'], ['admin', 'viewer', 'finance'])) {
 
 include 'php/conn.php';
 
+$channel = $_GET['channel'] ?? '';
+$channelSql = '';
+
+if ($channel !== '') {
+    $channelSql = " AND penjualan = '".$conn->real_escape_string($channel)."'";
+}
+
 $totalItems = $conn->query("
     SELECT IFNULL(SUM(jumlah),0) AS total
     FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
+    $channelSql
 ")->fetch_assoc();
 
 $totalRevenue = $conn->query("
@@ -29,6 +37,7 @@ $totalRevenue = $conn->query("
     FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
+    $channelSql
 ")->fetch_assoc();
 
 $totalTransaction = $conn->query("
@@ -36,6 +45,7 @@ $totalTransaction = $conn->query("
     FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
+    $channelSql
 ")->fetch_assoc();
 
 $averageRevenue = $totalTransaction['total'] > 0
@@ -47,6 +57,7 @@ $hourlyResult = $conn->query("
     FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
+    $channelSql
     GROUP BY HOUR(tanggal)
     ORDER BY jam
 ");
@@ -63,10 +74,9 @@ $historyResult = $conn->query("
     FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
+    $channelSql
     ORDER BY tanggal DESC
 ");
-
-
 
 $hours = [];
 $totals = [];
@@ -83,6 +93,7 @@ $shipmentResult = $conn->query("
     FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
+    $channelSql
     GROUP BY lokasi
 ");
 
@@ -104,6 +115,7 @@ $allProductResult = $conn->query("
     FROM transaksi
     WHERE tipe = 'keluar'
     AND DATE(tanggal) = CURDATE()
+    $channelSql
     GROUP BY nama_produk
 ");
 
@@ -138,6 +150,17 @@ $allProductResult = $conn->query("
 
         <div class="list-card">
             <h2>Today's Statistics</h2>
+                <form method="get" class="channel-filter">
+                <select name="channel">
+                    <option value="">Semua Channel</option>
+                    <option value="tokopedia" <?= ($_GET['penjualan'] ?? '') === 'tokopedia' ? 'selected' : '' ?>>Tokopedia</option>
+                    <option value="shopee" <?= ($_GET['penjualan'] ?? '') === 'shopee' ? 'selected' : '' ?>>Shopee</option>
+                    <option value="tiktok" <?= ($_GET['penjualan'] ?? '') === 'tiktok' ? 'selected' : '' ?>>Tiktok</option>
+                    <option value="offline" <?= ($_GET['penjualan'] ?? '') === 'offline' ? 'selected' : '' ?>>Offline</option>
+                </select>
+
+                <button class="btn-submit">Terapkan</button>
+            </form>
 
             <div class="list-wrap">
                 <div class="list-body">
@@ -195,40 +218,6 @@ $allProductResult = $conn->query("
         </div>  
 
         <div class="list-card">
-            <h2>All Sold Products Today</h2>
-
-            <table>
-                <tr>
-                    <th>No</th>
-                    <th>Product</th>
-                    <th>Sold</th>
-                    <th>Revenue</th>
-                </tr>
-
-                <?php
-                $no = 1;
-                if ($allProductResult->num_rows > 0) {
-                    while ($row = $allProductResult->fetch_assoc()) {
-                        echo "
-                        <tr>
-                            <td>{$no}</td>
-                            <td>{$row['nama_produk']}</td>
-                            <td>{$row['total']}</td>
-                            <td>Rp " . number_format($row['revenue'], 0, ',', '.') . "</td>
-                        </tr>";
-                        $no++;
-                    }
-                } else {
-                    echo "
-                    <tr>
-                        <td colspan='4'>No sales today</td>
-                    </tr>";
-                }
-                ?>
-            </table>
-        </div>
-
-        <div class="list-card">
             <h2>All List History Sold Products Today</h2>
             <div class="table-sales">
                 <table>
@@ -274,6 +263,39 @@ $allProductResult = $conn->query("
             </div>
         </div>
 
+        <div class="list-card">
+            <h2>All Sold Products Today</h2>
+
+            <table>
+                <tr>
+                    <th>No</th>
+                    <th>Product</th>
+                    <th>Sold</th>
+                    <th>Revenue</th>
+                </tr>
+
+                <?php
+                $no = 1;
+                if ($allProductResult->num_rows > 0) {
+                    while ($row = $allProductResult->fetch_assoc()) {
+                        echo "
+                        <tr>
+                            <td>{$no}</td>
+                            <td>{$row['nama_produk']}</td>
+                            <td>{$row['total']}</td>
+                            <td>Rp " . number_format($row['revenue'], 0, ',', '.') . "</td>
+                        </tr>";
+                        $no++;
+                    }
+                } else {
+                    echo "
+                    <tr>
+                        <td colspan='4'>No sales today</td>
+                    </tr>";
+                }
+                ?>
+            </table>
+        </div>
     <?php include "partials/info-penjualan-m.php"; ?>
     </section>
     

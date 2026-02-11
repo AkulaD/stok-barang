@@ -66,6 +66,28 @@ main {
 }
 
 /* STATISTIC */
+.channel-filter{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.channel-filter select{
+    padding:10px 14px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    background:#fff;
+    font-size:14px;
+    min-width:180px;
+    outline:none;
+    transition:0.2s;
+}
+
+.channel-filter select:focus{
+    border-color:#999;
+}
 
 .list-wrap {
     display: grid;
@@ -227,6 +249,15 @@ table th {
 
     .chart-grid {
         grid-template-columns: 1fr;
+    }
+
+    .channel-filter{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .channel-filter select{
+        width:100%;
     }
 
 }
