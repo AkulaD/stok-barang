@@ -80,6 +80,7 @@ $result = mysqli_query($conn, "SELECT * FROM user ORDER BY tanggal DESC");
                         <p><b>In-put</b></p>
                         <p>Memiliki akses untuk Input (Product-in), tidak bisa mengakses Output (product-out).</p>
                     </li>
+                    <li>
                         <p><b>Output</b></p>
                         <p>Memiliki akses untuk Output (product-out), tidak bisa mengakses Input (Product-in).</p>
                     </li>
